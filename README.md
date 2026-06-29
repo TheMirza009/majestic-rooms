@@ -1,17 +1,19 @@
-# majestic_rooms
+# Majestic Rooms
 
-A new Flutter project.
+Android application for the Majestic Rooms website.
 
-## Getting Started
+## Tech Stack
 
-This project is a starting point for a Flutter application.
+This project is built using the following technologies:
 
-A few resources to get you started if this is your first Flutter project:
+*   🔷 **Framework:** [Flutter](https://flutter.dev/) (Dart) `^3.44.0`
+*   🚀 **State Management & Routing:** [GetX](https://pub.dev/packages/get) `^4.7.3`
+*   ⚡ **Backend / Authentication:** [Supabase](https://supabase.com/) `^2.14.0`
+*   🏛️ **Architecture:** Clean Monolith (Extracted business logic with inline UI components)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Key Features
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+*   **Explore:** Browse hotels and resorts across various cities.
+*   **Saved:** Bookmark favorite locations for quick access.
+*   **Bookings:** Manage and view reservation history.
+*   **Authentication:** Secure user login and registration powered by Supabase.
