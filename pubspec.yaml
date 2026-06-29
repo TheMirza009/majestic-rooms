@@ -1,0 +1,68 @@
+name: majestic_rooms
+description: "A new Flutter project."
+
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  dio: ^5.9.2
+  supabase_flutter: ^2.14.0
+  get: ^4.7.3
+  cached_network_image: ^3.4.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Fustat
+      fonts:
+        - asset: assets/fonts/Fustat-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Fustat-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Fustat-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Fustat-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Fustat-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Fustat-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Fustat-ExtraBold.ttf
+          weight: 800
+
+  # To add custom fonts to your application, add a fonts section here,
+  # in this "flutter" section. Each entry in this list should have a
+  # "family" key with the font family name, and a "fonts" key with a
+  # list giving the asset and other descriptors for the font. For
+  # example:
+  # fonts:
+  #   - family: Schyler
+  #     fonts:
+  #       - asset: fonts/Schyler-Regular.ttf
+  #       - asset: fonts/Schyler-Italic.ttf
+  #         style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/to/font-from-package
