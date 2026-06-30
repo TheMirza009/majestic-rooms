@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/root/widgets/confirm_logout_dialog.dart';
 
 bool get kIsWindows => Platform.isWindows;
@@ -111,6 +112,36 @@ class Utils {
       builder: (_) => ConfirmLogoutDialog(
         controller: Get.find<CommonController>(),
       ),
+    );
+  }
+
+  static Future<void> showAboutDialog() async {
+    await showAdaptiveDialog(
+      context: Get.context!,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog.adaptive(
+          title: const Text('About'),
+          content: const Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'App Name: ${Constants.appName}',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8),
+              Text('Version: ${Constants.appVersion}'),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
@@ -25,19 +26,25 @@ class HomeScreen extends GetView<HomeController> {
       child: Scaffold(
         extendBody: true,
         backgroundColor: CustomColors.cardSubtleBg,
-        appBar: buildAppBar(controller, context),
+        // appBar: buildAppBar(controller, context),
         body: SafeArea(
-          bottom: false,
-          child: IndexedStack(
-            index: controller.currentIndex.value,
-            children: const [
-              ExploreScreen(),
-              SavedScreen(),
-              BookingsScreen(),
-              ProfileScreen(),
-            ],
-          ),
-        ),
+  bottom: false,
+  child: PageView(
+    controller: controller.pageController,
+    onPageChanged: controller.onPageChanged,
+    // Keeps all pages laid out regardless of scroll distance — without
+    // this, jumping from page 0 to page 3 leaves ProfileScreen's avatar
+    // unattached until the very end of the transition, which is what was
+    // causing the flight to freeze then teleport instead of animating.
+    scrollCacheExtent: ScrollCacheExtent.viewport(MediaQuery.sizeOf(context).width * 4),
+    children: const [
+      ExploreScreen(),
+      SavedScreen(),
+      BookingsScreen(),
+      ProfileScreen(),
+    ],
+  ),
+),
         bottomNavigationBar: GlassBottomNavBar(
           currentIndex: controller.currentIndex.value,
           onTap: controller.navigateTo,

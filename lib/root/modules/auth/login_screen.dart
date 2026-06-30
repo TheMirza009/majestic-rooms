@@ -9,6 +9,8 @@ import 'package:majestic_rooms/root/modules/auth/login_controller.dart';
 import 'package:majestic_rooms/root/modules/auth/signup_screen.dart';
 import 'package:majestic_rooms/root/widgets/custom_button.dart';
 import 'package:majestic_rooms/root/widgets/entry_field.dart';
+import 'package:flutter/services.dart';
+
 
 class LoginScreen extends GetView<LoginController> {
   const LoginScreen({super.key});
@@ -64,6 +66,14 @@ class LoginScreen extends GetView<LoginController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomColors.brandWhite,
+      appBar: AppBar(
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        toolbarHeight: 0,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: _paddingH),

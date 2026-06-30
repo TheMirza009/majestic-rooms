@@ -16,7 +16,6 @@ class _SavedScreenState extends State<SavedScreen> {
   final TextEditingController _searchController = TextEditingController();
   final CommonController controller = Get.find<CommonController>();
   
-
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -50,7 +49,7 @@ class _SavedScreenState extends State<SavedScreen> {
                         return HotelCard(
                           hotel: hotel,
                           initialSaveValue: controller.savedHotels.contains(hotel),
-                          onSaveTap: (_) => controller.toggleHotelSave(hotel),
+                          onSaveTap: (_) => confirmRemoveDialog(context, hotel),
                         );
                       },
                       separatorBuilder: (context, index) => const SizedBox(height: 16),
@@ -59,6 +58,29 @@ class _SavedScreenState extends State<SavedScreen> {
                 ),
               ],
             ),
+      );
+    });
+  }
+
+  Future<void> confirmRemoveDialog(BuildContext context, Hotel hotel) async {
+    return await showAdaptiveDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text("Remove from saved"),
+        content: Text("Are you sure you want to remove this hotel from your saved list?"),
+        actionsPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              controller.toggleHotelSave(hotel);
+              Navigator.pop(context);
+            },
+            child: Text("Remove"),
+          ),
+        ],
       );
     });
   }

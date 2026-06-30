@@ -4,4 +4,8 @@ class Constants {
 
   static const String appName    = 'Majestic Rooms';
   static const String appVersion = '0.0.1';
+
+  // CONTACT INFORMATION
+  static const String email = "support@majesticrooms.com";
+  static const String phone = "+9123 456 78912";
 }
