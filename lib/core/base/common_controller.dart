@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/routes/app_routes.dart';
 import 'package:majestic_rooms/core/supabase/supabase_utils.dart';
-import 'package:majestic_rooms/root/modules/tabs/explore/models/hotel.dart';
+import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// App-wide state shared across every module.

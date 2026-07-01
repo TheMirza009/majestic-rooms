@@ -37,15 +37,32 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
     }
     final sourceRect = sourceBox.localToGlobal(Offset.zero) & sourceBox.size;
     final overlay     = Overlay.of(context);
+    final screenWidth = MediaQuery.sizeOf(context).width;
 
     isFlying.value = true;
     Get.find<HomeController>().navigateTo(3);
 
     try {
-      final destinationRect = _cachedDestinationRect ?? await _settledRect(screenAvatarKey);
+      if (_cachedDestinationRect == null) {
+        // Since we added cacheExtent to HomeScreen, ProfileScreen is already
+        // built and laid out, but it's sitting off-screen to the right. 
+        // We can instantly calculate its final resting position by taking 
+        // its current global X coordinate modulo the screen width.
+        final destBox = screenAvatarKey.currentContext?.findRenderObject() as RenderBox?;
+        if (destBox != null && destBox.attached) {
+          final currentRect = destBox.localToGlobal(Offset.zero) & destBox.size;
+          _cachedDestinationRect = Rect.fromLTWH(
+            currentRect.left % screenWidth,
+            currentRect.top,
+            currentRect.width,
+            currentRect.height,
+          );
+        }
+      }
+
+      final destinationRect = _cachedDestinationRect;
       if (destinationRect == null) return;
 
-      _cachedDestinationRect = destinationRect;
       await _runFlight(overlay, sourceRect, destinationRect, avatarUrl);
     } finally {
       isFlying.value = false;
@@ -77,21 +94,5 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
 
     entry.remove();
     animController.dispose();
-  }
-
-  // Polls until the destination's rect is attached and stops changing
-  // between frames. Only needed for the very first flight, before the rect
-  // gets cached — every flight after that uses the cached value directly.
-  Future<Rect?> _settledRect(GlobalKey key) async {
-    Rect? previous;
-    for (var i = 0; i < _maxSettleFrames; i++) {
-      await WidgetsBinding.instance.endOfFrame;
-      final box = key.currentContext?.findRenderObject() as RenderBox?;
-      if (box == null || !box.attached) continue;
-      final rect = box.localToGlobal(Offset.zero) & box.size;
-      if (previous == rect) return rect;
-      previous = rect;
-    }
-    return previous;
   }
 }

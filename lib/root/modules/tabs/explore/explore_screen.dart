@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:majestic_rooms/root/modules/hotel/hotel_screen.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/explore_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/city_chips.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/explore_search_bar.dart';
@@ -24,7 +25,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
 
   @override
   void dispose() {
-    Get.delete<ExploreController>();
+    // Get.delete<ExploreController>();
     super.dispose();
   }
 
@@ -86,6 +87,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     hotel: hotel,
                     initialSaveValue: saved.contains(hotel),
                     onSaveTap: (_) => _controller.controller.toggleHotelSave(hotel),
+                    onTap: () => Get.to(() => HotelScreen(hotel: hotel)),
                   );
                 },
               );

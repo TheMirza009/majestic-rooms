@@ -41,6 +41,28 @@ class SupabaseUtils {
   void printUserStates() {
     debugPrint("💠 Current User: ${currentUser?.email}");
   }
+
+  /// Fetches hotels along with their images, rooms (rates), and facilities.
+  /// (Not currently live - wire up in ExploreController later)
+  Future<List<Map<String, dynamic>>> fetchHotels() async {
+    try {
+      final response = await _client
+          .from('hotel')
+          .select('''
+            *,
+            hotel_images (url, description, sort_order),
+            hotel_rooms (price_per_night),
+            hotel_facility (
+              facility (id, name, slug, icon)
+            )
+          ''')
+          .eq('is_active', true);
+      
+      return List<Map<String, dynamic>>.from(response);
+    } catch (e) {
+      throw Exception('Error fetching hotels: $e');
+    }
+  }
 }
 
 

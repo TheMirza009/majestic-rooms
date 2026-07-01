@@ -23,31 +23,52 @@ class HomeScreen extends GetView<HomeController> {
         statusBarIconBrightness: Brightness.dark,
         statusBarBrightness: Brightness.light,
       ),
-      child: Scaffold(
-        extendBody: true,
-        backgroundColor: CustomColors.cardSubtleBg,
-        // appBar: buildAppBar(controller, context),
-        body: SafeArea(
-  bottom: false,
-  child: PageView(
-    controller: controller.pageController,
-    onPageChanged: controller.onPageChanged,
-    // Keeps all pages laid out regardless of scroll distance — without
-    // this, jumping from page 0 to page 3 leaves ProfileScreen's avatar
-    // unattached until the very end of the transition, which is what was
-    // causing the flight to freeze then teleport instead of animating.
-    scrollCacheExtent: ScrollCacheExtent.viewport(MediaQuery.sizeOf(context).width * 4),
-    children: const [
-      ExploreScreen(),
-      SavedScreen(),
-      BookingsScreen(),
-      ProfileScreen(),
-    ],
-  ),
-),
-        bottomNavigationBar: GlassBottomNavBar(
-          currentIndex: controller.currentIndex.value,
-          onTap: controller.navigateTo,
+      child: PopScope(
+        onPopInvokedWithResult: (didPop, result) {
+          if (!didPop && controller.currentIndex.value != 0) {
+            controller.onPageChanged(0);
+          }
+        },
+        child: Scaffold(
+          extendBody: true,
+          backgroundColor: CustomColors.cardSubtleBg,
+          // appBar: buildAppBar(controller, context),
+          body: SafeArea(
+          bottom: false,
+            child: NotificationListener<ScrollUpdateNotification>(
+              onNotification: (notification) {
+                if (notification.depth == 0) {
+                  final page = controller.pageController.page?.round();
+                  if (page != null && page != controller.currentIndex.value) {
+                    controller.onPageChanged(page);
+                  }
+                }
+                return false;
+              },
+              child: LayoutBuilder(
+                builder: (context, constraints) => CustomScrollView(
+                  controller: controller.pageController,
+                  scrollDirection: Axis.horizontal,
+                  physics: const PageScrollPhysics(),
+                  cacheExtent: constraints.maxWidth * 4,
+                  slivers: [
+                    SliverFillViewport(
+                      delegate: SliverChildListDelegate(const [
+                        ExploreScreen(),
+                        SavedScreen(),
+                        BookingsScreen(),
+                        ProfileScreen(),
+                      ]),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          bottomNavigationBar: GlassBottomNavBar(
+            currentIndex: controller.currentIndex.value,
+            onTap: controller.navigateTo,
+          ),
         ),
       ),
     ));

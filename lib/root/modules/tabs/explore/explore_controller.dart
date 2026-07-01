@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:majestic_rooms/root/modules/tabs/explore/models/dummy_hotels.dart';
-import 'package:majestic_rooms/root/modules/tabs/explore/models/hotel.dart';
+import 'package:majestic_rooms/core/data/dummy_hotels.dart';
+import 'package:majestic_rooms/core/data/models/hotel.dart';
 
 class City {
   final String name;
