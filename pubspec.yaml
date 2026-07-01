@@ -16,18 +16,27 @@ dependencies:
   supabase_flutter: ^2.14.0
   get: ^4.7.3
   cached_network_image: ^3.4.1
+  fluttertoast: ^9.1.0
+  shimmer: ^3.0.0
+
+  # Maps implementation
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  url_launcher: ^6.3.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.0
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/images/
+    - assets/launcher/
 
   fonts:
     - family: Fustat
@@ -46,6 +55,16 @@ flutter:
           weight: 700
         - asset: assets/fonts/Fustat-ExtraBold.ttf
           weight: 800
+
+
+
+flutter_native_splash:
+  color: "#F9F9FA"
+  image: "assets/launcher/splash.png"
+  color_dark: "#111111"
+  image_dark: "assets/launcher/splash_dark.png"
+  android: true
+  ios: true
 
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a

@@ -9,6 +9,7 @@ import 'package:majestic_rooms/root/modules/hotel/widgets/check_availability_bar
 import 'package:majestic_rooms/root/modules/hotel/widgets/hotel_stars.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/licence_banner.dart';
+import 'package:majestic_rooms/root/modules/hotel/widgets/maps_preview.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/favorite_button.dart';
 import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
@@ -149,10 +150,39 @@ class HotelScreen extends StatelessWidget {
                         avatar: f.icon != null ? Icon(_getIconData(f.icon!), size: 18, color: CustomColors.brandRed) : null,
                         backgroundColor: CustomColors.surfaceWhite,
                         side: BorderSide(color: CustomColors.borderColor.withOpacity(0.2)),
+                        elevation: 2.0,
+                        shadowColor: Colors.black.withOpacity(0.4),
                       )).toList(),
                     ),
                     const SizedBox(height: 30),
                   ],
+                  
+                  // LOCATION
+                  Text(
+                    "Location",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: CustomColors.textMain,
+                    ),
+                  ),
+                  if (hotel.distanceFromHaram != null) Text(
+                    "${hotel.distanceFromHaram} KM from the Haram",
+                    style: TextStyle(
+                      fontStyle: hotel.distanceFromHaram == null ? FontStyle.italic : FontStyle.normal,
+                    ),
+                  ),
+                  
+                  if (hotel.latitude != null && hotel.longitude != null) ...[
+                    const SizedBox(height: 16),
+                    MapsPreview(
+                      latitude: hotel.latitude!.toDouble(),
+                      longitude: hotel.longitude!.toDouble(),
+                      hotelName: hotel.name,
+                    ),
+                  ],
+                  
+                  const SizedBox(height: 30),
 
                   // POLICIES
                   Text(
@@ -169,7 +199,8 @@ class HotelScreen extends StatelessWidget {
                       fontStyle: hotel.description == null ? FontStyle.italic : FontStyle.normal,
                     ),
                   ),
-                  SizedBox(height: 30),
+                  // Extra padding so content isn't covered by the floating CheckAvailabilityBar
+                  const SizedBox(height: 200),
                 ],
               ),
             ),

@@ -26,9 +26,17 @@ class CommonController extends GetxController {
   void onInit() {
     super.onInit();
     currentUser.value = _supabase.currentUser;
-    _authSubscription = _supabase.onAuthStateChange.listen(
-      (authState) => currentUser.value = authState.session?.user,
-    );
+    _authSubscription = _supabase.onAuthStateChange.listen((authState) {
+      currentUser.value = authState.session?.user;
+      
+      // Auto-logout: if the session expires in the background or the user
+      // is deleted/signed out remotely, force them back to the login screen.
+      if (authState.event == AuthChangeEvent.signedOut ||
+          authState.event == AuthChangeEvent.userDeleted) {
+        savedHotels.clear();
+        Get.offAllNamed(AppRoutes.login);
+      }
+    });
     _supabase.printUserStates();
   }
 

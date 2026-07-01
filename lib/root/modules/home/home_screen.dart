@@ -35,35 +35,17 @@ class HomeScreen extends GetView<HomeController> {
           // appBar: buildAppBar(controller, context),
           body: SafeArea(
           bottom: false,
-            child: NotificationListener<ScrollUpdateNotification>(
-              onNotification: (notification) {
-                if (notification.depth == 0) {
-                  final page = controller.pageController.page?.round();
-                  if (page != null && page != controller.currentIndex.value) {
-                    controller.onPageChanged(page);
-                  }
-                }
-                return false;
-              },
-              child: LayoutBuilder(
-                builder: (context, constraints) => CustomScrollView(
-                  controller: controller.pageController,
-                  scrollDirection: Axis.horizontal,
-                  physics: const PageScrollPhysics(),
-                  cacheExtent: constraints.maxWidth * 4,
-                  slivers: [
-                    SliverFillViewport(
-                      delegate: SliverChildListDelegate(const [
-                        ExploreScreen(),
-                        SavedScreen(),
-                        BookingsScreen(),
-                        ProfileScreen(),
-                      ]),
-                    ),
-                  ],
-                ),
+              child: PageView(
+                controller: controller.pageController,
+                physics: const BouncingScrollPhysics(),
+                onPageChanged: controller.onPageChanged,
+                children: const [
+                  ExploreScreen(),
+                  SavedScreen(),
+                  BookingsScreen(),
+                  ProfileScreen(),
+                ],
               ),
-            ),
           ),
           bottomNavigationBar: GlassBottomNavBar(
             currentIndex: controller.currentIndex.value,

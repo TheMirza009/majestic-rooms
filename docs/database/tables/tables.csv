@@ -1,0 +1,101 @@
+table_name,column_name,data_type,is_nullable,column_default
+accounts,id,uuid,NO,uuid_generate_v4()
+accounts,name,character varying,NO,null
+accounts,email,character varying,YES,null
+accounts,updated_at,timestamp with time zone,YES,null
+accounts,created_at,timestamp with time zone,YES,null
+accounts,created_by,uuid,YES,null
+accounts,updated_by,uuid,YES,null
+accounts,picture_url,character varying,YES,null
+accounts,public_data,jsonb,NO,'{}'::jsonb
+blog_post,id,integer,NO,nextval('blog_post_id_seq'::regclass)
+blog_post,title,character varying,NO,null
+blog_post,short_description,text,YES,null
+blog_post,long_description,text,YES,null
+blog_post,thumbnail,character varying,YES,null
+blog_post,created_at,timestamp without time zone,YES,CURRENT_TIMESTAMP
+blog_post,created_by,character varying,YES,null
+blog_post,tags,ARRAY,YES,null
+booking,id,uuid,NO,gen_random_uuid()
+booking,hotel_slug,text,YES,null
+booking,room_id,integer,YES,null
+booking,check_in_date,date,NO,null
+booking,check_out_date,date,NO,null
+booking,nights,integer,YES,null
+booking,number_of_rooms,integer,YES,1
+booking,booking_status,USER-DEFINED,YES,'PENDING'::booking_status_enum
+booking,booking_date,date,YES,CURRENT_DATE
+booking,promocode,character varying,YES,null
+booking,guest_full_name,character varying,YES,null
+booking,guest_email,character varying,YES,null
+booking,guest_phone,character varying,YES,null
+booking,special_request,text,YES,null
+booking,gross_total,numeric,YES,null
+booking,discount,numeric,YES,null
+booking,net_total,numeric,YES,null
+booking,account_id,uuid,YES,null
+booking_detail,id,bigint,NO,nextval('booking_detail_id_seq'::regclass)
+booking_detail,booking_id,uuid,YES,null
+booking_detail,room_id,integer,YES,null
+booking_detail,no_of_rooms,integer,YES,1
+booking_detail,room_price,numeric,NO,null
+booking_detail,gross_amount,numeric,NO,null
+booking_detail,discount,numeric,YES,0
+booking_detail,net_amount,numeric,NO,null
+booking_detail,includes_breakfast,boolean,YES,false
+facilities,id,uuid,NO,uuid_generate_v4()
+facilities,name,text,NO,null
+facilities,slug,text,NO,null
+facilities,icon,text,YES,null
+facilities,created_at,timestamp with time zone,YES,now()
+facilities,updated_at,timestamp with time zone,YES,now()
+facility,id,integer,NO,nextval('facility_id_seq'::regclass)
+facility,name,character varying,NO,null
+facility,slug,text,YES,null
+facility,icon,character varying,YES,null
+hotel,id,uuid,NO,gen_random_uuid()
+hotel,name,character varying,NO,null
+hotel,slug,text,YES,null
+hotel,address,character varying,YES,null
+hotel,location_slug,text,YES,null
+hotel,distance_from_haram,numeric,YES,null
+hotel,latitude,double precision,YES,null
+hotel,longitude,double precision,YES,null
+hotel,coordinates,USER-DEFINED,YES,null
+hotel,class,integer,YES,null
+hotel,liscense_no,character varying,YES,null
+hotel,description,text,YES,null
+hotel,terms,text,YES,null
+hotel,serve_breakfast,boolean,YES,false
+hotel,payment_policies,text,YES,null
+hotel,land_line,character varying,YES,null
+hotel,phone_number,character varying,YES,null
+hotel,email,character varying,YES,null
+hotel,is_best_hotel,boolean,YES,false
+hotel,is_active,boolean,YES,true
+hotel_facility,hotel_id,uuid,NO,null
+hotel_facility,facility_id,integer,NO,null
+hotel_images,id,integer,NO,nextval('hotel_images_id_seq'::regclass)
+hotel_images,hotel_slug,text,YES,null
+hotel_images,url,character varying,NO,null
+hotel_images,description,character varying,YES,null
+hotel_images,sort_order,integer,YES,'-1'::integer
+hotel_rooms,id,integer,NO,nextval('hotel_rooms_id_seq'::regclass)
+hotel_rooms,hotel_slug,text,YES,null
+hotel_rooms,room_category_id,integer,YES,null
+hotel_rooms,room_number,character varying,NO,null
+hotel_rooms,name,character varying,YES,null
+hotel_rooms,description,text,YES,null
+hotel_rooms,beds,integer,YES,1
+hotel_rooms,price_per_night,numeric,NO,null
+hotel_rooms,status,USER-DEFINED,YES,'AVAILABLE'::room_status_enum
+hotel_rooms,city_view,boolean,YES,false
+hotel_rooms,price_per_night_with_breakfast,numeric,YES,null
+location,id,uuid,NO,gen_random_uuid()
+location,name,character varying,NO,null
+location,slug,text,YES,null
+location,thumbnail,character varying,YES,null
+payment,id,integer,NO,nextval('payment_id_seq'::regclass)
+payment,booking_id,uuid,YES,null
+payment,amount,numeric,NO,null
+payment,payment_date,date,YES,CURRENT_DATE

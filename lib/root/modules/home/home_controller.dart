@@ -20,7 +20,7 @@ class HomeController extends GetxController {
 
   // ── Navigation ───────────────────────────────────────────────────────────
   void navigateTo(int index) {
-    currentIndex.value = index;
+    // currentIndex.value = index;
     pageController.animateToPage(
       index,
       duration: const Duration(milliseconds: 300),

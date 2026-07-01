@@ -1,0 +1,7 @@
+schemaname,tablename,policyname,permissive,roles,cmd,qual,with_check
+public,accounts,accounts_read,PERMISSIVE,{authenticated},SELECT,(( SELECT auth.uid() AS uid) = id),null
+public,accounts,accounts_update,PERMISSIVE,{authenticated},UPDATE,(( SELECT auth.uid() AS uid) = id),(( SELECT auth.uid() AS uid) = id)
+public,facilities,facilities_select,PERMISSIVE,{authenticated},SELECT,true,null
+public,facilities,facilities_insert,PERMISSIVE,{authenticated},INSERT,null,true
+public,facilities,facilities_update,PERMISSIVE,{authenticated},UPDATE,true,true
+public,facilities,facilities_delete,PERMISSIVE,{authenticated},DELETE,true,null
