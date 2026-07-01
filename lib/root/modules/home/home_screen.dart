@@ -24,9 +24,12 @@ class HomeScreen extends GetView<HomeController> {
         statusBarBrightness: Brightness.light,
       ),
       child: PopScope(
-        onPopInvokedWithResult: (didPop, result) {
-          if (!didPop && controller.currentIndex.value != 0) {
-            controller.onPageChanged(0);
+        canPop: false,
+        onPopInvokedWithResult: (didPop, result) async {
+          if (didPop) return;
+          final shouldPop = await controller.handleBackPress();
+          if (shouldPop) {
+            SystemNavigator.pop();
           }
         },
         child: Scaffold(
@@ -35,17 +38,18 @@ class HomeScreen extends GetView<HomeController> {
           // appBar: buildAppBar(controller, context),
           body: SafeArea(
           bottom: false,
-              child: PageView(
-                controller: controller.pageController,
-                physics: const BouncingScrollPhysics(),
-                onPageChanged: controller.onPageChanged,
-                children: const [
-                  ExploreScreen(),
-                  SavedScreen(),
-                  BookingsScreen(),
-                  ProfileScreen(),
-                ],
-              ),
+            child: PageView(
+              controller: controller.pageController,
+              physics: const BouncingScrollPhysics(),
+              onPageChanged: controller.onPageChanged,
+              allowImplicitScrolling: true,
+              children: const [
+                ExploreScreen(),
+                SavedScreen(),
+                BookingsScreen(),
+                ProfileScreen(),
+              ],
+            ),
           ),
           bottomNavigationBar: GlassBottomNavBar(
             currentIndex: controller.currentIndex.value,

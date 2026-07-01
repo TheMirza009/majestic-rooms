@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
+import 'package:majestic_rooms/root/modules/home/notifications_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
@@ -63,6 +65,10 @@ class ExploreController extends GetxController {
       return City(name: name, imageURL: url);
     }).toList();
     debugPrint("Cities: ${cities.value.map((city) {print("URL: " + city.imageURL + "\n Name: " + city.name);})}");
+  }
+
+  void openNotifications() {
+    Navigator.push(Get.context!, CupertinoPageRoute(builder: (context) => const NotificationsScreen()));
   }
 
   @override

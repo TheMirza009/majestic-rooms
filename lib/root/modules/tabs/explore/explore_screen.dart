@@ -39,7 +39,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // PROFILE
-          ProfileBar(onNotificationsTap: _controller.fetchCities),
+          RepaintBoundary(child: ProfileBar(onNotificationsTap: _controller.openNotifications)), // fetchCities
     
           // SEARCH
           ExploreSearchBar(

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
@@ -35,64 +36,66 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
       Get.find<HomeController>().navigateTo(3);
       return;
     }
-    final sourceRect = sourceBox.localToGlobal(Offset.zero) & sourceBox.size;
+    final sourceRect  = sourceBox.localToGlobal(Offset.zero) & sourceBox.size;
     final overlay     = Overlay.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
+    final homeCtrl    = Get.find<HomeController>();
 
     isFlying.value = true;
-    Get.find<HomeController>().navigateTo(3);
+    homeCtrl.navigateTo(3);
+
+    // Insert overlay at source position immediately — no blank frames between
+    // the ProfileBar avatar hiding (isFlying=true) and the overlay appearing.
+    final animCtrl = AnimationController(vsync: this, duration: _flightDuration);
+    Rect liveRect  = sourceRect;
+
+    late OverlayEntry entry;
+    entry = OverlayEntry(builder: (_) {
+      return Positioned.fromRect(
+        rect: liveRect,
+        child: IgnorePointer(child: UserAvatar(imageUrl: avatarUrl, size: liveRect.width)),
+      );
+    });
+    overlay.insert(entry);
 
     try {
+      // Settle until ProfileScreen is mounted and screenAvatarKey has a context.
       if (_cachedDestinationRect == null) {
-        // Since we added cacheExtent to HomeScreen, ProfileScreen is already
-        // built and laid out, but it's sitting off-screen to the right. 
-        // We can instantly calculate its final resting position by taking 
-        // its current global X coordinate modulo the screen width.
-        final destBox = screenAvatarKey.currentContext?.findRenderObject() as RenderBox?;
-        if (destBox != null && destBox.attached) {
-          final currentRect = destBox.localToGlobal(Offset.zero) & destBox.size;
-          _cachedDestinationRect = Rect.fromLTWH(
-            currentRect.left % screenWidth,
-            currentRect.top,
-            currentRect.width,
-            currentRect.height,
-          );
+        for (int i = 0; i < _maxSettleFrames; i++) {
+          await SchedulerBinding.instance.endOfFrame;
+          final destBox = screenAvatarKey.currentContext?.findRenderObject() as RenderBox?;
+          if (destBox != null && destBox.attached) {
+            final destRect     = destBox.localToGlobal(Offset.zero) & destBox.size;
+            // % screenWidth is only correct when measured at page == 0 (integer rest).
+            // Mid-animation the page is fractional, so subtract the remaining
+            // scroll distance to get the avatar's final resting X coordinate.
+            final pagePosition = homeCtrl.pageController.page ?? 3.0;
+            _cachedDestinationRect = Rect.fromLTWH(
+              destRect.left - (3.0 - pagePosition) * screenWidth,
+              destRect.top,
+              destRect.width,
+              destRect.height,
+            );
+            break;
+          }
         }
       }
 
       final destinationRect = _cachedDestinationRect;
       if (destinationRect == null) return;
 
-      await _runFlight(overlay, sourceRect, destinationRect, avatarUrl);
+      final rectTween = RectTween(begin: sourceRect, end: destinationRect);
+      final curved    = CurvedAnimation(parent: animCtrl, curve: Curves.easeInOutCubic);
+      animCtrl.addListener(() {
+        liveRect = rectTween.evaluate(curved)!;
+        entry.markNeedsBuild();
+      });
+
+      await animCtrl.forward();
     } finally {
+      entry.remove();
+      animCtrl.dispose();
       isFlying.value = false;
     }
-  }
-
-  Future<void> _runFlight(OverlayState overlay, Rect sourceRect, Rect destinationRect, String? avatarUrl) async {
-    final animController = AnimationController(vsync: this, duration: _flightDuration);
-    final rectTween       = RectTween(begin: sourceRect, end: destinationRect);
-    final curved          = CurvedAnimation(parent: animController, curve: Curves.easeInOutCubic);
-
-    late OverlayEntry entry;
-    entry = OverlayEntry(
-      builder: (_) {
-        final rect = rectTween.evaluate(curved)!;
-        return Positioned.fromRect(
-          rect: rect,
-          child: IgnorePointer(
-            child: UserAvatar(imageUrl: avatarUrl, size: rect.width),
-          ),
-        );
-      },
-    );
-
-    animController.addListener(() => entry.markNeedsBuild());
-    overlay.insert(entry);
-
-    await animController.forward();
-
-    entry.remove();
-    animController.dispose();
   }
 }

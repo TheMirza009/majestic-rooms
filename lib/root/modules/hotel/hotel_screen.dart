@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
-import 'package:majestic_rooms/root/modules/hotel/screens/rooms_screen.dart';
+import 'package:majestic_rooms/root/modules/booking/screens/rooms_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/check_availability_bar.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/hotel_stars.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
@@ -212,7 +212,7 @@ class HotelScreen extends StatelessWidget {
         onTap: () => Navigator.push(
           context, 
           CupertinoPageRoute(
-            builder: (context) => const RoomsScreen(),
+            builder: (context) => RoomsScreen(hotel: hotel),
           ),
         ),
       ),
