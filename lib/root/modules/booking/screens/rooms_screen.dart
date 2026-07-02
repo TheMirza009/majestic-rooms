@@ -20,6 +20,7 @@ class RoomsScreen extends StatelessWidget {
     return Scaffold(
       // backgroundColor: CustomColors.background,
       appBar: AppBar(
+        elevation: 0,
         title: Text(
           "Select Rooms",
           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -29,11 +30,13 @@ class RoomsScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.pop(context),
         ),
+        surfaceTintColor: Colors.transparent,
       ),
       body: SafeArea(
         child: Column(
           children: [
             const DateRangeSelectionCard(),
+            SizedBox(height: 8),
             Expanded(
               child: hotel.rooms.isEmpty
                   ? const Center(
@@ -55,7 +58,7 @@ class RoomsScreen extends StatelessWidget {
                     )
                   : ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 120.0), // padding for FAB
+                      padding: const EdgeInsets.only(top: 0.0, bottom: 120.0), // padding for FAB
                       itemCount: hotel.rooms.length,
                       itemBuilder: (context, index) {
                         final room = hotel.rooms[index];

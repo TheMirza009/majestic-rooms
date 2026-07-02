@@ -107,7 +107,10 @@ class DateRangeSelectionCard extends StatelessWidget {
                     const SizedBox(width: 8),
 
                     // EDIT
-                    const Text('Edit', style: _editStyle),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: const Text('Edit', style: _editStyle),
+                    ),
                   ],
                 ),
               ),

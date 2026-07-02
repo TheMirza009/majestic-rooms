@@ -155,6 +155,35 @@ class _HotelCardState extends State<HotelCard> {
                       ),
                     ),
 
+                    // PROMOTION BADGE
+                    if (widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true)
+                      Positioned(
+                        top: _inset,
+                        left: _inset,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFD700),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.local_offer_rounded, size: 14, color: Color(0xFF10141B)),
+                              const SizedBox(width: 4),
+                              Text(
+                                '${widget.hotel.activePromotion!.discountPercent}% OFF',
+                                style: const TextStyle(
+                                  color: Color(0xFF10141B),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
                     // DETAILS
                     Align(
                       alignment: Alignment.bottomCenter,
@@ -294,8 +323,13 @@ class _HotelCardState extends State<HotelCard> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
+                                      if (widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null)
+                                        Text(
+                                          '\$${widget.hotel.rates.first}',
+                                          style: _unitStyle.copyWith(decoration: TextDecoration.lineThrough),
+                                        ),
                                       Text(
-                                        '\$${widget.hotel.rates.first}',
+                                        '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',
                                         style: _rateStyle,
                                       ),
                                       const Text('/night', style: _unitStyle),

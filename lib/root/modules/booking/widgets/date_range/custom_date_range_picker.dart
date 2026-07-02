@@ -186,7 +186,7 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                         initialStartDate: widget.initialStartDate,
                         primaryColor: widget.primaryColor,
                         rangeColor: widget.rangeColor,
-                        startEndDateChange: (DateTime startDateData, DateTime endDateData) {
+                        startEndDateChange: (DateTime? startDateData, DateTime? endDateData) {
                           setState(() {
                             startDate = startDateData;
                             endDate = endDateData;
@@ -261,8 +261,11 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
 
   // Applies the current range: notifies the caller, then closes the dialog.
   void onApplyPressed() {
+    if (startDate == null) return;
+    
     try {
-      widget.onApplyClick(startDate!, endDate!);
+      final end = endDate ?? startDate!;
+      widget.onApplyClick(startDate!, end);
       Navigator.pop(context);
     } catch (_) {}
   }

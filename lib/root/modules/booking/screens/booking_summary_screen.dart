@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
@@ -52,142 +53,134 @@ class BookingSummaryScreen extends StatelessWidget {
     final controller = Get.find<BookingController>();
     final hotel = controller.hotel;
     final heroImage = hotel.images.isNotEmpty ? hotel.images.first.url : null;
-    final topPad = MediaQuery.of(context).padding.top + kToolbarHeight + 8;
-
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F9),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF7F7F9),
+        surfaceTintColor: const Color(0xFFF7F7F9),
+        centerTitle: true,
+        title: const Text(
+          'Booking Summary',
+           style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        leadingWidth: 70,
+        leading: Align(
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12.0),
+            child: RoundIconButton(
+              size: 44,
+              backgroundColor: CustomColors.cardSubtleBg,
+              icon: const Padding(
+                padding: EdgeInsets.only(right: 3.0),
+                child: Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: CustomColors.textMain,
+                  size: 20,
+                ),
+              ),
+              onTap: () => Navigator.pop(context),
+            ),
+          ),
+        ),
+      ),
       body: Stack(
         children: [
           // SCROLLABLE CONTENT
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              // HERO APP BAR
-              SliverAppBar(
-                expandedHeight: 280,
-                pinned: true,
-                backgroundColor: const Color(0xFFF7F7F9),
-                surfaceTintColor: Colors.transparent,
-                centerTitle: true,
-                title: const Text(
-                  'Booking Summary',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: CustomColors.textMain,
-                  ),
-                ),
-                leadingWidth: 100,
-                leading: Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12.0, top: 10.0),
-                    child: RoundIconButton(
-                      size: 46,
-                      backgroundColor: CustomColors.cardSubtleBg,
-                      icon: const Padding(
-                        padding: EdgeInsets.only(right: 3.0),
-                        child: Icon(
-                          Icons.arrow_back_ios_new_rounded,
-                          color: CustomColors.textMain,
-                          size: 22,
-                        ),
-                      ),
-                      onTap: () => Navigator.pop(context),
-                    ),
-                  ),
-                ),
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.parallax,
-                  background: Padding(
-                    // Push image below the pinned toolbar + status bar
-                    padding: EdgeInsets.fromLTRB(12, topPad, 12, 12),
-                    child: ClipRRect(
+              // HOTEL HERO IMAGE
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+                  child: Container(
+                    height: 200,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          // HOTEL IMAGE
-                          heroImage != null
-                              ? CachedNetworkImage(
-                                  imageUrl: heroImage,
-                                  fit: BoxFit.cover,
-                                  placeholder: (context, url) =>
-                                      const ColoredBox(
-                                          color: CustomColors.cardSubtleBg),
-                                  errorWidget: (context, url, error) =>
-                                      const ColoredBox(
-                                    color: CustomColors.cardSubtleBg,
-                                    child: Icon(
-                                      Icons.broken_image_outlined,
-                                      color: CustomColors.hintColor,
-                                      size: 48,
-                                    ),
-                                  ),
-                                )
-                              : const ColoredBox(
-                                  color: CustomColors.cardSubtleBg),
-                          // GRADIENT OVERLAY
-                          const DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                                colors: [
-                                  Color(0x00000000),
-                                  Color(0x99000000),
-                                ],
-                                stops: [0.4, 1.0],
-                              ),
-                            ),
-                          ),
-                          // HOTEL NAME + LOCATION OVERLAY
-                          Positioned(
-                            bottom: 16,
-                            left: 16,
-                            right: 16,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  hotel.name,
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
-                                    height: 1.2,
+                    ),
+                    clipBehavior: Clip.hardEdge,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        // HOTEL IMAGE
+                        heroImage != null
+                            ? CachedNetworkImage(
+                                imageUrl: heroImage,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    const ColoredBox(color: CustomColors.cardSubtleBg),
+                                errorWidget: (context, url, error) =>
+                                    const ColoredBox(
+                                  color: CustomColors.cardSubtleBg,
+                                  child: Icon(
+                                    Icons.broken_image_outlined,
+                                    color: CustomColors.hintColor,
+                                    size: 48,
                                   ),
                                 ),
-                                if (hotel.address != null) ...[
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.location_on_outlined,
-                                        size: 13,
-                                        color: Color(0xCCFFFFFF),
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Expanded(
-                                        child: Text(
-                                          hotel.address!,
-                                          style: const TextStyle(
-                                            fontSize: 13,
-                                            color: Color(0xCCFFFFFF),
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              )
+                            : const ColoredBox(color: CustomColors.cardSubtleBg),
+                        // GRADIENT OVERLAY
+                        const DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color(0x00000000),
+                                Color(0x99000000),
                               ],
+                              stops: [0.4, 1.0],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        // HOTEL NAME + LOCATION OVERLAY
+                        Positioned(
+                          bottom: 16,
+                          left: 16,
+                          right: 16,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                hotel.name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                  height: 1.2,
+                                ),
+                              ),
+                              if (hotel.address != null) ...[
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on_outlined,
+                                      size: 13,
+                                      color: Color(0xCCFFFFFF),
+                                    ),
+                                    const SizedBox(width: 4),
+                                    Expanded(
+                                      child: Text(
+                                        hotel.address!,
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: Color(0xCCFFFFFF),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -200,116 +193,141 @@ class BookingSummaryScreen extends StatelessWidget {
                   delegate: SliverChildListDelegate([
 
                     // STAY DETAILS GRID
-                    const Text('Stay Details', style: _sectionTitleStyle),
-                    const SizedBox(height: 10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // CHECK-IN
-                        Expanded(
-                          child: SummaryCard(
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('CHECK-IN', style: _labelStyle),
-                                SizedBox(height: 6),
-                                Text('Jun 30, 2024', style: _valueStyle),
-                                SizedBox(height: 2),
-                                Text('After 02:00 PM', style: _subValueStyle),
-                              ],
-                            ),
+                        const Text('Stay Details', style: _sectionTitleStyle),
+                        TextButton(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        // CHECK-OUT
-                        Expanded(
-                          child: SummaryCard(
-                            child: const Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('CHECK-OUT', style: _labelStyle),
-                                SizedBox(height: 6),
-                                Text('Jul 01, 2024', style: _valueStyle),
-                                SizedBox(height: 2),
-                                Text('Before 11:00 AM', style: _subValueStyle),
-                              ],
-                            ),
-                          ),
+                          onPressed: () => controller.selectDateRange(context),
+                          child: const Text('Edit', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: CustomColors.brandRed)),
                         ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        // DURATION
-                        Expanded(
-                          child: SummaryCard(
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        CustomColors.brandRed.withOpacity(0.08),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Icon(
-                                    Icons.nightlight_round,
-                                    size: 18,
-                                    color: CustomColors.brandRed,
+                    Obx(() {
+                      final dateRange = controller.dateRange.value;
+                      final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.start) : 'Not selected';
+                      final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.end) : 'Not selected';
+                      final nights = controller.nights;
+                      
+                      return Column(
+                        children: [
+                          Row(
+                            children: [
+                              // CHECK-IN
+                              Expanded(
+                                child: SummaryCard(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('CHECK-IN', style: _labelStyle),
+                                      const SizedBox(height: 6),
+                                      Text(checkInStr, style: _valueStyle),
+                                      const SizedBox(height: 2),
+                                      const Text('After 02:00 PM', style: _subValueStyle),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(width: 10),
-                                const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('DURATION', style: _labelStyle),
-                                    SizedBox(height: 2),
-                                    Text('1 Night', style: _valueStyle),
-                                  ],
+                              ),
+                              const SizedBox(width: 10),
+                              // CHECK-OUT
+                              Expanded(
+                                child: SummaryCard(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('CHECK-OUT', style: _labelStyle),
+                                      const SizedBox(height: 6),
+                                      Text(checkOutStr, style: _valueStyle),
+                                      const SizedBox(height: 2),
+                                      const Text('Before 11:00 AM', style: _subValueStyle),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        
-                        // ROOMS COUNT
-                        Expanded(
-                          child: SummaryCard(
-                            child: Obx(() => Row(
-                                  children: [
-                                    Container(
-                                      padding: const EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: CustomColors.brandRed
-                                            .withOpacity(0.08),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: const Icon(
-                                        Icons.person_outline_rounded,
-                                        size: 18,
-                                        color: CustomColors.brandRed,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        const Text('ROOMS', style: _labelStyle),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          '${controller.totalQuantity} Room${controller.totalQuantity == 1 ? '' : 's'}',
-                                          style: _valueStyle,
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              // DURATION
+                              Expanded(
+                                child: SummaryCard(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color:
+                                              CustomColors.brandRed.withOpacity(0.08),
+                                          borderRadius: BorderRadius.circular(10),
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                )),
+                                        child: const Icon(
+                                          Icons.nightlight_round,
+                                          size: 18,
+                                          color: CustomColors.brandRed,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('DURATION', style: _labelStyle),
+                                          const SizedBox(height: 2),
+                                          Text('$nights Night${nights == 1 ? '' : 's'}', style: _valueStyle),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              
+                              // ROOMS COUNT
+                              Expanded(
+                                child: SummaryCard(
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                          color: CustomColors.brandRed
+                                              .withOpacity(0.08),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: const Icon(
+                                          Icons.person_outline_rounded,
+                                          size: 18,
+                                          color: CustomColors.brandRed,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          const Text('ROOMS', style: _labelStyle),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            '${controller.totalQuantity} Room${controller.totalQuantity == 1 ? '' : 's'}',
+                                            style: _valueStyle,
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      );
+                    }),
                     const SizedBox(height: 20),
 
                     // SELECTED ROOMS
@@ -388,6 +406,10 @@ class BookingSummaryScreen extends StatelessWidget {
             child: Container(
               decoration: const BoxDecoration(
                 color: CustomColors.surfaceWhite,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Color(0x1A000000),
@@ -396,12 +418,54 @@ class BookingSummaryScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              padding: const EdgeInsets.fromLTRB(20, 16, 20, 32),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: Obx(() {
                 final subtotal = controller.totalPrice;
                 final total = subtotal * 1.172; // 10% service + 7.2% taxes
                 return Row(
                   children: [
+                    
+                    // BOOK NOW BUTTON
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: _onConfirmBooking,
+                        child: Container(
+                          height: 54,
+                          decoration: BoxDecoration(
+                            color: CustomColors.brandRed,
+                            borderRadius: BorderRadius.circular(100),
+                            boxShadow: [
+                              BoxShadow(
+                                color: CustomColors.brandRed.withOpacity(0.30),
+                                blurRadius: 16,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
+                          ),
+                          child: const Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Confirm Booking',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                  letterSpacing: 0.3,
+                                ),
+                              ),
+                              SizedBox(width: 6),
+                              Icon(
+                                Icons.arrow_forward_ios_rounded,
+                                size: 14,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
                     // TOTAL PRICE LABEL
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -425,47 +489,6 @@ class BookingSummaryScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(width: 16),
-                    // BOOK NOW BUTTON
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: _onConfirmBooking,
-                        child: Container(
-                          height: 54,
-                          decoration: BoxDecoration(
-                            color: CustomColors.brandRed,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColors.brandRed.withOpacity(0.30),
-                                blurRadius: 16,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
-                          ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Book Now',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  letterSpacing: 0.3,
-                                ),
-                              ),
-                              SizedBox(width: 6),
-                              Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 14,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
                     ),
                   ],
                 );

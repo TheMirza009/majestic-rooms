@@ -34,7 +34,7 @@ class CustomCalendar extends StatefulWidget {
   final Color? rangeColor;
 
   /// A function to be called when the selected date range changes
-  final Function(DateTime, DateTime)? startEndDateChange;
+  final Function(DateTime?, DateTime?)? startEndDateChange;
 
   const CustomCalendar({
     super.key,
@@ -269,7 +269,10 @@ class CustomCalendarState extends State<CustomCalendar> {
     if (!isDateSelectable(date)) return;
 
     if (startDate == null && endDate == null) {
-      setState(() => startDate = date);
+      setState(() {
+        startDate = date;
+      });
+      widget.startEndDateChange?.call(startDate, endDate);
       return;
     }
     if (startDate != null && endDate == null) {
@@ -280,6 +283,7 @@ class CustomCalendarState extends State<CustomCalendar> {
           endDate = date;
         }
       });
+      widget.startEndDateChange?.call(startDate, endDate);
       return;
     }
     setState(() {
@@ -291,9 +295,7 @@ class CustomCalendarState extends State<CustomCalendar> {
       } else {
         endDate = date;
       }
-      if (startDate != null && endDate != null) {
-        widget.startEndDateChange?.call(startDate!, endDate!);
-      }
+      widget.startEndDateChange?.call(startDate, endDate);
     });
   }
 

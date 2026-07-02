@@ -86,7 +86,38 @@ class HotelScreen extends StatelessWidget {
               tag: heroTag ?? hotel.imageUrl,
               child: Material(
                 type: MaterialType.transparency,
-                child: ImageCarousel(images: hotel.images.map((image) => image.url).toList()),
+                child: Stack(
+                  children: [
+                    ImageCarousel(images: hotel.images.map((image) => image.url).toList()),
+                    if (hotel.activePromotion != null && hotel.activePromotion?.isActive == true)
+                      Positioned(
+                        bottom: 24,
+                        left: 16,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFD700),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.local_offer_rounded, size: 16, color: Color(0xFF10141B)),
+                              const SizedBox(width: 6),
+                              Text(
+                                '${hotel.activePromotion!.discountPercent}% OFF',
+                                style: const TextStyle(
+                                  color: Color(0xFF10141B),
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
 

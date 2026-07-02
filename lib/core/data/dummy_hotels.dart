@@ -2,6 +2,7 @@ import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/data/models/facility.dart';
 import 'package:majestic_rooms/core/data/models/hotel_image.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
+import 'package:majestic_rooms/core/data/models/promotion.dart';
 
 const _dummyFacilities = [
   Facility(id: 1, name: 'Free WiFi', slug: 'wifi', icon: 'wifi'),
@@ -409,6 +410,12 @@ const List<Hotel> kDummyHotels = [
     email: 'info@dummy.com',
     isActive: true,
     facilities: _dummyFacilities,
+    activePromotion: const Promotion(
+      code: 'SUMMER20',
+      hotelId: 'riyadh-1',
+      discountPercent: 20,
+      isActive: true,
+    ),
   ),
   Hotel(
     id: 'riyadh-2',

@@ -21,9 +21,8 @@ class PriceBreakdown extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // SUBTOTAL ROW
             _PriceRow(
-              label: '${controller.totalQuantity} room(s) × 1 night',
+              label: '${controller.totalQuantity} room(s) × ${controller.nights} night${controller.nights == 1 ? '' : 's'}',
               amount: formatPrice(subtotal),
             ),
             const SizedBox(height: 12),

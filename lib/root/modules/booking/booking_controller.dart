@@ -55,16 +55,18 @@ class BookingController extends GetxController {
 
   void selectDateRange(BuildContext context) {
     final DateTime now = DateTime.now();
+    final DateTime today = DateTime(now.year, now.month, now.day);
     
     showCustomDateRangePicker(
       context,
       dismissible: true,
-      minimumDate: now,
-      maximumDate: now.add(const Duration(days: 365)),
+      minimumDate: today,
+      maximumDate: today.add(const Duration(days: 365)),
       startDate: dateRange.value?.start,
       endDate: dateRange.value?.end,
       backgroundColor: CustomColors.surfaceWhite,
       primaryColor: CustomColors.brandRed,
+      rangeColor: CustomColors.brandRed.withValues(alpha: 0.1),
       onApplyClick: (start, end) {
         dateRange.value = DateTimeRange(start: start, end: end);
       },
