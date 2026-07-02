@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/routes/app_routes.dart';
 import 'package:majestic_rooms/core/supabase/supabase_utils.dart';
+import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -55,6 +56,10 @@ class CommonController extends GetxController {
       savedHotels.add(hotel);
     }
   }
+
+  final RxList<BookingModel> bookings = <BookingModel>[].obs;
+
+  void addBooking(BookingModel booking) => bookings.add(booking);
 
   // ── Actions ────────────────────────────────────────────────────────────────
 

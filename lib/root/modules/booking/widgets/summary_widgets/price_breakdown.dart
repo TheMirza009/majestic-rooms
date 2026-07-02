@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
-import 'package:majestic_rooms/root/modules/booking/widgets/summary_card.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
 
 /// Reactive price breakdown card: subtotal, service fee, taxes, and total.
 class PriceBreakdown extends StatelessWidget {

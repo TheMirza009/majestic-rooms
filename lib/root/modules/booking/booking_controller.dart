@@ -14,9 +14,26 @@ class BookingController extends GetxController {
   final RxMap<HotelRoom, int> selectedRooms = <HotelRoom, int>{}.obs;
 
   // Date range
-  final Rx<DateTimeRange?> dateRange = Rx<DateTimeRange?>(null);
+  late final Rx<DateTimeRange?> dateRange;
 
   BookingController({required this.hotel});
+
+  @override
+  void onInit() {
+    super.onInit();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    dateRange = Rx<DateTimeRange?>(DateTimeRange(start: today, end: tomorrow));
+  }
+
+  void clearState() {
+    selectedRooms.clear();
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final tomorrow = today.add(const Duration(days: 1));
+    dateRange.value = DateTimeRange(start: today, end: tomorrow);
+  }
 
   int getRoomQuantity(HotelRoom room) {
     return selectedRooms[room] ?? 0;

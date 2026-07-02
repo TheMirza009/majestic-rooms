@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:majestic_rooms/core/base/common_controller.dart';
+import 'package:majestic_rooms/core/data/models/booking.dart';
+import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
-import 'package:majestic_rooms/root/modules/booking/widgets/price_breakdown.dart';
-import 'package:majestic_rooms/root/modules/booking/widgets/selected_rooms_list.dart';
-import 'package:majestic_rooms/root/modules/booking/widgets/summary_card.dart';
-import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
+import 'package:majestic_rooms/root/modules/booking/screens/booking_success_screen.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/price_breakdown.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/selected_rooms_list.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
 
 // ── Shared style constants ────────────────────────────────────────────────────
 const _labelStyle = TextStyle(
@@ -34,25 +38,40 @@ const _sectionTitleStyle = TextStyle(
 );
 
 class BookingSummaryScreen extends StatelessWidget {
-  const BookingSummaryScreen({super.key});
+  const BookingSummaryScreen({
+    super.key,
+    this.isPaid = false,
+    this.booking,
+  });
 
-  void _onConfirmBooking() {
-    Get.snackbar(
-      'Booking Confirmed',
-      'Your reservation has been submitted successfully.',
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: const Color(0xFF2E2E2E),
-      colorText: Colors.white,
-      margin: const EdgeInsets.all(16),
-      borderRadius: 12,
+  /// When true: read-only mode — shows a green "Paid" banner instead of
+  /// the confirm button. Set by [BookingCard] when opening a past booking.
+  final bool isPaid;
+
+  /// The past booking to display in read-only mode. Required when [isPaid]
+  /// is true. Provides the hotel object, dates, rooms and price data without
+  /// needing [BookingController].
+  final BookingModel? booking;
+
+  void _onConfirmBooking(BuildContext context, BookingController controller) {
+    final booking = BookingModel.fromController(controller);
+    Get.find<CommonController>().addBooking(booking);
+    Navigator.push(
+      context,
+      CupertinoPageRoute(
+        builder: (_) => BookingSuccessScreen(booking: booking),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<BookingController>();
-    final hotel = controller.hotel;
-    final heroImage = hotel.images.isNotEmpty ? hotel.images.first.url : null;
+    // In paid mode, BookingController may not be registered (different route
+    // context), so only look it up when actually needed.
+    final controller = isPaid ? null : Get.find<BookingController>();
+    final effectiveHotel = isPaid ? booking!.hotel : controller!.hotel;
+    final heroImage =
+        effectiveHotel.images.isNotEmpty ? effectiveHotel.images.first.url : null;
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F9),
       appBar: AppBar(
@@ -64,25 +83,10 @@ class BookingSummaryScreen extends StatelessWidget {
            style: TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
-        leading: Align(
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 12.0),
-            child: RoundIconButton(
-              size: 44,
-              backgroundColor: CustomColors.cardSubtleBg,
-              icon: const Padding(
-                padding: EdgeInsets.only(right: 3.0),
-                child: Icon(
-                  Icons.arrow_back_ios_new_rounded,
-                  color: CustomColors.textMain,
-                  size: 20,
-                ),
-              ),
-              onTap: () => Navigator.pop(context),
-            ),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () => Navigator.maybePop(context),
           ),
-        ),
       ),
       body: Stack(
         children: [
@@ -144,7 +148,7 @@ class BookingSummaryScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                hotel.name,
+                                effectiveHotel.name,
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w800,
@@ -152,7 +156,7 @@ class BookingSummaryScreen extends StatelessWidget {
                                   height: 1.2,
                                 ),
                               ),
-                              if (hotel.address != null) ...[
+                              if (effectiveHotel.address != null) ...[
                                 const SizedBox(height: 4),
                                 Row(
                                   children: [
@@ -164,7 +168,7 @@ class BookingSummaryScreen extends StatelessWidget {
                                     const SizedBox(width: 4),
                                     Expanded(
                                       child: Text(
-                                        hotel.address!,
+                                        effectiveHotel.address!,
                                         style: const TextStyle(
                                           fontSize: 13,
                                           color: Color(0xCCFFFFFF),
@@ -197,147 +201,320 @@ class BookingSummaryScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Stay Details', style: _sectionTitleStyle),
-                        TextButton(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        if (!isPaid)
+                          TextButton(
+                            style: TextButton.styleFrom(
+                              padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                              minimumSize: Size.zero,
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            onPressed: () => controller!.selectDateRange(context),
+                            child: const Text('Edit', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: CustomColors.brandRed)),
                           ),
-                          onPressed: () => controller.selectDateRange(context),
-                          child: const Text('Edit', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: CustomColors.brandRed)),
-                        ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    Obx(() {
-                      final dateRange = controller.dateRange.value;
-                      final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.start) : 'Not selected';
-                      final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.end) : 'Not selected';
-                      final nights = controller.nights;
-                      
-                      return Column(
+                    if (isPaid) ...[
+                      // PAID MODE — static date/rooms grid from BookingModel
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              // CHECK-IN
-                              Expanded(
-                                child: SummaryCard(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('CHECK-IN', style: _labelStyle),
-                                      const SizedBox(height: 6),
-                                      Text(checkInStr, style: _valueStyle),
-                                      const SizedBox(height: 2),
-                                      const Text('After 02:00 PM', style: _subValueStyle),
-                                    ],
+                          Expanded(
+                            child: SummaryCard(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('CHECK-IN', style: _labelStyle),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    booking != null
+                                        ? DateFormat('MMM dd, yyyy').format(booking!.checkInDate)
+                                        : '—',
+                                    style: _valueStyle,
                                   ),
-                                ),
+                                  const SizedBox(height: 2),
+                                  const Text('After 02:00 PM', style: _subValueStyle),
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              // CHECK-OUT
-                              Expanded(
-                                child: SummaryCard(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const Text('CHECK-OUT', style: _labelStyle),
-                                      const SizedBox(height: 6),
-                                      Text(checkOutStr, style: _valueStyle),
-                                      const SizedBox(height: 2),
-                                      const Text('Before 11:00 AM', style: _subValueStyle),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
-                          const SizedBox(height: 10),
-                          Row(
-                            children: [
-                              // DURATION
-                              Expanded(
-                                child: SummaryCard(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color:
-                                              CustomColors.brandRed.withOpacity(0.08),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: const Icon(
-                                          Icons.nightlight_round,
-                                          size: 18,
-                                          color: CustomColors.brandRed,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('DURATION', style: _labelStyle),
-                                          const SizedBox(height: 2),
-                                          Text('$nights Night${nights == 1 ? '' : 's'}', style: _valueStyle),
-                                        ],
-                                      ),
-                                    ],
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SummaryCard(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('CHECK-OUT', style: _labelStyle),
+                                  const SizedBox(height: 6),
+                                  Text(
+                                    booking != null
+                                        ? DateFormat('MMM dd, yyyy').format(booking!.checkOutDate)
+                                        : '—',
+                                    style: _valueStyle,
                                   ),
-                                ),
+                                  const SizedBox(height: 2),
+                                  const Text('Before 11:00 AM', style: _subValueStyle),
+                                ],
                               ),
-                              const SizedBox(width: 10),
-                              
-                              // ROOMS COUNT
-                              Expanded(
-                                child: SummaryCard(
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: CustomColors.brandRed
-                                              .withOpacity(0.08),
-                                          borderRadius: BorderRadius.circular(10),
-                                        ),
-                                        child: const Icon(
-                                          Icons.person_outline_rounded,
-                                          size: 18,
-                                          color: CustomColors.brandRed,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          const Text('ROOMS', style: _labelStyle),
-                                          const SizedBox(height: 2),
-                                          Text(
-                                            '${controller.totalQuantity} Room${controller.totalQuantity == 1 ? '' : 's'}',
-                                            style: _valueStyle,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
-                      );
-                    }),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: SummaryCard(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: CustomColors.brandRed.withOpacity(0.08),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.nightlight_round,
+                                      size: 18,
+                                      color: CustomColors.brandRed,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('DURATION', style: _labelStyle),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        booking != null
+                                            ? '${booking!.nights} Night${booking!.nights == 1 ? '' : 's'}'
+                                            : '—',
+                                        style: _valueStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SummaryCard(
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: CustomColors.brandRed.withOpacity(0.08),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.person_outline_rounded,
+                                      size: 18,
+                                      color: CustomColors.brandRed,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      const Text('ROOMS', style: _labelStyle),
+                                      const SizedBox(height: 2),
+                                      Text(
+                                        booking != null
+                                            ? '${booking!.numberOfRooms} Room${booking!.numberOfRooms == 1 ? '' : 's'}'
+                                            : '—',
+                                        style: _valueStyle,
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ] else
+                      Obx(() {
+                        final dateRange = controller!.dateRange.value;
+                        final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.start) : 'Not selected';
+                        final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.end) : 'Not selected';
+                        final nights = controller.nights;
+                        
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                // CHECK-IN
+                                Expanded(
+                                  child: SummaryCard(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('CHECK-IN', style: _labelStyle),
+                                        const SizedBox(height: 6),
+                                        Text(checkInStr, style: _valueStyle),
+                                        const SizedBox(height: 2),
+                                        const Text('After 02:00 PM', style: _subValueStyle),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                // CHECK-OUT
+                                Expanded(
+                                  child: SummaryCard(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        const Text('CHECK-OUT', style: _labelStyle),
+                                        const SizedBox(height: 6),
+                                        Text(checkOutStr, style: _valueStyle),
+                                        const SizedBox(height: 2),
+                                        const Text('Before 11:00 AM', style: _subValueStyle),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                // DURATION
+                                Expanded(
+                                  child: SummaryCard(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                CustomColors.brandRed.withOpacity(0.08),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: const Icon(
+                                            Icons.nightlight_round,
+                                            size: 18,
+                                            color: CustomColors.brandRed,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('DURATION', style: _labelStyle),
+                                            const SizedBox(height: 2),
+                                            Text('$nights Night${nights == 1 ? '' : 's'}', style: _valueStyle),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                
+                                // ROOMS COUNT
+                                Expanded(
+                                  child: SummaryCard(
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: CustomColors.brandRed
+                                                .withOpacity(0.08),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: const Icon(
+                                            Icons.person_outline_rounded,
+                                            size: 18,
+                                            color: CustomColors.brandRed,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text('ROOMS', style: _labelStyle),
+                                            const SizedBox(height: 2),
+                                            Text(
+                                              '${controller.totalQuantity} Room${controller.totalQuantity == 1 ? '' : 's'}',
+                                              style: _valueStyle,
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                      }),
                     const SizedBox(height: 20),
 
                     // SELECTED ROOMS
-                    const SelectedRoomsList(),
+                    SelectedRoomsList(booking: isPaid ? booking : null),
                     
                     // PRICE BREAKDOWN
-                    const Text('Price Details', style: _sectionTitleStyle),
-                    const SizedBox(height: 10),
-                    const PriceBreakdown(),
-                    const SizedBox(height: 20),
+                    if (isPaid && booking != null) ...[
+                      const Text('Price Details', style: _sectionTitleStyle),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: CustomColors.surfaceWhite,
+                          borderRadius: BorderRadius.circular(16),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x0D000000),
+                              blurRadius: 10,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Subtotal', style: TextStyle(fontSize: 13, color: CustomColors.textMuted)),
+                                Text(formatPrice(booking!.grossTotal), style: const TextStyle(fontSize: 13, color: CustomColors.textMain)),
+                              ],
+                            ),
+                            if (booking!.discount > 0) ...[
+                              const SizedBox(height: 8),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('Discount', style: TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
+                                  Text('- ${formatPrice(booking!.discount)}', style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
+                                ],
+                              ),
+                            ],
+                            const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 10),
+                              child: Divider(height: 1, color: Color(0xFFEEEEEE)),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Total Paid', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: CustomColors.textMain)),
+                                Text(formatPrice(booking!.netTotal), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: CustomColors.brandRed)),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                    ] else if (!isPaid) ...[
+                      const Text('Price Details', style: _sectionTitleStyle),
+                      const SizedBox(height: 10),
+                      const PriceBreakdown(),
+                      const SizedBox(height: 20),
+                    ],
 
                     // CANCELLATION POLICY
                     Container(
@@ -376,7 +553,7 @@ class BookingSummaryScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  hotel.terms ??
+                                  effectiveHotel.terms ??
                                       'Free cancellation before check-in date. Review our full terms before confirming.',
                                   style: const TextStyle(
                                     fontSize: 13,
@@ -419,80 +596,116 @@ class BookingSummaryScreen extends StatelessWidget {
                 ],
               ),
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: Obx(() {
-                final subtotal = controller.totalPrice;
-                final total = subtotal * 1.172; // 10% service + 7.2% taxes
-                return Row(
-                  children: [
-                    
-                    // BOOK NOW BUTTON
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: _onConfirmBooking,
-                        child: Container(
-                          height: 54,
-                          decoration: BoxDecoration(
-                            color: CustomColors.brandRed,
-                            borderRadius: BorderRadius.circular(100),
-                            boxShadow: [
-                              BoxShadow(
-                                color: CustomColors.brandRed.withOpacity(0.30),
-                                blurRadius: 16,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
+              child: isPaid
+                  // STATUS BANNER — paid read-only mode
+                  ? Container(
+                      height: 54,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color(0xFF2E7D32).withOpacity(0.30),
+                            blurRadius: 16,
+                            offset: const Offset(0, 6),
                           ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Confirm Booking',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  letterSpacing: 0.3,
+                        ],
+                      ),
+                      alignment: Alignment.center,
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check_circle_rounded,
+                              size: 20, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Paid',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  // CONFIRM BUTTON — active booking mode
+                  : Obx(() {
+                      final subtotal = controller!.totalPrice;
+                      final total = subtotal * 1.172; // 10% service + 7.2% taxes
+                      return Row(
+                        children: [
+                          // BOOK NOW BUTTON
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () => _onConfirmBooking(context, controller),
+                              child: Container(
+                                height: 54,
+                                decoration: BoxDecoration(
+                                  color: CustomColors.brandRed,
+                                  borderRadius: BorderRadius.circular(100),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: CustomColors.brandRed.withOpacity(0.30),
+                                      blurRadius: 16,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: const Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Confirm Booking',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        letterSpacing: 0.3,
+                                      ),
+                                    ),
+                                    SizedBox(width: 6),
+                                    Icon(
+                                      Icons.arrow_forward_ios_rounded,
+                                      size: 14,
+                                      color: Colors.white,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              SizedBox(width: 6),
-                              Icon(
-                                Icons.arrow_forward_ios_rounded,
-                                size: 14,
-                                color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // TOTAL PRICE LABEL
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                'Total price',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: CustomColors.textMuted,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                formatPrice(total),
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w900,
+                                  color: CustomColors.textMain,
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 16),
-                    // TOTAL PRICE LABEL
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text(
-                          'Total price',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: CustomColors.textMuted,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          formatPrice(total),
-                          style: const TextStyle(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w900,
-                            color: CustomColors.textMain,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                );
-              }),
+                        ],
+                      );
+                    }),
             ),
           ),
         ],

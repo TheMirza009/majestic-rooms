@@ -4,8 +4,9 @@ import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
-import 'package:majestic_rooms/root/modules/booking/widgets/date_range_selection_card.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/date_range/date_range_selection_card.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/room_card.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/room_widgets/book_now_button.dart';
 
 class RoomsScreen extends StatelessWidget {
   final Hotel hotel;
@@ -17,24 +18,56 @@ class RoomsScreen extends StatelessWidget {
     // Initialize the BookingController for this specific hotel
     final controller = Get.put(BookingController(hotel: hotel));
 
-    return Scaffold(
-      // backgroundColor: CustomColors.background,
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          "Select Rooms",
-          style: const TextStyle(fontWeight: FontWeight.bold),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) async {
+        if (didPop) return;
+        if (controller.selectedRooms.isEmpty) {
+          Navigator.pop(context);
+          return;
+        }
+
+        final shouldCancel = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Discard Selections?"),
+            content: const Text("Are you sure you want to go back? Your room selections and dates will be reset."),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("Keep Editing"),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("Discard", style: TextStyle(color: CustomColors.brandRed)),
+              ),
+            ],
+          ),
+        );
+
+        if (shouldCancel == true) {
+          controller.clearState();
+          if (context.mounted) Navigator.pop(context);
+        }
+      },
+      child: Scaffold(
+        // backgroundColor: CustomColors.background,
+        appBar: AppBar(
+          elevation: 0,
+          title: const Text(
+            "Select Rooms",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new_rounded),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+          surfaceTintColor: Colors.transparent,
         ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          onPressed: () => Navigator.pop(context),
-        ),
-        surfaceTintColor: Colors.transparent,
-      ),
-      body: SafeArea(
-        child: Column(
-          children: [
+        body: SafeArea(
+          child: Column(
+            children: [
             const DateRangeSelectionCard(),
             SizedBox(height: 8),
             Expanded(
@@ -79,62 +112,8 @@ class RoomsScreen extends StatelessWidget {
       
       // FLOATING ACTION BUTTON
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: Obx(() {
-        final hasSelection = controller.selectedRooms.isNotEmpty;
-        final total = controller.totalPrice;
-        
-        return AnimatedSlide(
-          offset: hasSelection ? Offset.zero : const Offset(0, 2.0),
-          duration: const Duration(milliseconds: 350),
-          curve: Curves.easeOutCubic,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: SizedBox(
-              width: double.infinity,
-              height: 56,
-              child: FloatingActionButton.extended(
-                heroTag: 'book_now_fab',
-                onPressed: controller.proceedToNextStep,
-                backgroundColor: CustomColors.brandRed,
-                elevation: 6,
-                shape: const StadiumBorder(),
-                label: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: const [
-                          Text(
-                            "Book Now",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 0.5,
-                            ),
-                          ),
-                          SizedBox(width: 8),
-                          Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.white),
-                        ],
-                      ),
-                      const SizedBox(width: 24), // Spacer
-                      Text(
-                        formatPrice(total),
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
-        );
-      }),
-    );
+      floatingActionButton: BookNowButton(controller: controller),
+    ),
+  );
   }
 }

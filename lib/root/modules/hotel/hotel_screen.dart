@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/rooms_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/check_availability_bar.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/hotel_stars.dart';
@@ -13,7 +13,6 @@ import 'package:majestic_rooms/root/modules/hotel/widgets/maps_preview.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/favorite_button.dart';
 import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
-import 'package:majestic_rooms/core/data/models/facility.dart';
 
 class HotelScreen extends StatelessWidget {
   final Hotel hotel;
@@ -241,12 +240,15 @@ class HotelScreen extends StatelessWidget {
       ),
       floatingActionButton: CheckAvailabilityBar(
         rates: hotel.rates,
-        onTap: () => Navigator.push(
-          context, 
-          CupertinoPageRoute(
-            builder: (context) => RoomsScreen(hotel: hotel),
-          ),
-        ),
+        onTap: () {
+          Get.delete<BookingController>(force: true);
+          Navigator.push(
+            context, 
+            CupertinoPageRoute(
+              builder: (context) => RoomsScreen(hotel: hotel),
+            ),
+          );
+        },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
