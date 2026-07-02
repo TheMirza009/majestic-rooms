@@ -17,7 +17,8 @@ import 'package:majestic_rooms/core/data/models/facility.dart';
 
 class HotelScreen extends StatelessWidget {
   final Hotel hotel;
-  const HotelScreen({super.key, required this.hotel});
+  final String? heroTag;
+  const HotelScreen({super.key, required this.hotel, this.heroTag});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class HotelScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Hero(
-              tag: hotel.imageUrl,
+              tag: heroTag ?? hotel.imageUrl,
               child: Material(
                 type: MaterialType.transparency,
                 child: ImageCarousel(images: hotel.images.map((image) => image.url).toList()),

@@ -42,6 +42,10 @@ class CommonController extends GetxController {
 
   // ── App States ─────────────────────────────────────────────────────────────
 
+  /// Active currency symbol. Read by [formatPrice] throughout the app.
+  /// Change this from Settings whenever that screen is built.
+  final RxString currencySymbol = r'$'.obs;
+
   final RxList<Hotel> savedHotels = <Hotel>[].obs;
 
   void toggleHotelSave(Hotel hotel) {

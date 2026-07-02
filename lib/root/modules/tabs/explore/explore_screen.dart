@@ -85,9 +85,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   // Main Hotel display card
                   return HotelCard(
                     hotel: hotel,
+                    heroTag: '${hotel.imageUrl}_explore',
                     initialSaveValue: saved.contains(hotel),
                     onSaveTap: (_) => _controller.controller.toggleHotelSave(hotel),
-                    onTap: () => Get.to(() => HotelScreen(hotel: hotel)),
+                    onTap: () => Get.to(() => HotelScreen(
+                      hotel: hotel,
+                      heroTag: '${hotel.imageUrl}_explore',
+                    )),
                   );
                 },
               );

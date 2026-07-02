@@ -8,6 +8,7 @@ import 'package:shimmer/shimmer.dart';
 class HotelCard extends StatefulWidget {
   final Hotel hotel;
   final bool initialSaveValue;
+  final String? heroTag;
   final Function(bool) onSaveTap;
   final void Function() onTap;
 
@@ -15,6 +16,7 @@ class HotelCard extends StatefulWidget {
     super.key,
     required this.hotel,
     this.initialSaveValue = false,
+    this.heroTag,
     required this.onSaveTap,
     required this.onTap,
   });
@@ -118,7 +120,7 @@ class _HotelCardState extends State<HotelCard> {
           
           // HERO IMAGE
           child: Hero(
-            tag: widget.hotel.imageUrl,
+            tag: widget.heroTag ?? widget.hotel.imageUrl,
             child: Material(
               type: MaterialType.transparency,
               child: ClipRRect(

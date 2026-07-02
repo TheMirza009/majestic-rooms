@@ -10,6 +10,8 @@ class RoomCategory {
       name: json['name'] as String,
     );
   }
+
+  bool get isStandard => name.toLowerCase() == "standard";
 }
 
 class RoomImage {
@@ -35,6 +37,9 @@ class HotelRoom {
   final String? roomNumber;
   final RoomCategory? category;
   final List<RoomImage> images;
+  final String? description;
+  final bool? cityView;
+  final num? pricePerNightWithBreakfast;
 
   const HotelRoom({
     this.id,
@@ -45,6 +50,9 @@ class HotelRoom {
     this.roomNumber,
     this.category,
     this.images = const [],
+    this.description,
+    this.cityView,
+    this.pricePerNightWithBreakfast,
   });
 
   factory HotelRoom.fromJson(Map<String, dynamic> json) {
@@ -62,6 +70,9 @@ class HotelRoom {
               ?.map((e) => RoomImage.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      description: json['description'] as String?,
+      cityView: json['city_view'] as bool?,
+      pricePerNightWithBreakfast: json['price_per_night_with_breakfast'] as num?,
     );
   }
 }

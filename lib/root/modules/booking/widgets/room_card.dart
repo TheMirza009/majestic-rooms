@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
+import 'package:majestic_rooms/core/utils/currency_format.dart';
 
 class RoomCard extends StatelessWidget {
   final HotelRoom room;
@@ -20,7 +21,9 @@ class RoomCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bool isSelected = quantity > 0;
-      return AnimatedContainer(
+    return GestureDetector(
+      onTap: quantity == 0 ? onIncrement : null,
+      child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         curve: Curves.easeInOut,
         margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
@@ -135,6 +138,72 @@ class RoomCard extends StatelessWidget {
                             ],
                           ),
                           
+                          // CHIPS
+                          if (room.category != null || room.cityView == true)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Wrap(
+                                spacing: 6,
+                                children: [
+                                  if (room.category != null)
+                                    Builder(
+                                      builder: (context) {
+                                        final bool isStandard = room.category?.isStandard ?? true;
+                                        return Chip(
+                                          label: Text(
+                                            room.category!.name,
+                                            style: TextStyle(
+                                              fontSize: 11,
+                                              color: isStandard 
+                                                  ? CustomColors.primaryDark 
+                                                  : CustomColors.premiumAmber,
+                                            ),
+                                          ),
+                                          backgroundColor: isStandard 
+                                              ? CustomColors.borderColor.withOpacity(0.85)
+                                              : CustomColors.premiumAmber.withOpacity(0.15),
+                                          side: BorderSide(
+                                            color: isStandard 
+                                                ? CustomColors.textMuted.withOpacity(0.5)  
+                                                : CustomColors.premiumAmber,
+                                            width: 0.8,
+                                          ),
+                                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                                          visualDensity: VisualDensity.compact,
+                                        );
+                                      }
+                                    ),
+                                  if (room.cityView == true) 
+                                    Chip(
+                                      label: const Text('City View', style: TextStyle(fontSize: 11, color: CustomColors.premiumAmber)),
+                                      backgroundColor: CustomColors.premiumAmber.withOpacity(0.15),
+                                      side: const BorderSide(color: CustomColors.premiumAmber, width: 0.8),
+                                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                                      visualDensity: VisualDensity.compact,
+                                    ),
+                                ],
+                              ),
+                            ),
+                            
+                          // DESCRIPTION
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8.0, right: 10),
+                            child: Text(
+                              room.description?.trim().isNotEmpty == true
+                                  ? room.description!
+                                  : 'No information given',
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: CustomColors.textMuted,
+                                fontStyle: room.description?.trim().isNotEmpty == true
+                                    ? FontStyle.normal
+                                    : FontStyle.italic,
+                              ),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          
                           const SizedBox(height: 16),
                           
                           // PRICE
@@ -143,7 +212,7 @@ class RoomCard extends StatelessWidget {
                             textBaseline: TextBaseline.alphabetic,
                             children: [
                               Text(
-                                "\$${room.pricePerNight.toStringAsFixed(0)}",
+                                formatPrice(room.pricePerNight),
                                 style: const TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w900,
@@ -154,12 +223,21 @@ class RoomCard extends StatelessWidget {
                                 " / night",
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: Colors.grey,
+                                  color: CustomColors.textMuted,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
                             ],
                           ),
+                          // BREAKFAST PRICE
+                          if (room.pricePerNightWithBreakfast != null)
+                            Padding(
+                              padding: const EdgeInsets.only(top: 4.0),
+                              child: Text(
+                                'With breakfast: ${formatPrice(room.pricePerNightWithBreakfast!)} / night',
+                                style: TextStyle(fontSize: 12, color: CustomColors.textMuted.withOpacity(0.8)),
+                              ),
+                            ),
                         ],
                       ),
                     ),
@@ -231,6 +309,7 @@ class RoomCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
     );
   }
 }

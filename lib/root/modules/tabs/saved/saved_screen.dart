@@ -49,9 +49,13 @@ class _SavedScreenState extends State<SavedScreen> {
                         final Hotel hotel = controller.savedHotels[index];
                         return HotelCard(
                           hotel: hotel,
+                          heroTag: '${hotel.imageUrl}_saved',
                           initialSaveValue: controller.savedHotels.contains(hotel),
                           onSaveTap: (_) => confirmRemoveDialog(context, hotel),
-                          onTap: () => Get.to(() => HotelScreen(hotel: hotel)),
+                          onTap: () => Get.to(() => HotelScreen(
+                            hotel: hotel,
+                            heroTag: '${hotel.imageUrl}_saved',
+                          )),
                         );
                       },
                       separatorBuilder: (context, index) => const SizedBox(height: 16),

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:get/get.dart';
+import 'dart:math' as math;
+
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 
@@ -87,7 +89,14 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
       final rectTween = RectTween(begin: sourceRect, end: destinationRect);
       final curved    = CurvedAnimation(parent: animCtrl, curve: Curves.easeInOutCubic);
       animCtrl.addListener(() {
-        liveRect = rectTween.evaluate(curved)!;
+        final baseRect = rectTween.evaluate(curved)!;
+        
+        // Use a sine wave based on the animation value to create a "bump".
+        // math.sin(x * pi) starts at 0, peaks at 1 in the middle (0.5), and ends at 0.
+        // We multiply by a factor (e.g., 15.0) to dictate how many pixels it inflates by.
+        final inflation = math.sin(animCtrl.value * math.pi) * 15.0;
+        liveRect = baseRect.inflate(inflation);
+
         entry.markNeedsBuild();
       });
 
