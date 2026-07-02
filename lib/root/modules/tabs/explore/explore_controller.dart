@@ -24,7 +24,7 @@ class ExploreController extends GetxController {
   static const String _bucket = 'locations';
 
   // ── Fields ───────────────────────────────────────────────────────────────
-  final searchController   = TextEditingController();
+  final searchQuery        = ''.obs;
   final selectedCategories = <int>{}.obs; // empty = no filter, show all hotels
   final cities          = <City>[].obs;
   final isLoadingImages = false.obs;
@@ -48,14 +48,54 @@ class ExploreController extends GetxController {
     }
   }
 
-  void onSearch() {} // TODO: trigger search
+  Future<void> onSearchSubmit(String query) async {
+    if (query.trim().isEmpty) {
+      hotels.assignAll(kDummyHotels);
+      return;
+    }
+
+    try {
+      var dbQuery = Supabase.instance.client
+          .from('hotel')
+          .select('*, hotel_images(*), hotel_rooms(*), hotel_facility(facility(*)), promotion(*)')
+          .or('name.ilike.%$query%,location_slug.ilike.%$query%,address.ilike.%$query%');
+
+      if (selectedCategories.isNotEmpty) {
+        final selectedCities = selectedCategories.map((i) => categories[i]).toList();
+        dbQuery = dbQuery.inFilter('location_slug', selectedCities);
+      }
+
+      final response = await dbQuery;
+      
+      final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+      hotels.assignAll(parsedHotels);
+    } catch (e) {
+      debugPrint("Search error: $e");
+    }
+  }
+
   void onFilter() {} // TODO: open filter sheet
 
-  /// Hotels in the selected cities. With nothing selected, returns all hotels.
+  /// Hotels in the selected cities and matching the search query. With nothing selected, returns all hotels.
   List<Hotel> get filteredHotels {
-    if (selectedCategories.isEmpty) return hotels;
-    final selectedCities = selectedCategories.map((i) => categories[i]).toSet();
-    return hotels.where((hotel) => selectedCities.contains(hotel.city)).toList();
+    List<Hotel> result = hotels;
+    
+    if (selectedCategories.isNotEmpty) {
+      final selectedCities = selectedCategories.map((i) => categories[i]).toSet();
+      result = result.where((hotel) => selectedCities.contains(hotel.city)).toList();
+    }
+    
+    final query = searchQuery.value.trim().toLowerCase();
+    if (query.isNotEmpty) {
+      result = result.where((hotel) {
+        final nameMatch = hotel.name.toLowerCase().contains(query);
+        final cityMatch = hotel.city.toLowerCase().contains(query);
+        final addressMatch = hotel.address?.toLowerCase().contains(query) ?? false;
+        return nameMatch || cityMatch || addressMatch;
+      }).toList();
+    }
+    
+    return result;
   }
 
   void fetchCities() {
@@ -73,7 +113,6 @@ class ExploreController extends GetxController {
 
   @override
   void onClose() {
-    searchController.dispose();
     super.onClose();
   }
 }

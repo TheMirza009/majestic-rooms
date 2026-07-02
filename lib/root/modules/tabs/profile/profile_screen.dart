@@ -43,10 +43,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
   late final Animation<double>  _avatarScale;
   late final Animation<double>  _avatarOpacity;
   late final Worker             _tabListener;
+  final GlobalKey               _avatarKey = GlobalKey();
 
   @override
   void initState() {
     super.initState();
+    flight.screenAvatarKey = _avatarKey;
     _avatarAnim = AnimationController(vsync: this, duration: _avatarAnimDuration);
     _avatarScale = Tween<double>(begin: _avatarAnimStartScale, end: 1.0).animate(
       CurvedAnimation(parent: _avatarAnim, curve: Curves.easeOutBack),
@@ -107,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 // AVATAR
                 Opacity(
                   opacity: isFlying ? 0 : 1,
-                  child: UserAvatar(key: flight.screenAvatarKey, imageUrl: avatarUrl, size: _avatarSize),
+                  child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _avatarSize),
                 ),
                 const SizedBox(height: 16),
                 Text(

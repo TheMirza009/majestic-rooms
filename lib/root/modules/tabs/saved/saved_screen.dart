@@ -5,6 +5,7 @@ import 'package:majestic_rooms/root/modules/hotel/hotel_screen.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/explore_search_bar.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/hotel_card.dart';
+import 'package:majestic_rooms/root/widgets/no_results_widget.dart';
 
 class SavedScreen extends StatefulWidget {
   const SavedScreen({super.key});
@@ -16,6 +17,20 @@ class SavedScreen extends StatefulWidget {
 class _SavedScreenState extends State<SavedScreen> {
   final TextEditingController _searchController = TextEditingController();
   final CommonController controller = Get.find<CommonController>();
+  
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -44,23 +59,43 @@ class _SavedScreenState extends State<SavedScreen> {
                   showSuffixIcon: false,
                   ),
                 Expanded(
-                  child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        final Hotel hotel = controller.savedHotels[index];
-                        return HotelCard(
-                          hotel: hotel,
-                          heroTag: '${hotel.imageUrl}_saved',
-                          initialSaveValue: controller.savedHotels.contains(hotel),
-                          onSaveTap: (_) => confirmRemoveDialog(context, hotel),
-                          onTap: () => Get.to(() => HotelScreen(
-                            hotel: hotel,
-                            heroTag: '${hotel.imageUrl}_saved',
-                          )),
+                  child: Builder(
+                    builder: (context) {
+                      final query = _searchController.text.trim().toLowerCase();
+                      var hotels = controller.savedHotels.toList();
+                      
+                      if (query.isNotEmpty) {
+                        hotels = hotels.where((hotel) {
+                          final nameMatch = hotel.name.toLowerCase().contains(query);
+                          final cityMatch = hotel.city.toLowerCase().contains(query);
+                          final addressMatch = hotel.address?.toLowerCase().contains(query) ?? false;
+                          return nameMatch || cityMatch || addressMatch;
+                        }).toList();
+                      }
+                      
+                      if (hotels.isEmpty && query.isNotEmpty) {
+                        return const NoResultsWidget();
+                      }
+                      
+                      return ListView.separated(
+                          itemBuilder: (context, index) {
+                            final Hotel hotel = hotels[index];
+                            return HotelCard(
+                              hotel: hotel,
+                              heroTag: '${hotel.imageUrl}_saved',
+                              initialSaveValue: controller.savedHotels.contains(hotel),
+                              onSaveTap: (_) => confirmRemoveDialog(context, hotel),
+                              onTap: () => Get.to(() => HotelScreen(
+                                hotel: hotel,
+                                heroTag: '${hotel.imageUrl}_saved',
+                              )),
+                            );
+                          },
+                          separatorBuilder: (context, index) => const SizedBox(height: 16),
+                          itemCount: hotels.length,
                         );
-                      },
-                      separatorBuilder: (context, index) => const SizedBox(height: 16),
-                      itemCount: controller.savedHotels.length,
-                    ),
+                    }
+                  ),
                 ),
               ],
             ),

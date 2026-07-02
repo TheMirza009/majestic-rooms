@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -6,6 +7,7 @@ import 'package:majestic_rooms/core/extensions/context_extensions.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
+import 'package:majestic_rooms/root/modules/home/home_screen.dart';
 
 // ── Shared style constants ─────────────────────────────────────────────────────
 const _snapshotLabelStyle = TextStyle(
@@ -61,8 +63,11 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   void _goToBookings() {
-    Get.find<HomeController>().navigateTo(2);
-    Navigator.of(context).popUntil((route) => route.isFirst);
+    Get.find<HomeController>().resetToTab(2);
+    Navigator.of(context).pushAndRemoveUntil(
+      CupertinoPageRoute(builder: (context) => const HomeScreen()),
+      (route) => false,
+    );
   }
 
   void _backToExploring() {

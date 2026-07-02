@@ -6,6 +6,7 @@ import 'package:majestic_rooms/root/modules/tabs/explore/widgets/city_chips.dart
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/explore_search_bar.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/hotel_card.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/profile_bar.dart';
+import 'package:majestic_rooms/root/widgets/no_results_widget.dart';
 
 class ExploreScreen extends StatefulWidget {
   const ExploreScreen({super.key});
@@ -16,16 +17,20 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   late final ExploreController _controller;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _controller = Get.put(ExploreController());
+    _searchController.addListener(() {
+      _controller.searchQuery.value = _searchController.text;
+    });
   }
 
   @override
   void dispose() {
-    // Get.delete<ExploreController>();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -43,9 +48,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
     
           // SEARCH
           ExploreSearchBar(
-            controller: _controller.searchController,
-            onSearchTap: _controller.onSearch,
+            controller: _searchController,
+            onSearchTap: () => _controller.onSearchSubmit(_searchController.text),
             onFilterTap: _controller.onFilter,
+            onSubmitted: _controller.onSearchSubmit,
           ),
     
           // CATEGORIES
@@ -63,7 +69,13 @@ class _ExploreScreenState extends State<ExploreScreen> {
           Expanded(
             child: Obx(() {
               final hotels = _controller.filteredHotels;
-              final saved = _controller.controller.savedHotels.value;
+              final saved = _controller.controller.savedHotels;
+              final isSearching = _controller.searchQuery.value.trim().isNotEmpty;
+              
+              if (hotels.isEmpty && isSearching) {
+                return const NoResultsWidget();
+              }
+              
               return ListView.separated(
                 padding: const EdgeInsets.only(bottom: 16),
                 itemCount: hotels.length + 1,

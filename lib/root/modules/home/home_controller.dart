@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 class HomeController extends GetxController {
   // ── Fields ───────────────────────────────────────────────────────────────
   final currentIndex = 0.obs;
-  late final PageController pageController;
+  late PageController pageController;
 
   @override
   void onInit() {
@@ -27,6 +27,11 @@ class HomeController extends GetxController {
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeInOut,
     );
+  }
+
+  void resetToTab(int index) {
+    currentIndex.value = index;
+    pageController = PageController(initialPage: index);
   }
 
   void onPageChanged(int index) {

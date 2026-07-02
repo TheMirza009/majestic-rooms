@@ -17,8 +17,8 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
   static const int      _maxSettleFrames = 30; // ~0.5s safety cap, first flight only
 
   // ── Fields ───────────────────────────────────────────────────────────────
-  final GlobalKey barAvatarKey    = GlobalKey();
-  final GlobalKey screenAvatarKey = GlobalKey();
+  GlobalKey barAvatarKey    = GlobalKey();
+  GlobalKey screenAvatarKey = GlobalKey();
   final isFlying = false.obs;
 
   // ProfileScreen's avatar rect is layout-static (fixed padding, fixed

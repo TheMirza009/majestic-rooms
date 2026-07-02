@@ -7,18 +7,30 @@ import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_c
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProfileBar extends StatelessWidget {
+class ProfileBar extends StatefulWidget {
   final VoidCallback? onNotificationsTap;
 
   const ProfileBar({super.key, this.onNotificationsTap});
 
+  @override
+  State<ProfileBar> createState() => _ProfileBarState();
+}
+
+class _ProfileBarState extends State<ProfileBar> {
   static const double _size = 42;
+  final GlobalKey _avatarKey = GlobalKey();
 
   ProfileAvatarFlightController get flight {
     if (!Get.isRegistered<ProfileAvatarFlightController>()) {
       Get.put(ProfileAvatarFlightController(), permanent: true);
     }
     return Get.find<ProfileAvatarFlightController>();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    flight.barAvatarKey = _avatarKey;
   }
 
   @override
@@ -48,7 +60,7 @@ class ProfileBar extends StatelessWidget {
                   children: [
                     Opacity(
                       opacity: isFlying ? 0 : 1,
-                      child: UserAvatar(key: flight.barAvatarKey, imageUrl: avatarUrl, size: _size),
+                      child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _size),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +82,7 @@ class ProfileBar extends StatelessWidget {
             padding: EdgeInsets.zero,
             iconSize: 25,
           ),
-          onPressed: onNotificationsTap,
+          onPressed: widget.onNotificationsTap,
           icon: Icon(
             Icons.notifications_outlined,
             color: CustomColors.textMuted,
