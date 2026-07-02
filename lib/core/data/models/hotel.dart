@@ -57,22 +57,22 @@ class Hotel {
 
   factory Hotel.fromJson(Map<String, dynamic> json) {
     return Hotel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      slug: json['slug'] as String?,
-      address: json['address'] as String?,
-      city: json['location_slug'] as String? ?? 'Unknown',
+      id: json['id'].toString(),
+      name: json['name'].toString(),
+      slug: json['slug']?.toString(),
+      address: json['address']?.toString(),
+      city: json['location_slug']?.toString() ?? 'Unknown',
       distanceFromHaram: json['distance_from_haram'] as num?,
-      liscenseNo: json['liscense_no'] as String?,
+      liscenseNo: json['liscense_no']?.toString(),
       latitude: json['latitude'] as num?,
       longitude: json['longitude'] as num?,
       hotelClass: json['class'] as num?,
-      paymentPolicies: json['payment_policies'] as String?,
-      description: json['description'] as String?,
-      terms: json['terms'] as String?,
+      paymentPolicies: json['payment_policies']?.toString(),
+      description: json['description']?.toString(),
+      terms: json['terms']?.toString(),
       serveBreakfast: json['serve_breakfast'] as bool?,
-      phoneNumber: json['phone_number'] as String?,
-      email: json['email'] as String?,
+      phoneNumber: json['phone_number']?.toString(),
+      email: json['email']?.toString(),
       isActive: json['is_active'] as bool?,
       images: (json['hotel_images'] as List<dynamic>?)
               ?.map((e) => HotelImage.fromJson(e as Map<String, dynamic>))
@@ -86,10 +86,20 @@ class Hotel {
               ?.map((e) => Facility.fromJson(e['facility'] as Map<String, dynamic>))
               .toList() ??
           [],
-      activePromotion: json['promotion'] != null 
-              ? Promotion.fromJson(json['promotion'] as Map<String, dynamic>) 
-              : null,
+      activePromotion: _parsePromotion(json['promotion']),
     );
+  }
+
+  static Promotion? _parsePromotion(dynamic promoData) {
+    if (promoData == null) return null;
+    if (promoData is List) {
+      if (promoData.isEmpty) return null;
+      return Promotion.fromJson(promoData.first as Map<String, dynamic>);
+    }
+    if (promoData is Map<String, dynamic>) {
+      return Promotion.fromJson(promoData);
+    }
+    return null;
   }
 
   @override

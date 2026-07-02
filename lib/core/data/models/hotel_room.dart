@@ -57,22 +57,32 @@ class HotelRoom {
 
   factory HotelRoom.fromJson(Map<String, dynamic> json) {
     return HotelRoom(
-      id: json['id'] as String?,
-      hotelSlug: json['hotel_slug'] as String?,
-      name: json['name'] as String?,
+      id: json['id']?.toString(),
+      hotelSlug: json['hotel_slug']?.toString(),
+      name: json['name']?.toString(),
       beds: json['beds'] as int?,
       pricePerNight: json['price_per_night'] as num,
       roomNumber: json['room_number']?.toString(),
-      category: json['room_category'] != null 
-          ? RoomCategory.fromJson(json['room_category'] as Map<String, dynamic>) 
-          : null,
+      category: _parseCategory(json['room_category']),
       images: (json['room_images'] as List<dynamic>?)
               ?.map((e) => RoomImage.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      description: json['description'] as String?,
+      description: json['description']?.toString(),
       cityView: json['city_view'] as bool?,
       pricePerNightWithBreakfast: json['price_per_night_with_breakfast'] as num?,
     );
+  }
+
+  static RoomCategory? _parseCategory(dynamic categoryData) {
+    if (categoryData == null) return null;
+    if (categoryData is List) {
+      if (categoryData.isEmpty) return null;
+      return RoomCategory.fromJson(categoryData.first as Map<String, dynamic>);
+    }
+    if (categoryData is Map<String, dynamic>) {
+      return RoomCategory.fromJson(categoryData);
+    }
+    return null;
   }
 }
