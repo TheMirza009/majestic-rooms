@@ -1,3 +1,4 @@
+import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
@@ -65,6 +66,18 @@ class BookingDetailItem {
         'net_amount': netAmount,
         'includes_breakfast': includesBreakfast,
       };
+
+  factory BookingDetailItem.fromJson(Map<String, dynamic> json) {
+    return BookingDetailItem(
+      roomId: json['room_id'] as int?,
+      quantity: json['no_of_rooms'] as int? ?? 1,
+      pricePerNight: (json['room_price'] as num?)?.toDouble() ?? 0.0,
+      grossAmount: (json['gross_amount'] as num?)?.toDouble() ?? 0.0,
+      discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
+      netAmount: (json['net_amount'] as num?)?.toDouble() ?? 0.0,
+      includesBreakfast: json['includes_breakfast'] as bool? ?? false,
+    );
+  }
 }
 
 // ── BookingModel ──────────────────────────────────────────────────────────────
@@ -174,6 +187,51 @@ class BookingModel {
       netTotal: netTotal,
       bookingDate: DateTime.now(),
       bookingStatus: BookingStatus.pending,
+      details: details,
+    );
+  }
+
+  factory BookingModel.fromJson(Map<String, dynamic> json) {
+    final String hotelSlug = json['hotel_slug'] as String? ?? 'unknown';
+    
+    Hotel? fetchedHotel;
+    if (json['hotel'] != null && json['hotel'] is Map) {
+      fetchedHotel = Hotel.fromJson(json['hotel'] as Map<String, dynamic>);
+    }
+    
+    // Resolve hotel from fetched data or local dummy list for UI completeness
+    final Hotel hotel = fetchedHotel ?? kDummyHotels.firstWhere(
+      (h) => h.slug == hotelSlug || h.id == hotelSlug,
+      orElse: () => Hotel(
+        id: hotelSlug,
+        slug: hotelSlug,
+        name: 'Unknown Hotel',
+        city: 'Unknown',
+        images: [],
+        rooms: [],
+      ),
+    );
+
+    final detailsJson = json['booking_detail'] as List<dynamic>? ?? [];
+    final details = detailsJson
+        .map((d) => BookingDetailItem.fromJson(d as Map<String, dynamic>))
+        .toList();
+
+    return BookingModel(
+      id: json['id'] as String? ?? '',
+      hotel: hotel,
+      hotelSlug: hotelSlug,
+      hotelName: hotel.name,
+      hotelImageUrl: hotel.images.isNotEmpty ? hotel.images.first.url : null,
+      checkInDate: DateTime.tryParse(json['check_in_date'] as String? ?? '') ?? DateTime.now(),
+      checkOutDate: DateTime.tryParse(json['check_out_date'] as String? ?? '') ?? DateTime.now(),
+      nights: json['nights'] as int? ?? 1,
+      numberOfRooms: json['number_of_rooms'] as int? ?? 1,
+      grossTotal: (json['gross_total'] as num?)?.toDouble() ?? 0.0,
+      discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
+      netTotal: (json['net_total'] as num?)?.toDouble() ?? 0.0,
+      bookingDate: DateTime.tryParse(json['booking_date'] as String? ?? '') ?? DateTime.now(),
+      bookingStatus: BookingStatus.fromValue(json['booking_status'] as String? ?? ''),
       details: details,
     );
   }

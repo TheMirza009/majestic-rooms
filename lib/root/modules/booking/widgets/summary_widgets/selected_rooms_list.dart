@@ -31,6 +31,7 @@ class SelectedRoomsList extends StatelessWidget {
     final controller = Get.find<BookingController>();
     return Obx(() {
       final rooms = controller.selectedRooms;
+      final nights = controller.nights;
       if (rooms.isEmpty) return const SizedBox.shrink();
       return _buildList(
         items: rooms.entries.map((entry) {
@@ -40,7 +41,7 @@ class SelectedRoomsList extends StatelessWidget {
             name: room.name ?? room.category?.name ?? 'Standard Room',
             roomNumber: room.roomNumber,
             qty: qty,
-            totalPrice: room.pricePerNight * qty,
+            totalPrice: room.pricePerNight * qty * nights,
           );
         }).toList(),
       );

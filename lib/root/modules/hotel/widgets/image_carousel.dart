@@ -5,8 +5,15 @@ import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
 
 class ImageCarousel extends StatefulWidget {
   final List<String> images;
+  final String? heroTagPrefix;
+  final void Function(int index)? onImageTap;
 
-  const ImageCarousel({super.key, required this.images});
+  const ImageCarousel({
+    super.key,
+    required this.images,
+    this.heroTagPrefix,
+    this.onImageTap,
+  });
 
   @override
   State<ImageCarousel> createState() => _ImageCarouselState();
@@ -61,7 +68,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
     }
 
     if (widget.images.length == 1) {
-      return CachedNetworkImage(
+      Widget image = CachedNetworkImage(
         imageUrl: widget.images.first,
         width: double.infinity,
         fit: BoxFit.fitWidth,
@@ -76,6 +83,18 @@ class _ImageCarouselState extends State<ImageCarousel> {
             color: CustomColors.hintColor,
           ),
         ),
+      );
+
+      if (widget.heroTagPrefix != null) {
+        image = Hero(
+          tag: '${widget.heroTagPrefix}_${widget.images.first}',
+          child: image,
+        );
+      }
+
+      return GestureDetector(
+        onTap: widget.onImageTap != null ? () => widget.onImageTap!(0) : null,
+        child: image,
       );
     }
 
@@ -93,7 +112,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
               });
             },
             itemBuilder: (context, index) {
-              return CachedNetworkImage(
+              Widget image = CachedNetworkImage(
                 imageUrl: widget.images[index],
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -105,6 +124,18 @@ class _ImageCarouselState extends State<ImageCarousel> {
                     color: CustomColors.hintColor,
                   ),
                 ),
+              );
+
+              if (widget.heroTagPrefix != null) {
+                image = Hero(
+                  tag: '${widget.heroTagPrefix}_${widget.images[index]}',
+                  child: image,
+                );
+              }
+
+              return GestureDetector(
+                onTap: widget.onImageTap != null ? () => widget.onImageTap!(index) : null,
+                child: image,
               );
             },
           ),

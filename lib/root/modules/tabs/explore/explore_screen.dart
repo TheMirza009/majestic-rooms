@@ -51,6 +51,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
             () => ExploreSearchBar(
               controller: _controller.searchController,
               isSearching: _controller.isSearching.value,
+              isFilterOn: _controller.isFilterOn.value,
               onSearchTap: () => _controller.onSearchSubmit(_controller.searchController.text),
               onFilterTap: _controller.onFilter,
               onSubmitted: _controller.onSearchSubmit,
@@ -60,12 +61,30 @@ class _ExploreScreenState extends State<ExploreScreen> {
     
           // CATEGORIES
           Obx(
-            () => CityChips(
-              categories: ExploreController.categories,
-              cities: _controller.cities,
-              selectedIndices: _controller.selectedCategories.toSet(),
-              isLoading: _controller.isLoadingImages.value,
-              onSelected: _controller.selectCategory,
+            () => AnimatedSwitcher(
+              duration: const Duration(milliseconds: 350),
+              switchInCurve: Curves.easeOutCubic,
+              switchOutCurve: Curves.easeInCubic,
+              transitionBuilder: (child, animation) {
+                return SizeTransition(
+                  sizeFactor: animation,
+                  axisAlignment: -1.0,
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  ),
+                );
+              },
+              child: _controller.isFilterOn.value
+                  ? CityChips(
+                      key: const ValueKey('city-chips-visible'),
+                      categories: ExploreController.categories,
+                      cities: _controller.cities,
+                      selectedIndices: _controller.selectedCategories.toSet(),
+                      isLoading: _controller.isLoadingImages.value,
+                      onSelected: _controller.selectCategory,
+                    )
+                  : const SizedBox.shrink(key: ValueKey('city-chips-hidden')),
             ),
           ),
     

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/rooms_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/check_availability_bar.dart';
@@ -13,14 +14,59 @@ import 'package:majestic_rooms/root/modules/hotel/widgets/maps_preview.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/favorite_button.dart';
 import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
+import 'package:majestic_rooms/root/modules/hotel/screens/image_viewer_screen.dart';
+import 'package:majestic_rooms/root/modules/hotel/hotel_screen_controller.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:shimmer/shimmer.dart';
 
-class HotelScreen extends StatelessWidget {
+class HotelScreen extends StatefulWidget {
   final Hotel hotel;
   final String? heroTag;
   const HotelScreen({super.key, required this.hotel, this.heroTag});
 
   @override
+  State<HotelScreen> createState() => _HotelScreenState();
+}
+
+class _HotelScreenState extends State<HotelScreen> {
+  late final HotelScreenController _controller;
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _reviewsSectionKey = GlobalKey();
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.put(HotelScreenController(hotelId: widget.hotel.id));
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    Get.delete<HotelScreenController>();
+    super.dispose();
+  }
+
+  void _scrollToReviews() {
+    if (_reviewsSectionKey.currentContext != null) {
+      Scrollable.ensureVisible(
+        _reviewsSectionKey.currentContext!,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  void _onShare() {
+    final webUrl = '${Constants.webURL}/hotel/${widget.hotel.slug}';
+    final text = 'Check out ${widget.hotel.name} on Majestic Rooms!\n\n${widget.hotel.address ?? ''}\n\n$webUrl';
+    Share.share(text, subject: 'Majestic Rooms: ${widget.hotel.name}');
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final hotel = widget.hotel;
+    final heroTag = widget.heroTag;
+    
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -59,17 +105,17 @@ class HotelScreen extends StatelessWidget {
                   size: 22,
                 ),
               ),
-              onTap: () => print("Share"),
+              onTap: _onShare,
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(right: 12.0, top: 10.0),
             child: Obx(() {
-              final CommonController controller = Get.find<CommonController>();
+              final CommonController commonController = Get.find<CommonController>();
               return FavoriteButton(
-                value: controller.savedHotels.contains(hotel),
+                value: commonController.savedHotels.contains(hotel),
                 onChanged: (_) {
-                  controller.toggleHotelSave(hotel);
+                  commonController.toggleHotelSave(hotel);
                 },
               );
             }),
@@ -77,18 +123,37 @@ class HotelScreen extends StatelessWidget {
         ],
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         padding: EdgeInsets.zero,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Hero(
-              tag: heroTag ?? hotel.imageUrl,
-              child: Material(
-                type: MaterialType.transparency,
-                child: Stack(
-                  children: [
-                    ImageCarousel(images: hotel.images.map((image) => image.url).toList()),
-                    if (hotel.activePromotion != null && hotel.activePromotion?.isActive == true)
+            Material(
+              type: MaterialType.transparency,
+              child: Stack(
+                children: [
+                  ImageCarousel(
+                    images: hotel.images.map((image) => image.url).toList(),
+                    heroTagPrefix: heroTag ?? hotel.imageUrl,
+                    onImageTap: (index) {
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) {
+                            return ImageViewerScreen(
+                              imageUrls: hotel.images.map((e) => e.url).toList(),
+                              initialIndex: index,
+                              heroTagPrefix: heroTag ?? hotel.imageUrl,
+                            );
+                          },
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(opacity: animation, child: child);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                  if (hotel.activePromotion != null && hotel.activePromotion?.isActive == true)
                       Positioned(
                         bottom: 24,
                         left: 16,
@@ -118,7 +183,7 @@ class HotelScreen extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
+
 
             // INFO SECTION
             Padding(
@@ -138,7 +203,11 @@ class HotelScreen extends StatelessWidget {
                   ),
 
                   // STARS
-                  HotelStars(rating: hotel.rating),
+                  Obx(() => HotelStars(
+                        rating: hotel.rating,
+                        reviewCount: _controller.isLoadingReviews.value ? null : _controller.reviews.length,
+                        onTap: _scrollToReviews,
+                      )),
                   SizedBox(height: 40),
                   
                   // ABOUT
@@ -230,8 +299,104 @@ class HotelScreen extends StatelessWidget {
                       fontStyle: hotel.description == null ? FontStyle.italic : FontStyle.normal,
                     ),
                   ),
+                  const SizedBox(height: 30),
+
+                  // REVIEWS
+                  Container(
+                    key: _reviewsSectionKey,
+                    padding: const EdgeInsets.only(top: 8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Reviews",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: CustomColors.textMain,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        Obx(() {
+                          if (_controller.isLoadingReviews.value) {
+                            return _buildReviewsShimmer();
+                          }
+                          if (_controller.reviews.isEmpty) {
+                            return const Text(
+                              "No reviews yet.",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                color: CustomColors.textMuted,
+                              ),
+                            );
+                          }
+                          return Column(
+                            children: _controller.reviews.map((review) {
+                              return Container(
+                                width: double.infinity,
+                                margin: const EdgeInsets.only(bottom: 16),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
+                                  color: CustomColors.surfaceWhite,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(color: CustomColors.borderColor.withOpacity(0.3)),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.02),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          review.reviewerName,
+                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                        ),
+                                        if (review.overallRating != null)
+                                          HotelStars(rating: review.overallRating!),
+                                      ],
+                                    ),
+                                    if (review.feedback != null && review.feedback!.isNotEmpty) ...[
+                                      const SizedBox(height: 8),
+                                      Text(
+                                        review.feedback!,
+                                        style: const TextStyle(color: CustomColors.textMain, fontSize: 14),
+                                      ),
+                                    ],
+                                    if (review.detailRatings.isNotEmpty) ...[
+                                      const SizedBox(height: 12),
+                                      Wrap(
+                                        spacing: 8,
+                                        runSpacing: 8,
+                                        children: review.detailRatings.map((dr) {
+                                          return Chip(
+                                            label: Text('${dr.service.capitalizeFirst} ${dr.rating} ★', style: const TextStyle(fontSize: 11)),
+                                            backgroundColor: CustomColors.cardSubtleBg,
+                                            side: BorderSide.none,
+                                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                                            visualDensity: VisualDensity.compact,
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        }),
+                      ],
+                    ),
+                  ),
+
                   // Extra padding so content isn't covered by the floating CheckAvailabilityBar
-                  const SizedBox(height: 200),
+                  const SizedBox(height: 120),
                 ],
               ),
             ),
@@ -251,6 +416,25 @@ class HotelScreen extends StatelessWidget {
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _buildReviewsShimmer() {
+    return Column(
+      children: List.generate(3, (index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            height: 100,
+            margin: const EdgeInsets.only(bottom: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+            ),
+          ),
+        );
+      }),
     );
   }
 

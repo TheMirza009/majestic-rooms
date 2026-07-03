@@ -21,6 +21,10 @@ dependencies:
   fluttertoast: ^9.1.0
   shimmer: ^3.0.0
   flutter_multiple_loaders: ^1.1.1
+  photo_view: ^0.15.0
+  share_plus: ^13.2.0
+  shared_preferences: ^2.3.2
+  flutter_svg: ^2.0.10
 
   # Maps implementation
   flutter_map: ^7.0.2

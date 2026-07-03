@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/vector_strings.dart';
 import 'package:majestic_rooms/root/widgets/field_clear_button.dart';
 
 class ExploreSearchBar extends StatelessWidget {
@@ -14,6 +16,7 @@ class ExploreSearchBar extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final VoidCallback?         onClear;
   final bool                  isSearching;
+  final bool                  isFilterOn;
 
   const ExploreSearchBar({
     super.key,
@@ -27,6 +30,7 @@ class ExploreSearchBar extends StatelessWidget {
     this.onSubmitted,
     this.onClear,
     this.isSearching = false,
+    this.isFilterOn = true,
   });
 
   // ── Control Panel ──────────────────────────────────────────────────────
@@ -64,7 +68,9 @@ class ExploreSearchBar extends StatelessWidget {
           children: [
             FieldClearButton(
               controller: controller,
-              iconColor: isSearching ? Colors.grey.shade400 : CustomColors.linkColor,
+              iconColor: isSearching
+                  ? Colors.grey.shade400
+                  : CustomColors.linkColor,
               onClear: () {
                 if (isSearching) return;
                 controller.clear();
@@ -76,10 +82,24 @@ class ExploreSearchBar extends StatelessWidget {
                 padding: const EdgeInsets.only(right: 4),
                 child: IconButton(
                   onPressed: isSearching ? null : onFilterTap,
-                  icon: Icon(
-                    Icons.tune_rounded,
-                    color: isSearching ? Colors.grey.shade400 : null,
-                  ),
+                  icon: isFilterOn
+                      ? Icon(
+                          Icons.tune_rounded,
+                          color: isSearching ? Colors.grey.shade400 : null,
+                        )
+                      : Builder(
+                          builder: (ctx) => SvgPicture.string(
+                            VectorStrings.tuneOff,
+                            width: 24,
+                            height: 24,
+                            colorFilter: ColorFilter.mode(
+                              isSearching
+                                  ? Colors.grey.shade400
+                                  : IconTheme.of(ctx).color ?? Colors.black,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ),
                 ),
               ),
           ],

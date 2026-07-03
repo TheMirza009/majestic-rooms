@@ -1,10 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
+import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/booking_summary_screen.dart';
+import 'package:majestic_rooms/root/modules/booking/screens/booking_success_screen.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/date_range/custom_date_range_picker.dart';
 
 class BookingController extends GetxController {
@@ -110,5 +114,77 @@ class BookingController extends GetxController {
       margin: const EdgeInsets.all(16),
       borderRadius: 12,
     );
+  }
+
+  /// Finalizes the booking by sending data to Supabase.
+  /// First checks if the hotel exists on the server to prevent orphans.
+  /// If missing, falls back to a dummy local mode for UI continuity.
+  Future<void> confirmBooking(BuildContext context) async {
+    final booking = BookingModel.fromController(this);
+    final commonController = Get.find<CommonController>();
+    final supabase = Supabase.instance.client;
+
+    try {
+      // 1. Check if hotel exists on backend
+      final hotelRow = await supabase
+          .from('hotel')
+          .select('slug')
+          .eq('slug', booking.hotelSlug)
+          .maybeSingle();
+
+      if (hotelRow == null) {
+        // Dummy local mode
+        Get.snackbar('Local Mode', 'Hotel does not exist on the server. Proceeding in local mode.', snackPosition: SnackPosition.BOTTOM);
+        commonController.addBooking(booking);
+      } else {
+        // Backend insert
+        final result = await supabase
+            .from('booking')
+            .insert(booking.toInsertJson(accountId: supabase.auth.currentUser?.id))
+            .select('id')
+            .single();
+
+        final serverId = result['id'] as String;
+        
+        await supabase
+            .from('booking_detail')
+            .insert(booking.detailsToInsertJson(serverId));
+
+        // Refetch to maintain sync, or insert local with server ID
+        commonController.addBooking(
+          BookingModel(
+            id: serverId,
+            hotel: booking.hotel,
+            hotelSlug: booking.hotelSlug,
+            hotelName: booking.hotelName,
+            hotelImageUrl: booking.hotelImageUrl,
+            checkInDate: booking.checkInDate,
+            checkOutDate: booking.checkOutDate,
+            nights: booking.nights,
+            numberOfRooms: booking.numberOfRooms,
+            grossTotal: booking.grossTotal,
+            discount: booking.discount,
+            netTotal: booking.netTotal,
+            bookingDate: booking.bookingDate,
+            bookingStatus: booking.bookingStatus,
+            details: booking.details,
+          )
+        );
+      }
+
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          CupertinoPageRoute(
+            builder: (_) => BookingSuccessScreen(booking: booking),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ [BookingController] Failed to confirm booking: $e');
+      if (context.mounted) {
+         Get.snackbar('Error', 'Failed to confirm booking.', snackPosition: SnackPosition.BOTTOM);
+      }
+    }
   }
 }

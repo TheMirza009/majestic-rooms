@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
+import 'package:majestic_rooms/root/modules/hotel/screens/image_viewer_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
 
 class RoomCard extends StatelessWidget {
@@ -67,6 +68,30 @@ class RoomCard extends StatelessWidget {
                           hotelImageUrl ??
                               'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
                         ],
+                  heroTagPrefix: 'room_${room.id}',
+                  onImageTap: (index) {
+                    final urls = room.images.isNotEmpty
+                        ? room.images.map((e) => e.url).toList()
+                        : [
+                            hotelImageUrl ??
+                                'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
+                          ];
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) {
+                          return ImageViewerScreen(
+                            imageUrls: urls,
+                            initialIndex: index,
+                            heroTagPrefix: 'room_${room.id}',
+                          );
+                        },
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(opacity: animation, child: child);
+                        },
+                      ),
+                    );
+                  },
                 ),
               ),
                 

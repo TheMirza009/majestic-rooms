@@ -31,6 +31,7 @@ class ExploreController extends GetxController {
   final cities          = <City>[].obs;
   final isLoadingImages = false.obs;
   final isSearching     = false.obs;
+  final isFilterOn      = true.obs;
   final hotels          = <Hotel>[].obs;
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -142,7 +143,9 @@ class ExploreController extends GetxController {
     if (newOnes.isNotEmpty) hotels.addAll(newOnes);
   }
 
-  void onFilter() {} // TODO: open filter sheet
+  void onFilter() {
+    isFilterOn.value = !isFilterOn.value;
+  }
 
   /// Hotels in the selected cities and matching the search query. With nothing selected, returns all hotels.
   List<Hotel> get filteredHotels {

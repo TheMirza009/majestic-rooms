@@ -58,12 +58,5 @@ class LoginController extends GetxController {
     }
   }
 
-  void signInWithGoogle() {
-    Utils.showBottomSnackBar(
-      'Google Authentication',
-      'Coming Soon!',
-      mainButtonText: 'Close',
-    );
-    // TODO: enable real Google OAuth via _supabase.signInWithGoogle()
-  }
+
 }

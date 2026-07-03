@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
@@ -53,16 +54,7 @@ class BookingSummaryScreen extends StatelessWidget {
   /// needing [BookingController].
   final BookingModel? booking;
 
-  void _onConfirmBooking(BuildContext context, BookingController controller) {
-    final booking = BookingModel.fromController(controller);
-    Get.find<CommonController>().addBooking(booking);
-    Navigator.push(
-      context,
-      CupertinoPageRoute(
-        builder: (_) => BookingSuccessScreen(booking: booking),
-      ),
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -641,7 +633,7 @@ class BookingSummaryScreen extends StatelessWidget {
                           // BOOK NOW BUTTON
                           Expanded(
                             child: GestureDetector(
-                              onTap: () => _onConfirmBooking(context, controller),
+                              onTap: () => controller.confirmBooking(context),
                               child: Container(
                                 height: 54,
                                 decoration: BoxDecoration(

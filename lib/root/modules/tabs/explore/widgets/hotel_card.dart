@@ -117,7 +117,7 @@ class _HotelCardState extends State<HotelCard> {
         duration: _fadeDuration,
         // HERO IMAGE
         child: Hero(
-          tag: widget.heroTag ?? widget.hotel.imageUrl,
+          tag: '${widget.heroTag ?? widget.hotel.imageUrl}_${widget.hotel.images.isNotEmpty ? widget.hotel.images.first.url : widget.hotel.imageUrl}',
           child: Material(
             type: MaterialType.transparency,
             clipBehavior: Clip.antiAlias,

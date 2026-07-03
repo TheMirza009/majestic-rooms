@@ -154,16 +154,18 @@ class LoginScreen extends GetView<LoginController> {
                 )),
                 const SizedBox(height: _gapSmall),
 
-                // FORGOT PASSWORD
-                Center(
-                  child: GestureDetector(
-                    onTap: () {
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    onPressed: () {
                       // TODO: Implement forgot password navigation
                     },
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Text('Password forgotten?', style: _linkStyle),
-                    ),
+                    child: const Text('Forgot Password?', style: _linkStyle),
                   ),
                 ),
                 const SizedBox(height: _gapMedium),
@@ -197,31 +199,7 @@ class LoginScreen extends GetView<LoginController> {
                 )),
                 const SizedBox(height: _gapLarge),
 
-                // DIVIDER
-                const Divider(color: CustomColors.borderColor),
-                const SizedBox(height: _gapLarge),
 
-                // GOOGLE SIGN IN
-                SizedBox(
-                  height: _buttonHeight,
-                  child: CustomButtonOutlined(
-                    text: 'Sign in with Google',
-                    textStyle: _btnTextDark,
-                    borderColor: CustomColors.borderColor,
-                    borderRadius: _borderRadius,
-                    prefix: Image.asset(
-                      ImageAssets.googleIcon,
-                      height: 20,
-                      errorBuilder: (_, __, ___) => const Icon(
-                        Icons.g_mobiledata,
-                        size: 24,
-                        color: CustomColors.hintColor,
-                      ),
-                    ),
-                    onTap: controller.signInWithGoogle,
-                  ),
-                ),
-                const SizedBox(height: _gapLarge),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

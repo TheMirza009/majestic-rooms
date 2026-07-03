@@ -6,8 +6,10 @@ import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_controller.dart';
+import 'package:majestic_rooms/root/modules/tabs/profile/settings_screen.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/cupertino.dart';
 
 // Promoted to file scope so both ProfileScreen and _Tile can reference it.
 const TextStyle _mutedStyle = TextStyle(fontSize: 14, color: CustomColors.textMuted);
@@ -175,6 +177,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   icon: Icons.info_outline,
                   title: 'About',
                   onTap: Utils.showAboutDialog,
+                ),
+                const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
+                _Tile(
+                  icon: Icons.settings_outlined,
+                  title: 'Settings',
+                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const SettingsScreen())),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
