@@ -98,6 +98,7 @@ class RoomsScreen extends StatelessWidget {
                         return Obx(() {
                           return RoomCard(
                             room: room,
+                            hotelImageUrl: hotel.imageUrl,
                             quantity: controller.getRoomQuantity(room),
                             onIncrement: () => controller.incrementRoom(room),
                             onDecrement: () => controller.decrementRoom(room),

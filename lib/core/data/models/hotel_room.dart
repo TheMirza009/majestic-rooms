@@ -1,3 +1,5 @@
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 class RoomCategory {
   final int id;
   final String name;
@@ -5,10 +7,7 @@ class RoomCategory {
   const RoomCategory({required this.id, required this.name});
 
   factory RoomCategory.fromJson(Map<String, dynamic> json) {
-    return RoomCategory(
-      id: json['id'] as int,
-      name: json['name'] as String,
-    );
+    return RoomCategory(id: json['id'] as int, name: json['name'] as String);
   }
 
   bool get isStandard => name.toLowerCase() == "standard";
@@ -23,8 +22,17 @@ class RoomImage {
   factory RoomImage.fromJson(Map<String, dynamic> json) {
     return RoomImage(
       id: json['id'] as int,
-      url: json['url'] as String,
+      url: _parseUrl(json['url'] as String?),
     );
+  }
+
+  static String _parseUrl(String? rawUrl) {
+    if (rawUrl == null || rawUrl.isEmpty) return 'https://picsum.photos/600/400';
+    if (rawUrl.startsWith('http')) return rawUrl;
+    
+    final storageUrl = Supabase.instance.client.storage.url;
+    final normalizedPath = rawUrl.startsWith('/') ? rawUrl : '/$rawUrl';
+    return '$storageUrl/object/public$normalizedPath';
   }
 }
 
@@ -64,13 +72,15 @@ class HotelRoom {
       pricePerNight: json['price_per_night'] as num,
       roomNumber: json['room_number']?.toString(),
       category: _parseCategory(json['room_category']),
-      images: (json['room_images'] as List<dynamic>?)
+      images:
+          (json['room_images'] as List<dynamic>?)
               ?.map((e) => RoomImage.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       description: json['description']?.toString(),
       cityView: json['city_view'] as bool?,
-      pricePerNightWithBreakfast: json['price_per_night_with_breakfast'] as num?,
+      pricePerNightWithBreakfast:
+          json['price_per_night_with_breakfast'] as num?,
     );
   }
 

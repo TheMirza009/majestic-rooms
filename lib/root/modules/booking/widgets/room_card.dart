@@ -3,9 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
+import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
 
 class RoomCard extends StatelessWidget {
   final HotelRoom room;
+  final String? hotelImageUrl;
   final int quantity;
   final VoidCallback onIncrement;
   final VoidCallback onDecrement;
@@ -13,6 +15,7 @@ class RoomCard extends StatelessWidget {
   const RoomCard({
     super.key,
     required this.room,
+    this.hotelImageUrl,
     required this.quantity,
     required this.onIncrement,
     required this.onDecrement,
@@ -57,24 +60,13 @@ class RoomCard extends StatelessWidget {
               // IMAGE
               AspectRatio(
                 aspectRatio: 16 / 9,
-                child: CachedNetworkImage(
-                  imageUrl: room.images.isNotEmpty 
-                      ? room.images.first.url 
-                      : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop',
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) => Container(
-                    color: CustomColors.cardSubtleBg,
-                    child: const Center(
-                      child: CircularProgressIndicator(
-                        color: CustomColors.brandRed,
-                        strokeWidth: 2,
-                      ),
-                    ),
-                  ),
-                  errorWidget: (context, url, error) => Container(
-                    color: CustomColors.cardSubtleBg,
-                    child: const Icon(Icons.broken_image, color: CustomColors.hintColor),
-                  ),
+                child: ImageCarousel(
+                  images: room.images.isNotEmpty
+                      ? room.images.map((e) => e.url).toList()
+                      : [
+                          hotelImageUrl ??
+                              'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
+                        ],
                 ),
               ),
                 
@@ -106,14 +98,14 @@ class RoomCard extends StatelessWidget {
                                 const Icon(
                                   Icons.king_bed_outlined,
                                   size: 18,
-                                  color: CustomColors.textLight,
+                                  // color: CustomColors.textLight,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
                                   "${room.beds} Bed${room.beds! > 1 ? 's' : ''}",
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    color: CustomColors.textLight,
+                                    // color: CustomColors.textLight,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
@@ -123,14 +115,14 @@ class RoomCard extends StatelessWidget {
                                 const Icon(
                                   Icons.tag_rounded,
                                   size: 16,
-                                  color: CustomColors.textLight,
+                                  // color: CustomColors.textLight,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   room.roomNumber!,
                                   style: const TextStyle(
                                     fontSize: 14,
-                                    color: CustomColors.textLight,
+                                    // color: CustomColors.textLight,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),

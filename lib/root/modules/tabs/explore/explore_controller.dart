@@ -61,7 +61,7 @@ class ExploreController extends GetxController {
       final selectedCities = selectedCategories.expand((i) => _mapCategoryToSlugs(categories[i])).toList();
       final response = await Supabase.instance.client
           .from('hotel')
-          .select('*, hotel_images(*), hotel_rooms(*), hotel_facility(facility(*)), promotion(*)')
+          .select('*, hotel_images(*), hotel_rooms(*, room_images(*)), hotel_facility(facility(*)), promotion(*)')
           .inFilter('location_slug', selectedCities);
       
       final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
@@ -103,7 +103,7 @@ class ExploreController extends GetxController {
       isSearching.value = true;
       var dbQuery = Supabase.instance.client
           .from('hotel')
-          .select('*, hotel_images(*), hotel_rooms(*), hotel_facility(facility(*)), promotion(*)')
+          .select('*, hotel_images(*), hotel_rooms(*, room_images(*)), hotel_facility(facility(*)), promotion(*)')
           .or('name.ilike.%$query%,location_slug.ilike.%$query%,address.ilike.%$query%');
 
       if (selectedCategories.isNotEmpty) {
@@ -112,7 +112,7 @@ class ExploreController extends GetxController {
       }
 
       final response = await dbQuery;
-
+      debugPrint("Search response: ${response.toString()}");
       final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
       
       final buffer = StringBuffer();
