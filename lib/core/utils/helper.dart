@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:majestic_rooms/root/widgets/confirm_logout_dialog.dart';
 
 bool get kIsWindows => Platform.isWindows;
@@ -22,6 +23,30 @@ class Utils {
         ),
       ),
     );
+  }
+
+  static void showToast(String message) {
+    if (kIsWindows) {
+      Get.rawSnackbar(
+        message: message,
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(16),
+        borderRadius: 8,
+        mainButton: IconButton(
+          icon: const Icon(Icons.clear, color: Colors.white),
+          onPressed: () {
+            if (Get.isSnackbarOpen) {
+              Get.closeCurrentSnackbar();
+            }
+          },
+        ),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+      );
+    }
   }
 
   // ── GetX snackbars ────────────────────────────────────────────────────────

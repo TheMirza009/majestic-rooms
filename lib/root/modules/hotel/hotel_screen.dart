@@ -178,7 +178,7 @@ class HotelScreen extends StatelessWidget {
                       runSpacing: 8.0,
                       children: hotel.facilities.map((f) => Chip(
                         label: Text(f.name),
-                        avatar: f.icon != null ? Icon(_getIconData(f.icon!), size: 18, color: CustomColors.brandRed) : null,
+                        avatar: Icon(_getIconData(f.icon, f.name), size: 18, color: CustomColors.brandRed),
                         backgroundColor: CustomColors.surfaceWhite,
                         side: BorderSide(color: CustomColors.borderColor.withOpacity(0.2)),
                         elevation: 2.0,
@@ -254,50 +254,56 @@ class HotelScreen extends StatelessWidget {
     );
   }
 
-  IconData _getIconData(String key) {
-    final normalized = key.toLowerCase().replaceAll(' ', '-').replaceAll('_', '-');
-    switch (normalized) {
-      case 'wifi':
-      case 'wi-fi':
-      case 'wi-fi-internet':
-        return Icons.wifi;
-      case 'pool':
-      case 'swimming-pool':
-        return Icons.pool;
-      case 'room-service':
-        return Icons.room_service;
-      case 'parking':
-        return Icons.local_parking;
-      case 'restaurant':
-        return Icons.restaurant;
-      case 'gym':
-      case 'fitness':
-      case 'fitness-center':
-        return Icons.fitness_center;
-      case 'accessibility':
-        return Icons.accessible;
-      case 'air-conditioner':
-      case 'ac':
-        return Icons.ac_unit;
-      case 'cards-accepted':
-      case 'card-accepted':
-      case 'credit-card':
-        return Icons.credit_card;
-      case 'club':
-      case 'nightclub':
-        return Icons.nightlife;
-      case 'coffee-shop':
-      case 'cafe':
-        return Icons.local_cafe;
-      case 'shuttle':
-      case 'shuttle-bus':
-      case 'shuttle-bus-service':
-        return Icons.airport_shuttle;
-      case 'elevator':
-      case 'lift':
-        return Icons.elevator;
-      default:
-        return Icons.check_circle_outline;
+  IconData _getIconData(String? iconKey, String name) {
+    final keys = [
+      if (iconKey != null && iconKey.trim().isNotEmpty)
+        iconKey.trim().toLowerCase().replaceAll(' ', '-').replaceAll('_', '-'),
+      name.trim().toLowerCase().replaceAll(' ', '-').replaceAll('_', '-'),
+    ];
+
+    for (final normalized in keys) {
+      switch (normalized) {
+        case 'wifi':
+        case 'wi-fi':
+        case 'wi-fi-internet':
+          return Icons.wifi;
+        case 'pool':
+        case 'swimming-pool':
+          return Icons.pool;
+        case 'room-service':
+          return Icons.room_service;
+        case 'parking':
+          return Icons.local_parking;
+        case 'restaurant':
+          return Icons.restaurant;
+        case 'gym':
+        case 'fitness':
+        case 'fitness-center':
+          return Icons.fitness_center;
+        case 'accessibility':
+          return Icons.accessible;
+        case 'air-conditioner':
+        case 'ac':
+          return Icons.ac_unit;
+        case 'cards-accepted':
+        case 'card-accepted':
+        case 'credit-card':
+          return Icons.credit_card;
+        case 'club':
+        case 'nightclub':
+          return Icons.nightlife;
+        case 'coffee-shop':
+        case 'cafe':
+          return Icons.local_cafe;
+        case 'shuttle':
+        case 'shuttle-bus':
+        case 'shuttle-bus-service':
+          return Icons.airport_shuttle;
+        case 'elevator':
+        case 'lift':
+          return Icons.elevator;
+      }
     }
+    return Icons.check_circle_outline;
   }
 }

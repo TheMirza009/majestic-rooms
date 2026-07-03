@@ -18,30 +18,20 @@ class ExploreScreen extends StatefulWidget {
 
 class _ExploreScreenState extends State<ExploreScreen> {
   late final ExploreController _controller;
-  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _controller = Get.put(ExploreController());
-    _searchController.addListener(() {
-      _controller.searchQuery.value = _searchController.text;
-    });
   }
 
   void _onClear() {
     if (_controller.isSearching.value) {
       return;
     }
-    _searchController.clear();
+    _controller.searchController.clear();
     // The addListener in initState syncs _controller.searchQuery automatically.
     // filteredHotels then returns all entries in the canonical hotels list.
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
   }
 
   @override
@@ -59,9 +49,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
           // SEARCH
           Obx(
             () => ExploreSearchBar(
-              controller: _searchController,
+              controller: _controller.searchController,
               isSearching: _controller.isSearching.value,
-              onSearchTap: () => _controller.onSearchSubmit(_searchController.text),
+              onSearchTap: () => _controller.onSearchSubmit(_controller.searchController.text),
               onFilterTap: _controller.onFilter,
               onSubmitted: _controller.onSearchSubmit,
               onClear: _onClear,

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/root/modules/home/notifications_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 
@@ -25,6 +25,7 @@ class ExploreController extends GetxController {
   static const String _bucket = 'locations';
 
   // ── Fields ───────────────────────────────────────────────────────────────
+  final searchController   = TextEditingController();
   final searchQuery        = ''.obs;
   final selectedCategories = <int>{}.obs; // empty = no filter, show all hotels
   final cities          = <City>[].obs;
@@ -36,6 +37,9 @@ class ExploreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    searchController.addListener(() {
+      searchQuery.value = searchController.text;
+    });
     fetchCities();
     hotels.assignAll(kDummyHotels);
   }
@@ -48,16 +52,50 @@ class ExploreController extends GetxController {
     } else {
       selectedCategories.add(index);
     }
+    _fetchHotelsForSelectedCategories();
+  }
+
+  Future<void> _fetchHotelsForSelectedCategories() async {
+    if (selectedCategories.isEmpty) return;
+    try {
+      final selectedCities = selectedCategories.expand((i) => _mapCategoryToSlugs(categories[i])).toList();
+      final response = await Supabase.instance.client
+          .from('hotel')
+          .select('*, hotel_images(*), hotel_rooms(*), hotel_facility(facility(*)), promotion(*)')
+          .inFilter('location_slug', selectedCities);
+      
+      final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+      
+      final buffer = StringBuffer();
+      buffer.writeln('${parsedHotels.length} results found:');
+      for (int i = 0; i < parsedHotels.length; i++) {
+        final h = parsedHotels[i];
+        buffer.writeln('${i + 1}. ${h.name} - ${h.city}');
+      }
+      debugPrint(buffer.toString());
+
+      _mergeHotels(parsedHotels);
+    } catch (e) {
+      debugPrint("Category fetch error: $e");
+    }
+  }
+
+  List<String> _mapCategoryToSlugs(String category) {
+    final lower = category.toLowerCase();
+    if (lower == 'mecca' || lower == 'makkah') {
+      return ['mecca', 'makkah'];
+    }
+    if (lower == 'medina' || lower == 'madinah') {
+      return ['medina', 'madinah'];
+    }
+    return [lower];
   }
 
   Future<void> onSearchSubmit(String query) async {
     if (isSearching.value) return;
 
     if (query.trim().isEmpty) {
-      Fluttertoast.showToast(
-        msg: 'Search query cannot be empty',
-        toastLength: Toast.LENGTH_SHORT,
-      );
+      Utils.showToast('Search query cannot be empty');
       return;
     }
 
@@ -69,19 +107,24 @@ class ExploreController extends GetxController {
           .or('name.ilike.%$query%,location_slug.ilike.%$query%,address.ilike.%$query%');
 
       if (selectedCategories.isNotEmpty) {
-        final selectedCities = selectedCategories.map((i) => categories[i]).toList();
+        final selectedCities = selectedCategories.expand((i) => _mapCategoryToSlugs(categories[i])).toList();
         dbQuery = dbQuery.inFilter('location_slug', selectedCities);
       }
 
       final response = await dbQuery;
-      
+
       final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
       
+      final buffer = StringBuffer();
+      buffer.writeln('${parsedHotels.length} results found:');
+      for (int i = 0; i < parsedHotels.length; i++) {
+        final h = parsedHotels[i];
+        buffer.writeln('${i + 1}. ${h.name} - ${h.city}');
+      }
+      debugPrint(buffer.toString());
+      
       if (parsedHotels.isEmpty) {
-        Fluttertoast.showToast(
-          msg: 'No hotels found',
-          toastLength: Toast.LENGTH_SHORT,
-        );
+        Utils.showToast('No hotels found');
       }
 
       _mergeHotels(parsedHotels);
@@ -106,8 +149,8 @@ class ExploreController extends GetxController {
     List<Hotel> result = hotels;
     
     if (selectedCategories.isNotEmpty) {
-      final selectedCities = selectedCategories.map((i) => categories[i]).toSet();
-      result = result.where((hotel) => selectedCities.contains(hotel.city)).toList();
+      final selectedCities = selectedCategories.expand((i) => _mapCategoryToSlugs(categories[i])).toSet();
+      result = result.where((hotel) => selectedCities.contains(hotel.city.toLowerCase())).toList();
     }
     
     final query = searchQuery.value.trim().toLowerCase();
@@ -138,6 +181,7 @@ class ExploreController extends GetxController {
 
   @override
   void onClose() {
+    searchController.dispose();
     super.onClose();
   }
 }
