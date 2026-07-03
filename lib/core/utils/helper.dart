@@ -7,10 +7,30 @@ import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:majestic_rooms/root/widgets/confirm_logout_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 bool get kIsWindows => Platform.isWindows;
 
 class Utils {
+  static Future<void> launchEmail(String email) async {
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+    if (await canLaunchUrl(emailLaunchUri)) {
+      await launchUrl(emailLaunchUri);
+    }
+  }
+
+  static Future<void> launchPhone(String phone) async {
+    final Uri phoneLaunchUri = Uri(
+      scheme: 'tel',
+      path: phone,
+    );
+    if (await canLaunchUrl(phoneLaunchUri)) {
+      await launchUrl(phoneLaunchUri);
+    }
+  }
 
   static void showSuccess(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(

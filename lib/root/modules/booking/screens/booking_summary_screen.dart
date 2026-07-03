@@ -1,16 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/data/models/booking.dart';
-import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
-import 'package:majestic_rooms/root/modules/booking/screens/booking_success_screen.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/price_breakdown.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/selected_rooms_list.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';

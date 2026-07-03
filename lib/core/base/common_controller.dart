@@ -138,7 +138,6 @@ class CommonController extends GetxController {
     try {
       await _supabase.signOut();
       debugPrint('✅ [Auth] Sign-out successful');
-      Get.offAllNamed(AppRoutes.login);
     } catch (e) {
       debugPrint('❌ [Auth] Sign-out failed: $e');
     }

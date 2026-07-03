@@ -7,6 +7,7 @@ import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/settings_screen.dart';
+import 'package:majestic_rooms/root/modules/tabs/profile/user_settings_screen.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -111,7 +112,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 // AVATAR
                 Opacity(
                   opacity: isFlying ? 0 : 1,
-                  child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _avatarSize),
+                  child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _avatarSize, heroTag: 'profile_avatar'),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -128,6 +129,19 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             );
           }),
           const SizedBox(height: 32),
+
+          // ACCOUNT SETTINGS
+          Material(
+            color: CustomColors.surfaceWhite,
+            shape: _groupShape,
+            clipBehavior: Clip.antiAlias,
+            child: _Tile(
+              icon: Icons.person_outline,
+              title: 'User Settings',
+              onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const UserSettingsScreen())),
+            ),
+          ),
+          const SizedBox(height: 24),
 
           // BOOKINGS & TRAVEL
           Material(
@@ -163,14 +177,14 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                   icon: Icons.email_outlined,
                   title: 'Contact Support',
                   subtitle: Constants.email,
-                  onTap: () {},
+                  onTap: () => Utils.launchEmail(Constants.email),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.phone_outlined,
                   title: 'Helpline',
                   subtitle: Constants.phone,
-                  onTap: () {},
+                  onTap: () => Utils.launchPhone(Constants.phone),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(

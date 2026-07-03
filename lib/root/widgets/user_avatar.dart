@@ -8,14 +8,15 @@ import 'package:majestic_rooms/core/theme/custom_colors.dart';
 class UserAvatar extends StatelessWidget {
   final String? imageUrl;
   final double size;
+  final String? heroTag;
 
-  const UserAvatar({super.key, required this.imageUrl, required this.size});
+  const UserAvatar({super.key, required this.imageUrl, required this.size, this.heroTag});
 
   static const Color _fallbackBg = CustomColors.surfaceWhite;
 
   @override
   Widget build(BuildContext context) {
-    return ClipOval(
+    Widget avatar = ClipOval(
       child: SizedBox.square(
         dimension: size,
         child: (imageUrl == null || imageUrl!.isEmpty)
@@ -44,5 +45,10 @@ class UserAvatar extends StatelessWidget {
               ),
       ),
     );
+
+    if (heroTag != null) {
+      return Hero(tag: heroTag!, child: avatar);
+    }
+    return avatar;
   }
 }

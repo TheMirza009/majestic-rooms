@@ -115,7 +115,7 @@ class LabeledEntryField extends StatelessWidget {
               fillColor: filledColor,
               counterText: '',
               contentPadding: contentPadding ??
-                  const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 8),
+                  const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               // labelText: labelText,
               // labelStyle: TextStyle(color: _primaryColor),
               disabledBorder: OutlineInputBorder(
@@ -268,7 +268,7 @@ class EntryField extends StatelessWidget {
               filled: filled,
               fillColor: filledColor,
               counterText: '',
-              contentPadding: contentPadding ?? const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 8),
+              contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               labelText: !showSeparateLabel ? labelText : null,
               // labelStyle: TextStyle(color: _primaryColor),
               disabledBorder: OutlineInputBorder(
@@ -383,8 +383,7 @@ class EntryFormField extends StatelessWidget {
             style: TextStyle(fontSize: 14, color: textColor ?? Colors.black),
             decoration: InputDecoration(
               counterText: '',
-              contentPadding:
-                  const EdgeInsets.only(left: 8, top: 4, bottom: 4, right: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               // labelText: labelText,
               // labelStyle: TextStyle(color: _primaryColor),
               disabledBorder: OutlineInputBorder(
