@@ -17,7 +17,7 @@ class HomeController extends GetxController {
   void onClose() {
     pageController.dispose();
     super.onClose();
-  }
+  } 
 
   // ── Navigation ───────────────────────────────────────────────────────────
   void navigateTo(int index) {

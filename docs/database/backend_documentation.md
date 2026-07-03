@@ -87,7 +87,22 @@ All 6 buckets are **public**, meaning files are served via a plain URL — no si
 
 **Naming convention note:** actual file paths are inconsistent — some are flat (`front.png`), some use a folder per hotel/room (`room_1/1775482119078_fvyh7u2bia5.jpeg`), and `locations` mixes both `.webp` files at the root and a `locations/` subfolder of `.png` duplicates. Don't assume a strict convention; always store the full path/URL returned at upload time in your table row (e.g. `hotel_images.url`) rather than reconstructing paths from IDs.
 
-**Get a public URL for a file**
+> **CRITICAL: Parsing URLs from the DB**  
+> Because of how data was seeded or uploaded historically, `url` columns (like in `hotel_images`) might contain:
+> 1. A full HTTP URL (`https://...`)
+> 2. A relative path that **includes the bucket name** (e.g. `hotel-images/mecca1.webp` or `/hotel-images/front.png`).
+> 
+> If you use `supabase.storage.from('hotel-images').getPublicUrl('hotel-images/mecca1.webp')`, Supabase will generate an invalid URL that duplicates the bucket: `.../public/hotel-images/hotel-images/mecca1.webp`.
+> 
+> **How to parse correctly in Flutter:**
+> ```dart
+> if (rawUrl.startsWith('http')) return rawUrl;
+> final storageUrl = Supabase.instance.client.storage.url;
+> final normalizedPath = rawUrl.startsWith('/') ? rawUrl : '/$rawUrl';
+> return '$storageUrl/object/public$normalizedPath';
+> ```
+
+**Get a public URL for a file (if you only have the inner path without the bucket)**
 ```dart
 final imageUrl = supabase.storage
     .from('hotel-images')

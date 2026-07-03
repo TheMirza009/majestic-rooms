@@ -255,12 +255,15 @@ class HotelScreen extends StatelessWidget {
   }
 
   IconData _getIconData(String key) {
-    switch (key) {
+    final normalized = key.toLowerCase().replaceAll(' ', '-').replaceAll('_', '-');
+    switch (normalized) {
       case 'wifi':
+      case 'wi-fi':
+      case 'wi-fi-internet':
         return Icons.wifi;
       case 'pool':
+      case 'swimming-pool':
         return Icons.pool;
-      case 'room_service':
       case 'room-service':
         return Icons.room_service;
       case 'parking':
@@ -269,7 +272,30 @@ class HotelScreen extends StatelessWidget {
         return Icons.restaurant;
       case 'gym':
       case 'fitness':
+      case 'fitness-center':
         return Icons.fitness_center;
+      case 'accessibility':
+        return Icons.accessible;
+      case 'air-conditioner':
+      case 'ac':
+        return Icons.ac_unit;
+      case 'cards-accepted':
+      case 'card-accepted':
+      case 'credit-card':
+        return Icons.credit_card;
+      case 'club':
+      case 'nightclub':
+        return Icons.nightlife;
+      case 'coffee-shop':
+      case 'cafe':
+        return Icons.local_cafe;
+      case 'shuttle':
+      case 'shuttle-bus':
+      case 'shuttle-bus-service':
+        return Icons.airport_shuttle;
+      case 'elevator':
+      case 'lift':
+        return Icons.elevator;
       default:
         return Icons.check_circle_outline;
     }

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/root/modules/home/notifications_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 
@@ -28,6 +29,7 @@ class ExploreController extends GetxController {
   final selectedCategories = <int>{}.obs; // empty = no filter, show all hotels
   final cities          = <City>[].obs;
   final isLoadingImages = false.obs;
+  final isSearching     = false.obs;
   final hotels          = <Hotel>[].obs;
 
   // ── Lifecycle ─────────────────────────────────────────────────────────────
@@ -49,12 +51,18 @@ class ExploreController extends GetxController {
   }
 
   Future<void> onSearchSubmit(String query) async {
+    if (isSearching.value) return;
+
     if (query.trim().isEmpty) {
-      hotels.assignAll(kDummyHotels);
+      Fluttertoast.showToast(
+        msg: 'Search query cannot be empty',
+        toastLength: Toast.LENGTH_SHORT,
+      );
       return;
     }
 
     try {
+      isSearching.value = true;
       var dbQuery = Supabase.instance.client
           .from('hotel')
           .select('*, hotel_images(*), hotel_rooms(*), hotel_facility(facility(*)), promotion(*)')
@@ -68,10 +76,27 @@ class ExploreController extends GetxController {
       final response = await dbQuery;
       
       final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
-      hotels.assignAll(parsedHotels);
+      
+      if (parsedHotels.isEmpty) {
+        Fluttertoast.showToast(
+          msg: 'No hotels found',
+          toastLength: Toast.LENGTH_SHORT,
+        );
+      }
+
+      _mergeHotels(parsedHotels);
     } catch (e) {
       debugPrint("Search error: $e");
+    } finally {
+      isSearching.value = false;
     }
+  }
+
+  // — merge: add API results not already in the canonical list (by id)
+  void _mergeHotels(List<Hotel> incoming) {
+    final existingIds = hotels.map((h) => h.id).toSet();
+    final newOnes = incoming.where((h) => !existingIds.contains(h.id)).toList();
+    if (newOnes.isNotEmpty) hotels.addAll(newOnes);
   }
 
   void onFilter() {} // TODO: open filter sheet

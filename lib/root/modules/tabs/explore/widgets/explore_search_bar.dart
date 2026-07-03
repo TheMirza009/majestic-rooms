@@ -12,6 +12,8 @@ class ExploreSearchBar extends StatelessWidget {
   final String                hintText;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
+  final VoidCallback?         onClear;
+  final bool                  isSearching;
 
   const ExploreSearchBar({
     super.key,
@@ -23,6 +25,8 @@ class ExploreSearchBar extends StatelessWidget {
     this.hintText = 'Search hotels, resorts...',
     this.onChanged,
     this.onSubmitted,
+    this.onClear,
+    this.isSearching = false,
   });
 
   // ── Control Panel ──────────────────────────────────────────────────────
@@ -42,8 +46,17 @@ class ExploreSearchBar extends StatelessWidget {
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 4),
           child: IconButton(
-            onPressed: onSearchTap,
-            icon: const Icon(Icons.search_rounded),
+            onPressed: isSearching ? null : onSearchTap,
+            icon: isSearching
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : Icon(
+                    Icons.search_rounded,
+                    color: isSearching ? Colors.grey.shade400 : null,
+                  ),
           ),
         ),
         suffixIcon: Row(
@@ -51,17 +64,22 @@ class ExploreSearchBar extends StatelessWidget {
           children: [
             FieldClearButton(
               controller: controller,
+              iconColor: isSearching ? Colors.grey.shade400 : CustomColors.linkColor,
               onClear: () {
+                if (isSearching) return;
                 controller.clear();
-                onChanged?.call('');
+                onClear?.call();
               },
             ),
             if (showSuffixIcon)
               suffixIcon ?? Padding(
                 padding: const EdgeInsets.only(right: 4),
                 child: IconButton(
-                  onPressed: onFilterTap,
-                  icon: const Icon(Icons.tune_rounded),
+                  onPressed: isSearching ? null : onFilterTap,
+                  icon: Icon(
+                    Icons.tune_rounded,
+                    color: isSearching ? Colors.grey.shade400 : null,
+                  ),
                 ),
               ),
           ],
