@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
@@ -7,6 +8,16 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
+
+// Top-level functions to run heavy parsing and stringification in a separate isolate
+List<Hotel> _parseHotelsWithDebugLog(dynamic response) {
+  debugPrint("Search response: ${response.toString()}");
+  return (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+}
+
+List<Hotel> _parseHotels(dynamic response) {
+  return (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+}
 
 class City {
   final String name;
@@ -65,7 +76,7 @@ class ExploreController extends GetxController {
           .select('*, hotel_images(*), hotel_rooms(*, room_images(*)), hotel_facility(facility(*)), promotion(*)')
           .inFilter('location_slug', selectedCities);
       
-      final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+      final parsedHotels = await compute(_parseHotels, response);
       
       final buffer = StringBuffer();
       buffer.writeln('${parsedHotels.length} results found:');
@@ -113,8 +124,7 @@ class ExploreController extends GetxController {
       }
 
       final response = await dbQuery;
-      debugPrint("Search response: ${response.toString()}");
-      final parsedHotels = (response as List).map((e) => Hotel.fromJson(e as Map<String, dynamic>)).toList();
+      final parsedHotels = await compute(_parseHotelsWithDebugLog, response);
       
       final buffer = StringBuffer();
       buffer.writeln('${parsedHotels.length} results found:');
