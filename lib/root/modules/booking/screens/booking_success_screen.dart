@@ -81,8 +81,14 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
     final checkIn = DateFormat('MMM dd, yyyy').format(booking.checkInDate);
     final checkOut = DateFormat('MMM dd, yyyy').format(booking.checkOutDate);
 
-    return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F9),
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        _backToExploring();
+      },
+      child: Scaffold(
+        backgroundColor: const Color(0xFFF7F7F9),
       body: SafeArea(
         child: SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
@@ -91,7 +97,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.max,
             children: [
-              SizedBox(height: context.screenHeight * 0.25),
+              // SizedBox(height: context.screenHeight * 0.25),
+              SizedBox(height: 100),
 
               // ANIMATED CHECK
               ScaleTransition(
@@ -380,6 +387,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
           ),
         ),
       ),
-        );
+      ),
+    );
+  }
 }
-    }

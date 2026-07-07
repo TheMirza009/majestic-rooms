@@ -24,14 +24,19 @@ class UserController extends GetxController {
       isLoading.value = true;
       final File file = File(image.path);
       final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) return;
+      if (userId == null) {
+        throw Exception('User not authenticated. Cannot update profile photo in local mode.');
+      }
 
       final fileExt = image.path.split('.').last;
-      final fileName = '$userId-${DateTime.now().millisecondsSinceEpoch}.$fileExt';
-      final path = '$userId/$fileName';
+      final path = '$userId.$fileExt';
 
       // 1. Upload to Supabase Storage (account_image bucket)
-      await _supabase.storage.from('account_image').upload(path, file);
+      await _supabase.storage.from('account_image').upload(
+        path,
+        file,
+        fileOptions: const FileOptions(upsert: true),
+      );
 
       // 2. Get public URL
       final String publicUrl = _supabase.storage.from('account_image').getPublicUrl(path);
@@ -47,6 +52,7 @@ class UserController extends GetxController {
       // Force refresh of current user in CommonController
       _commonController.currentUser.value = _supabase.auth.currentUser;
 
+      debugPrint('✅ [UserController] Profile photo updated successfully for user: $userId');
       Utils.showBottomSnackBar('Success', 'Profile photo updated successfully.');
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update profile photo: $e');
@@ -63,7 +69,9 @@ class UserController extends GetxController {
     try {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) return;
+      if (userId == null) {
+        throw Exception('User not authenticated. Cannot update name in local mode.');
+      }
 
       // Update auth metadata
       await _supabase.auth.updateUser(UserAttributes(
@@ -74,6 +82,8 @@ class UserController extends GetxController {
       await _supabase.from('accounts').update({'name': newName.trim()}).eq('id', userId);
 
       _commonController.currentUser.value = _supabase.auth.currentUser;
+      
+      debugPrint('✅ [UserController] Name updated successfully to: ${newName.trim()}');
       Utils.showBottomSnackBar('Success', 'Name updated successfully.');
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update name: $e');
@@ -88,7 +98,9 @@ class UserController extends GetxController {
     try {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) return;
+      if (userId == null) {
+        throw Exception('User not authenticated. Cannot update email in local mode.');
+      }
 
       // Update auth email
       await _supabase.auth.updateUser(UserAttributes(email: newEmail.trim()));
@@ -97,6 +109,8 @@ class UserController extends GetxController {
       await _supabase.from('accounts').update({'email': newEmail.trim()}).eq('id', userId);
 
       _commonController.currentUser.value = _supabase.auth.currentUser;
+      
+      debugPrint('✅ [UserController] Email updated successfully to: ${newEmail.trim()}');
       Utils.showBottomSnackBar('Success', 'Email updated successfully. Please verify your new email.');
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update email: $e');
@@ -106,20 +120,27 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> updatePassword(String newPassword) async {
+  Future<bool> updatePassword(String newPassword) async {
     if (newPassword.trim().length < 6) {
       Utils.showBottomSnackBarError('Invalid Password', 'Password must be at least 6 characters.');
-      return;
+      return false;
     }
     try {
       isLoading.value = true;
+      final userId = _supabase.auth.currentUser?.id;
+      if (userId == null) {
+        throw Exception('User not authenticated. Cannot update password in local mode.');
+      }
       
       await _supabase.auth.updateUser(UserAttributes(password: newPassword.trim()));
 
+      debugPrint('✅ [UserController] Password updated successfully.');
       Utils.showBottomSnackBar('Success', 'Password updated successfully.');
+      return true;
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update password: $e');
       Utils.showBottomSnackBarError('Update Failed', 'Could not update password.');
+      return false;
     } finally {
       isLoading.value = false;
     }
@@ -130,7 +151,9 @@ class UserController extends GetxController {
     try {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
-      if (userId == null) return;
+      if (userId == null) {
+        throw Exception('User not authenticated. Cannot update phone in local mode.');
+      }
 
       // Update public_data jsonb in accounts table
       // Fetch existing public_data first
@@ -145,6 +168,7 @@ class UserController extends GetxController {
 
       await _supabase.from('accounts').update({'public_data': publicData}).eq('id', userId);
 
+      debugPrint('✅ [UserController] Phone number updated successfully to: ${newPhone.trim()}');
       Utils.showBottomSnackBar('Success', 'Phone number updated successfully.');
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update phone: $e');

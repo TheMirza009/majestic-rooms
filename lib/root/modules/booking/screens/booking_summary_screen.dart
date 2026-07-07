@@ -557,6 +557,7 @@ class BookingSummaryScreen extends StatelessWidget {
                         ],
                       ),
                     ),
+                    SizedBox(height: 100),
                   ]),
                 ),
               ),
@@ -586,39 +587,84 @@ class BookingSummaryScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
               child: isPaid
                   // STATUS BANNER — paid read-only mode
-                  ? Container(
-                      height: 54,
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
-                        ),
-                        borderRadius: BorderRadius.circular(100),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFF2E7D32).withOpacity(0.30),
-                            blurRadius: 16,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      alignment: Alignment.center,
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.check_circle_rounded,
-                              size: 20, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'Paid',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              letterSpacing: 0.3,
+                  ? Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        if (booking!.bookingStatus == BookingStatus.cancelled)
+                          Container(
+                            height: 54,
+                            decoration: BoxDecoration(
+                              color: CustomColors.brandRed.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(100),
+                            ),
+                            alignment: Alignment.center,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.cancel_rounded, size: 20, color: CustomColors.brandRed),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Cancelled',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: CustomColors.brandRed,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        else ...[
+                          Container(
+                            height: 54,
+                            decoration: BoxDecoration(
+                              gradient: const LinearGradient(
+                                colors: [Color(0xFF2E7D32), Color(0xFF43A047)],
+                              ),
+                              borderRadius: BorderRadius.circular(100),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color(0xFF2E7D32).withOpacity(0.30),
+                                  blurRadius: 16,
+                                  offset: const Offset(0, 6),
+                                ),
+                              ],
+                            ),
+                            alignment: Alignment.center,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.check_circle_rounded,
+                                    size: 20, color: Colors.white),
+                                SizedBox(width: 8),
+                                Text(
+                                  'Paid',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    letterSpacing: 0.3,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
+                          if (booking!.bookingStatus != BookingStatus.completed) ...[
+                            const SizedBox(height: 12),
+                            OutlinedButton(
+                              onPressed: () => _showCancelDialog(context, booking!),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size.fromHeight(50),
+                                foregroundColor: CustomColors.brandRed,
+                                side: const BorderSide(color: CustomColors.brandRed, width: 1.5),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+                              ),
+                              child: const Text('Cancel Booking', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                            ),
+                          ],
                         ],
-                      ),
+                      ],
                     )
                   // CONFIRM BUTTON — active booking mode
                   : Obx(() {
@@ -630,12 +676,13 @@ class BookingSummaryScreen extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () => controller.confirmBooking(context),
-                              child: Container(
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 300),
                                 height: 54,
                                 decoration: BoxDecoration(
-                                  color: CustomColors.brandRed,
+                                  color: controller.isBooking.value ? Colors.grey : CustomColors.brandRed,
                                   borderRadius: BorderRadius.circular(100),
-                                  boxShadow: [
+                                  boxShadow: controller.isBooking.value ? [] : [
                                     BoxShadow(
                                       color: CustomColors.brandRed.withOpacity(0.30),
                                       blurRadius: 16,
@@ -643,25 +690,54 @@ class BookingSummaryScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                child: const Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      'Confirm Booking',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.white,
-                                        letterSpacing: 0.3,
-                                      ),
-                                    ),
-                                    SizedBox(width: 6),
-                                    Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 14,
-                                      color: Colors.white,
-                                    ),
-                                  ],
+                                child: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  child: controller.isBooking.value
+                                      ? const Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          key: ValueKey('booking'),
+                                          children: [
+                                            SizedBox(
+                                              width: 20,
+                                              height: 20,
+                                              child: CircularProgressIndicator(
+                                                color: Colors.white,
+                                                strokeWidth: 2.5,
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Text(
+                                              'Booking...',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                                letterSpacing: 0.3,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      : const Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          key: ValueKey('confirm'),
+                                          children: [
+                                            Text(
+                                              'Confirm Booking',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: Colors.white,
+                                                letterSpacing: 0.3,
+                                              ),
+                                            ),
+                                            SizedBox(width: 6),
+                                            Icon(
+                                              Icons.arrow_forward_ios_rounded,
+                                              size: 14,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        ),
                                 ),
                               ),
                             ),
@@ -698,6 +774,68 @@ class BookingSummaryScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  void _showCancelDialog(BuildContext context, BookingModel booking) {
+    showDialog(
+      context: context,
+      builder: (BuildContext ctx) {
+        return AlertDialog(
+          backgroundColor: CustomColors.surfaceWhite,
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+          title: const Text('Cancel Booking?', style: TextStyle(fontWeight: FontWeight.w800)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'Are you sure you want to cancel this booking? Cancelling a booking may incur extra charges depending on the hotel policy.',
+                style: TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: CustomColors.brandRed.withOpacity(0.06),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: CustomColors.brandRed.withOpacity(0.2)),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.info_outline_rounded, color: CustomColors.brandRed, size: 20),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        booking.hotel.terms ?? 'Free cancellation before check-in date. Review our full terms before confirming.',
+                        style: const TextStyle(fontSize: 13, color: CustomColors.brandRed, fontWeight: FontWeight.w500, height: 1.4),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              style: TextButton.styleFrom(foregroundColor: CustomColors.textMuted),
+              child: const Text('Keep Booking', style: TextStyle(fontWeight: FontWeight.w600)),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx); // Close dialog immediately
+                final tempController = Get.put(BookingController(hotel: booking.hotel));
+                tempController.cancelBooking(booking, context);
+              },
+              style: TextButton.styleFrom(foregroundColor: Colors.white, backgroundColor: CustomColors.brandRed.withOpacity(0.10)),
+              child: const Text('Cancel Booking', style: TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
+            ),
+          ],
+        );
+      },
     );
   }
 }

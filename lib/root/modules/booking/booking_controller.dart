@@ -19,6 +19,9 @@ class BookingController extends GetxController {
 
   // Date range
   late final Rx<DateTimeRange?> dateRange;
+  
+  // Loading state
+  final RxBool isBooking = false.obs;
 
   BookingController({required this.hotel});
 
@@ -105,26 +108,29 @@ class BookingController extends GetxController {
     
     // Future implementation: Navigate to Guest Details Screen
     Navigator.push(Get.context!, CupertinoPageRoute(builder: (_) => BookingSummaryScreen()));
-    Get.snackbar(
-      "Rooms Selected",
-      "Proceeding to checkout for $totalQuantity room(s) for $nights night(s). Total: \$${totalPrice.toStringAsFixed(2)}",
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: const Color(0xFF2E2E2E),
-      colorText: const Color(0xFFFFFFFF),
-      margin: const EdgeInsets.all(16),
-      borderRadius: 12,
-    );
+    // Get.snackbar(
+    //   "Rooms Selected",
+    //   "Proceeding to checkout for $totalQuantity room(s) for $nights night(s). Total: \$${totalPrice.toStringAsFixed(2)}",
+    //   snackPosition: SnackPosition.BOTTOM,
+    //   backgroundColor: const Color(0xFF2E2E2E),
+    //   colorText: const Color(0xFFFFFFFF),
+    //   margin: const EdgeInsets.all(16),
+    //   borderRadius: 12,
+    // );
   }
 
   /// Finalizes the booking by sending data to Supabase.
   /// First checks if the hotel exists on the server to prevent orphans.
   /// If missing, falls back to a dummy local mode for UI continuity.
   Future<void> confirmBooking(BuildContext context) async {
-    final booking = BookingModel.fromController(this);
+    if (isBooking.value) return;
+    
+    isBooking.value = true;
     final commonController = Get.find<CommonController>();
     final supabase = Supabase.instance.client;
 
     try {
+      final booking = BookingModel.fromController(this);
       // 1. Check if hotel exists on backend
       final hotelRow = await supabase
           .from('hotel')
@@ -134,7 +140,12 @@ class BookingController extends GetxController {
 
       if (hotelRow == null) {
         // Dummy local mode
-        Get.snackbar('Local Mode', 'Hotel does not exist on the server. Proceeding in local mode.', snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Local Mode',
+          'Hotel does not exist on the server. Proceeding in local mode.',
+          snackPosition: SnackPosition.BOTTOM,
+          margin: EdgeInsets.all(16)
+        );
         commonController.addBooking(booking);
       } else {
         // Backend insert
@@ -184,6 +195,85 @@ class BookingController extends GetxController {
       debugPrint('❌ [BookingController] Failed to confirm booking: $e');
       if (context.mounted) {
          Get.snackbar('Error', 'Failed to confirm booking.', snackPosition: SnackPosition.BOTTOM);
+      }
+    } finally {
+      isBooking.value = false;
+    }
+  }
+  
+  Future<void> cancelBooking(BookingModel booking, BuildContext context) async {
+    try {
+      final supabase = Supabase.instance.client;
+      
+      // 1. Check if hotel exists on backend
+      final hotelRow = await supabase
+          .from('hotel')
+          .select('slug')
+          .eq('slug', booking.hotelSlug)
+          .maybeSingle();
+
+      if (hotelRow == null) {
+        // Dummy local mode cancellation
+        final commonController = Get.find<CommonController>();
+        commonController.bookings.removeWhere((b) => b.id == booking.id);
+        
+        if (context.mounted) {
+          Navigator.pop(context); // Go back to bookings screen
+          Get.snackbar(
+            'Local Mode',
+            'Hotel does not exist on the server. Booking cancelled locally.',
+            snackPosition: SnackPosition.BOTTOM,
+            margin: const EdgeInsets.all(16),
+          );
+        }
+        return;
+      }
+
+      await supabase
+          .from('booking')
+          .update({'booking_status': BookingStatus.cancelled.value})
+          .eq('id', booking.id);
+
+      final commonController = Get.find<CommonController>();
+      final index = commonController.bookings.indexWhere((b) => b.id == booking.id);
+      if (index != -1) {
+        final updatedBooking = BookingModel(
+          id: booking.id,
+          hotel: booking.hotel,
+          hotelSlug: booking.hotelSlug,
+          hotelName: booking.hotelName,
+          hotelImageUrl: booking.hotelImageUrl,
+          checkInDate: booking.checkInDate,
+          checkOutDate: booking.checkOutDate,
+          nights: booking.nights,
+          numberOfRooms: booking.numberOfRooms,
+          grossTotal: booking.grossTotal,
+          discount: booking.discount,
+          netTotal: booking.netTotal,
+          bookingDate: booking.bookingDate,
+          bookingStatus: BookingStatus.cancelled,
+          details: booking.details,
+        );
+        commonController.bookings[index] = updatedBooking;
+        commonController.bookings.refresh();
+      }
+
+      if (context.mounted) {
+        Navigator.pop(context); // Go back to bookings screen
+        Get.snackbar(
+          'Booking Cancelled',
+          'Your booking has been successfully cancelled.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      }
+    } catch (e) {
+      debugPrint('❌ [BookingController] Failed to cancel booking: $e');
+      if (context.mounted) {
+        Get.snackbar(
+          'Error',
+          'Failed to cancel booking. Please try again.',
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     }
   }

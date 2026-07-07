@@ -109,10 +109,12 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             return Column(
               children: [
                 // AVATAR
-                // AVATAR
                 Opacity(
                   opacity: isFlying ? 0 : 1,
-                  child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _avatarSize, heroTag: 'profile_avatar'),
+                  child: GestureDetector(
+                    onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const UserSettingsScreen())),
+                    child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _avatarSize, heroTag: 'profile_avatar'),
+                  ),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -211,6 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
             ),
           ),
+          SizedBox(height: 150,)
         ],
       ),
     );

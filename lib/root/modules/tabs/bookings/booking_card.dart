@@ -88,27 +88,21 @@ class BookingCard extends StatelessWidget {
                 topLeft: Radius.circular(20),
                 bottomLeft: Radius.circular(20),
               ),
-              child: booking.hotelImageUrl != null
-                  ? CachedNetworkImage(
-                      imageUrl: booking.hotelImageUrl!,
-                      width: 90,
-                      height: 110,
-                      fit: BoxFit.cover,
-                      placeholder: (_, __) =>
-                          const ColoredBox(color: CustomColors.cardSubtleBg),
-                      errorWidget: (_, __, ___) => const ColoredBox(
-                        color: CustomColors.cardSubtleBg,
-                        child: Icon(
-                          Icons.broken_image_outlined,
-                          color: CustomColors.hintColor,
-                        ),
-                      ),
-                    )
-                  : const SizedBox(
-                      width: 90,
-                      height: 110,
-                      child: ColoredBox(color: CustomColors.cardSubtleBg),
-                    ),
+              child: CachedNetworkImage(
+                imageUrl: booking.hotelImageUrl ?? 'https://picsum.photos/600/400',
+                width: 90,
+                height: 110,
+                fit: BoxFit.cover,
+                placeholder: (context, url) =>
+                    const ColoredBox(color: CustomColors.cardSubtleBg),
+                errorWidget: (context, url, error) => const ColoredBox(
+                  color: CustomColors.cardSubtleBg,
+                  child: Icon(
+                    Icons.broken_image_outlined,
+                    color: CustomColors.hintColor,
+                  ),
+                ),
+              ),
             ),
             // DETAILS
             Expanded(

@@ -68,7 +68,7 @@ class RoomCard extends StatelessWidget {
                           hotelImageUrl ??
                               'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
                         ],
-                  heroTagPrefix: 'room_${room.id}',
+                  heroTagPrefix: 'room_${room.id ?? room.hashCode}',
                   onImageTap: (index) {
                     final urls = room.images.isNotEmpty
                         ? room.images.map((e) => e.url).toList()
@@ -83,7 +83,7 @@ class RoomCard extends StatelessWidget {
                           return ImageViewerScreen(
                             imageUrls: urls,
                             initialIndex: index,
-                            heroTagPrefix: 'room_${room.id}',
+                            heroTagPrefix: 'room_${room.id ?? room.hashCode}',
                           );
                         },
                         transitionsBuilder: (context, animation, secondaryAnimation, child) {

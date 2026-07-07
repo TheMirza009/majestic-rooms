@@ -38,6 +38,7 @@ dev_dependencies:
 
   flutter_lints: ^6.0.0
   flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
 
 flutter:
   uses-material-design: true
@@ -71,25 +72,18 @@ flutter_native_splash:
   image: "assets/launcher/splash.png"
   color_dark: "#111111"
   image_dark: "assets/launcher/splash_dark.png"
+  android_12:
+    image: "assets/launcher/splash.png"
+    image_dark: "assets/launcher/splash_dark.png"
+    color: "#F9F9FA"
+    color_dark: "#111111"
   android: true
-  ios: true
+  ios: false
 
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/launcher/icon.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/launcher/icon_adaptive.png"
