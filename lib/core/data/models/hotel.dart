@@ -2,6 +2,7 @@ import 'package:majestic_rooms/core/data/models/facility.dart';
 import 'package:majestic_rooms/core/data/models/hotel_image.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/data/models/promotion.dart';
+
 class Hotel {
   final String id;
   final String name;
