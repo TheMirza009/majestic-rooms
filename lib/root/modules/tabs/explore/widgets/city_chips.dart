@@ -9,6 +9,8 @@ class CityChips extends StatelessWidget {
   final List<City>        cities;
   final Set<int>          selectedIndices;
   final bool              isLoading;
+  /// When true, chips are greyed out and taps are ignored (e.g. while a search is in flight).
+  final bool              isLocked;
   final ValueChanged<int> onSelected;
 
   const CityChips({
@@ -17,6 +19,7 @@ class CityChips extends StatelessWidget {
     required this.cities,
     required this.selectedIndices,
     required this.isLoading,
+    this.isLocked = false,
     required this.onSelected,
   });
 
@@ -39,8 +42,10 @@ class CityChips extends StatelessWidget {
           final isSelected = selectedIndices.contains(i);
           return Padding(
             padding: EdgeInsets.only(right: i < categories.length - 1 ? 8 : 0),
-            child: GestureDetector(
-              onTap: () => onSelected(i),
+            child: Opacity(
+              opacity: isLocked ? 0.4 : 1.0,
+              child: GestureDetector(
+              onTap: isLocked ? null : () => onSelected(i),
               child: AnimatedContainer(
                 duration: _animDuration,
                 curve: _animCurve,
@@ -75,6 +80,7 @@ class CityChips extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
               ),
             ),
           );

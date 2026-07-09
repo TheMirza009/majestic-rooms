@@ -5,7 +5,6 @@ import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/hotel/screens/image_viewer_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
-
 class RoomCard extends StatelessWidget {
   final HotelRoom room;
   final String? hotelImageUrl;
@@ -62,16 +61,16 @@ class RoomCard extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 16 / 9,
                 child: ImageCarousel(
-                  images: room.images.isNotEmpty
-                      ? room.images.map((e) => e.url).toList()
+                  images: (room.images != null && room.images!.isNotEmpty)
+                      ? room.images!.map((e) => e.url).toList()
                       : [
                           hotelImageUrl ??
                               'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
                         ],
                   heroTagPrefix: 'room_${room.id ?? room.hashCode}',
                   onImageTap: (index) {
-                    final urls = room.images.isNotEmpty
-                        ? room.images.map((e) => e.url).toList()
+                    final urls = (room.images != null && room.images!.isNotEmpty)
+                        ? room.images!.map((e) => e.url).toList()
                         : [
                             hotelImageUrl ??
                                 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'

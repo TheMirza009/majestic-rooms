@@ -82,12 +82,12 @@ class _SavedScreenState extends State<SavedScreen> {
                             final Hotel hotel = hotels[index];
                             return HotelCard(
                               hotel: hotel,
-                              heroTag: '${hotel.imageUrl}_saved',
+                              heroTag: '${hotel.id}_saved',
                               initialSaveValue: controller.savedHotels.contains(hotel),
                               onSaveTap: (_) => confirmRemoveDialog(context, hotel),
                               onTap: () => Get.to(() => HotelScreen(
                                 hotel: hotel,
-                                heroTag: '${hotel.imageUrl}_saved',
+                                heroTag: '${hotel.id}_saved',
                               )),
                             );
                           },

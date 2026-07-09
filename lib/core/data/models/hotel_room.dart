@@ -1,4 +1,5 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'package:majestic_rooms/core/data/models/room_image.dart';
 
 class RoomCategory {
   final int id;
@@ -13,29 +14,6 @@ class RoomCategory {
   bool get isStandard => name.toLowerCase() == "standard";
 }
 
-class RoomImage {
-  final int id;
-  final String url;
-
-  const RoomImage({required this.id, required this.url});
-
-  factory RoomImage.fromJson(Map<String, dynamic> json) {
-    return RoomImage(
-      id: json['id'] as int,
-      url: _parseUrl(json['url'] as String?),
-    );
-  }
-
-  static String _parseUrl(String? rawUrl) {
-    if (rawUrl == null || rawUrl.isEmpty) return 'https://picsum.photos/600/400';
-    if (rawUrl.startsWith('http')) return rawUrl;
-    
-    final storageUrl = Supabase.instance.client.storage.url;
-    final normalizedPath = rawUrl.startsWith('/') ? rawUrl : '/$rawUrl';
-    return '$storageUrl/object/public$normalizedPath';
-  }
-}
-
 class HotelRoom {
   final String? id;
   final String? hotelSlug;
@@ -44,7 +22,7 @@ class HotelRoom {
   final num pricePerNight;
   final String? roomNumber;
   final RoomCategory? category;
-  final List<RoomImage> images;
+  final List<RoomImage>? images;
   final String? description;
   final bool? cityView;
   final num? pricePerNightWithBreakfast;
@@ -57,7 +35,7 @@ class HotelRoom {
     required this.pricePerNight,
     this.roomNumber,
     this.category,
-    this.images = const [],
+    this.images,
     this.description,
     this.cityView,
     this.pricePerNightWithBreakfast,
@@ -72,11 +50,9 @@ class HotelRoom {
       pricePerNight: json['price_per_night'] as num,
       roomNumber: json['room_number']?.toString(),
       category: _parseCategory(json['room_category']),
-      images:
-          (json['room_images'] as List<dynamic>?)
-              ?.map((e) => RoomImage.fromJson(e as Map<String, dynamic>))
-              .toList() ??
-          [],
+      images: (json['room_images'] as List<dynamic>?)
+          ?.map((e) => RoomImage.fromJson(e as Map<String, dynamic>))
+          .toList(),
       description: json['description']?.toString(),
       cityView: json['city_view'] as bool?,
       pricePerNightWithBreakfast:

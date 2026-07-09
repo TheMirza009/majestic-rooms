@@ -3,7 +3,7 @@ class Constants {
   static final Constants instance = Constants._();
 
   static const String appName    = 'Majestic Rooms';
-  static const String appVersion = '0.2.4';
+  static const String appVersion = '0.3.0';
   static const String webURL     = 'https://hotel-directory-admin.vercel.app';
 
   // CONTACT INFORMATION

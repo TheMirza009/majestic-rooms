@@ -2,6 +2,7 @@ import 'package:majestic_rooms/core/data/models/facility.dart';
 import 'package:majestic_rooms/core/data/models/hotel_image.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/data/models/promotion.dart';
+import 'package:majestic_rooms/core/data/models/review.dart';
 
 class Hotel {
   final String id;
@@ -25,6 +26,7 @@ class Hotel {
   final List<HotelImage> images;
   final List<HotelRoom> rooms;
   final List<Facility> facilities;
+  final List<Review> reviews;
   final Promotion? activePromotion;
 
   // Compatibility getters for UI
@@ -53,6 +55,7 @@ class Hotel {
     required this.images,
     required this.rooms,
     this.facilities = const [],
+    this.reviews = const [],
     this.activePromotion,
   });
 
@@ -85,6 +88,10 @@ class Hotel {
           [],
       facilities: (json['hotel_facility'] as List<dynamic>?)
               ?.map((e) => Facility.fromJson(e['facility'] as Map<String, dynamic>))
+              .toList() ??
+          [],
+      reviews: (json['review'] as List<dynamic>?)
+              ?.map((e) => Review.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       activePromotion: _parsePromotion(json['promotion']),

@@ -117,7 +117,7 @@ class _HotelCardState extends State<HotelCard> {
         duration: _fadeDuration,
         // HERO IMAGE
         child: Hero(
-          tag: '${widget.heroTag ?? widget.hotel.imageUrl}_${widget.hotel.images.isNotEmpty ? widget.hotel.images.first.url : widget.hotel.imageUrl}',
+          tag: '${widget.heroTag ?? widget.hotel.id}_${widget.hotel.images.isNotEmpty ? widget.hotel.images.first.url : widget.hotel.imageUrl}',
           child: Material(
             type: MaterialType.transparency,
             clipBehavior: Clip.antiAlias,
@@ -173,155 +173,91 @@ class _HotelCardState extends State<HotelCard> {
                     ),
 
                   // 3. DETAILS
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: FractionallySizedBox(
-                      heightFactor: 0.25,
-                      child: Padding(
-                        padding: const EdgeInsets.all(_inset),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: _detailBg,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 14),
-                            child: Row(
-                              children: [
-                                // NAME + ADDRESS + RATING · CITY
-                                Expanded(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      // NAME
-                                      AnimatedSwitcher(
-                                        duration: _fadeDuration,
-                                        child: _imageLoaded
-                                            ? Text(
-                                                widget.hotel.name,
-                                                key: const ValueKey('name-loaded'),
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: _nameStyle,
-                                              )
-                                            : Shimmer.fromColors(
-                                                key: const ValueKey('name-shimmer'),
-                                                baseColor: _shimmerBase,
-                                                highlightColor: _shimmerHighlight,
-                                                period: _shimmerPeriod,
-                                                child: Text(
-                                                  widget.hotel.name,
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: _nameStyle,
-                                                ),
-                                              ),
-                                      ),
-                                      const SizedBox(height: 2),
+                  // The entire panel fades in once the image resolves so there is
+                  // no jarring snap — it rises smoothly over the image shimmer.
+                  AnimatedOpacity(
+                    opacity: _imageLoaded ? 1.0 : 0.0,
+                    duration: _fadeDuration,
+                    curve: Curves.easeOut,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: FractionallySizedBox(
+                        heightFactor: 0.25,
+                        child: Padding(
+                          padding: const EdgeInsets.all(_inset),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: _detailBg,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              child: Row(
+                                children: [
+                                  // NAME + ADDRESS + RATING · CITY
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        // NAME
+                                        Text(
+                                          widget.hotel.name,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: _nameStyle,
+                                        ),
+                                        const SizedBox(height: 2),
 
-                                      // ADDRESS
-                                      AnimatedSwitcher(
-                                        duration: _fadeDuration,
-                                        child: _imageLoaded
-                                            ? Text(
-                                                widget.hotel.address ?? "A City on Planet Earth",
-                                                key: const ValueKey('address-loaded'),
+                                        // ADDRESS
+                                        Text(
+                                          widget.hotel.address ?? 'A City on Planet Earth',
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: _metaStyle,
+                                        ),
+                                        const SizedBox(height: 2),
+
+                                        // STAR + RATING · CITY
+                                        Row(
+                                          children: [
+                                            const Icon(Icons.star_rounded, size: 13, color: _starColor),
+                                            const SizedBox(width: 2),
+                                            Expanded(
+                                              child: Text(
+                                                '${widget.hotel.rating.toStringAsFixed(1)}  ·  ${widget.hotel.city}',
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: _metaStyle,
-                                              )
-                                            : Shimmer.fromColors(
-                                                key: const ValueKey('address-shimmer'),
-                                                baseColor: _shimmerBase,
-                                                highlightColor: _shimmerHighlight,
-                                                period: _shimmerPeriod,
-                                                child: Text(
-                                                  widget.hotel.address ?? "A City on Planet Earth",
-                                                  maxLines: 1,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: _metaStyle,
-                                                ),
                                               ),
-                                      ),
-                                      const SizedBox(height: 2),
-
-                                      // STAR (static) + RATING · CITY (shimmers)
-                                      Row(
-                                        children: [
-                                          const Icon(Icons.star_rounded, size: 13, color: _starColor),
-                                          const SizedBox(width: 2),
-                                          Expanded(
-                                            child: AnimatedSwitcher(
-                                              duration: _fadeDuration,
-                                              child: _imageLoaded
-                                                  ? Row(
-                                                      key: const ValueKey('rating-loaded'),
-                                                      children: [
-                                                        Text(
-                                                          widget.hotel.rating.toStringAsFixed(1),
-                                                          style: _metaStyle,
-                                                        ),
-                                                        const Text('  ·  ', style: _metaStyle),
-                                                        Flexible(
-                                                          child: Text(
-                                                            widget.hotel.city,
-                                                            maxLines: 1,
-                                                            overflow: TextOverflow.ellipsis,
-                                                            style: _metaStyle,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                  : Shimmer.fromColors(
-                                                      key: const ValueKey('rating-shimmer'),
-                                                      baseColor: _shimmerBase,
-                                                      highlightColor: _shimmerHighlight,
-                                                      period: _shimmerPeriod,
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            widget.hotel.rating.toStringAsFixed(1),
-                                                            style: _metaStyle,
-                                                          ),
-                                                          const Text('  ·  ', style: _metaStyle),
-                                                          Flexible(
-                                                            child: Text(
-                                                              widget.hotel.city,
-                                                              maxLines: 1,
-                                                              overflow: TextOverflow.ellipsis,
-                                                              style: _metaStyle,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  // RATE / NIGHT
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      if (widget.hotel.activePromotion != null &&
+                                          widget.hotel.activePromotion?.isActive == true &&
+                                          widget.hotel.activePromotion?.discountPercent != null)
+                                        Text(
+                                          '\$${widget.hotel.rates.first}',
+                                          style: _unitStyle.copyWith(decoration: TextDecoration.lineThrough),
+                                        ),
+                                      Text(
+                                        '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',
+                                        style: _rateStyle,
                                       ),
+                                      const Text('/night', style: _unitStyle),
                                     ],
                                   ),
-                                ),
-
-                                // RATE / NIGHT
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    if (widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null)
-                                      Text(
-                                        '\$${widget.hotel.rates.first}',
-                                        style: _unitStyle.copyWith(decoration: TextDecoration.lineThrough),
-                                      ),
-                                    Text(
-                                      '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',
-                                      style: _rateStyle,
-                                    ),
-                                    const Text('/night', style: _unitStyle),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -353,11 +289,11 @@ class _HotelCardState extends State<HotelCard> {
                     ),
                   ),
                 ],
-                ),
               ),
             ),
           ),
         ),
+      ),
     );
   }
 }

@@ -1,4 +1,3 @@
-import 'package:majestic_rooms/core/data/dummy_hotels.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
@@ -199,17 +198,14 @@ class BookingModel {
       fetchedHotel = Hotel.fromJson(json['hotel'] as Map<String, dynamic>);
     }
     
-    // Resolve hotel from fetched data or local dummy list for UI completeness
-    final Hotel hotel = fetchedHotel ?? kDummyHotels.firstWhere(
-      (h) => h.slug == hotelSlug || h.id == hotelSlug,
-      orElse: () => Hotel(
-        id: hotelSlug,
-        slug: hotelSlug,
-        name: 'Unknown Hotel',
-        city: 'Unknown',
-        images: [],
-        rooms: [],
-      ),
+    // Resolve hotel from fetched data or create a placeholder if it's missing
+    final Hotel hotel = fetchedHotel ?? Hotel(
+      id: hotelSlug,
+      slug: hotelSlug,
+      name: 'Unknown Hotel',
+      city: 'Unknown',
+      images: [],
+      rooms: [],
     );
 
     final detailsJson = json['booking_detail'] as List<dynamic>? ?? [];
