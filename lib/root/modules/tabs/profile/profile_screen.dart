@@ -8,6 +8,7 @@ import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/settings_screen.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/user_settings_screen.dart';
+import 'package:majestic_rooms/root/modules/tabs/profile/about_screen.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -192,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 _Tile(
                   icon: Icons.info_outline,
                   title: 'About',
-                  onTap: Utils.showAboutDialog,
+                  onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const AboutScreen())),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
@@ -213,7 +214,17 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
 
             ),
           ),
-          SizedBox(height: 150,)
+          const SizedBox(height: 32),
+          const Center(
+            child: Text(
+              '${Constants.appName} - ${Constants.appVersion}',
+              style: TextStyle(
+                fontSize: 12,
+                color: CustomColors.textMuted,
+              ),
+            ),
+          ),
+          const SizedBox(height: 100),
         ],
       ),
     );

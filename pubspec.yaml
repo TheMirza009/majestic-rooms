@@ -25,6 +25,9 @@ dependencies:
   share_plus: ^13.2.0
   shared_preferences: ^2.3.2
   flutter_svg: ^2.0.10
+  screenshot: ^3.0.0
+  path_provider: ^2.1.3
+  gal: ^2.3.0
 
   # Maps implementation
   flutter_map: ^7.0.2

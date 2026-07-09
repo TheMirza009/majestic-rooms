@@ -6,6 +6,13 @@ import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/core/extensions/context_extensions.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:gal/gal.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:majestic_rooms/root/modules/booking/screens/booking_summary_screen.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/home/home_screen.dart';
 
@@ -39,6 +46,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
   // ── Fields ─────────────────────────────────────────────────────────────────
   late final AnimationController _animController;
   late final Animation<double> _scaleAnimation;
+  final ScreenshotController _screenshotController = ScreenshotController();
+  bool _isCapturing = false;
 
   // ── Lifecycle ──────────────────────────────────────────────────────────────
   @override
@@ -73,6 +82,74 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
   void _backToExploring() {
     Get.find<HomeController>().navigateTo(0);
     Navigator.of(context).popUntil((route) => route.isFirst);
+  }
+
+  Future<void> _captureAndAction({required bool saveToGallery}) async {
+    if (_isCapturing) return;
+    setState(() => _isCapturing = true);
+
+    try {
+      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
+        MediaQuery(
+          data: MediaQueryData.fromView(View.of(context)),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Fustat'),
+            home: Scaffold(
+              body: BookingSummaryScreen(
+                booking: widget.booking,
+                isPaid: true,
+                isScreenshot: false,
+              ),
+            ),
+          ),
+        ),
+        delay: const Duration(milliseconds: 200),
+      );
+
+      if (imageBytes == null) throw Exception("Failed to capture screenshot");
+
+      final tempDir = await getTemporaryDirectory();
+      final file = File('${tempDir.path}/booking_${widget.booking.id ?? DateTime.now().millisecondsSinceEpoch}.png');
+      await file.writeAsBytes(imageBytes);
+
+      if (saveToGallery) {
+        await Gal.putImage(file.path);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Saved to gallery!', style: TextStyle(color: Colors.white)), backgroundColor: CustomColors.brandRed),
+          );
+        }
+      } else {
+        await Share.shareXFiles([XFile(file.path)], text: 'My booking at ${widget.booking.hotelName}');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e', style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isCapturing = false);
+    }
+  }
+
+  Widget _buildChipButton({required IconData icon, required String label, required VoidCallback onTap}) {
+    return TextButton.icon(
+      onPressed: onTap,
+      icon: Icon(icon, size: 16),
+      label: Text(
+        label,
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+      ),
+      style: TextButton.styleFrom(
+        backgroundColor: const Color(0xFFEEEEEE),
+        foregroundColor: CustomColors.textMuted,
+        elevation: 0,
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
+      ),
+    );
   }
 
   @override
@@ -381,6 +458,24 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                       ),
                     ),
                   ),
+                  const SizedBox(height: 24),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildChipButton(
+                        icon: Icons.image_outlined,
+                        label: _isCapturing ? 'Saving...' : 'Save to Gallery',
+                        onTap: () => _captureAndAction(saveToGallery: true),
+                      ),
+                      const SizedBox(width: 12),
+                      _buildChipButton(
+                        icon: Icons.share_outlined,
+                        label: 'Share',
+                        onTap: () => _captureAndAction(saveToGallery: false),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
                 ],
               ),
             ],

@@ -1,3 +1,9 @@
+import 'dart:io';
+import 'package:flutter/services.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:gal/gal.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
@@ -34,11 +40,12 @@ const _sectionTitleStyle = TextStyle(
   color: CustomColors.textMain,
 );
 
-class BookingSummaryScreen extends StatelessWidget {
+class BookingSummaryScreen extends StatefulWidget {
   const BookingSummaryScreen({
     super.key,
     this.isPaid = false,
     this.booking,
+    this.isScreenshot = false,
   });
 
   /// When true: read-only mode — shows a green "Paid" banner instead of
@@ -50,14 +57,75 @@ class BookingSummaryScreen extends StatelessWidget {
   /// needing [BookingController].
   final BookingModel? booking;
 
+  /// Whether this screen is rendered for a screenshot.
+  /// Used for hiding elements we don't want in screenshots (like cancel button, back button, actions).
+  final bool isScreenshot;
 
+  @override
+  State<BookingSummaryScreen> createState() => _BookingSummaryScreenState();
+}
+
+class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
+  final ScreenshotController _screenshotController = ScreenshotController();
+  bool _isCapturing = false;
+
+  Future<void> _captureAndAction({required bool saveToGallery}) async {
+    if (_isCapturing) return;
+    setState(() => _isCapturing = true);
+
+    try {
+      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
+        MediaQuery(
+          data: MediaQueryData.fromView(View.of(context)),
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Fustat'),
+            home: Scaffold(
+              body: BookingSummaryScreen(
+                booking: widget.booking,
+                isPaid: widget.isPaid,
+                isScreenshot: true,
+              ),
+            ),
+          ),
+        ),
+        delay: const Duration(milliseconds: 200),
+      );
+
+      if (imageBytes == null) throw Exception("Failed to capture screenshot");
+
+      final tempDir = await getTemporaryDirectory();
+      final hotelName = widget.isPaid ? widget.booking!.hotelName : Get.find<BookingController>().hotel.name;
+      final file = File('${tempDir.path}/booking_${DateTime.now().millisecondsSinceEpoch}.png');
+      await file.writeAsBytes(imageBytes);
+
+      if (saveToGallery) {
+        await Gal.putImage(file.path);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Saved to gallery!', style: TextStyle(color: Colors.white)), backgroundColor: CustomColors.brandRed),
+          );
+        }
+      } else {
+        await Share.shareXFiles([XFile(file.path)], text: 'My booking at $hotelName');
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e', style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isCapturing = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // In paid mode, BookingController may not be registered (different route
     // context), so only look it up when actually needed.
-    final controller = isPaid ? null : Get.find<BookingController>();
-    final effectiveHotel = isPaid ? booking!.hotel : controller!.hotel;
+    final controller = widget.isPaid ? null : Get.find<BookingController>();
+    final effectiveHotel = widget.isPaid ? widget.booking!.hotel : controller!.hotel;
     final heroImage =
         effectiveHotel.images.isNotEmpty ? effectiveHotel.images.first.url : null;
     return Scaffold(
@@ -71,10 +139,41 @@ class BookingSummaryScreen extends StatelessWidget {
            style: TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
-        leading: IconButton(
+        leading: widget.isScreenshot ? const SizedBox.shrink() : IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () => Navigator.maybePop(context),
           ),
+        actions: widget.isScreenshot ? const [] : [
+          PopupMenuButton<int>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 0) _captureAndAction(saveToGallery: true);
+              if (value == 1) _captureAndAction(saveToGallery: false);
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 0,
+                child: Row(
+                  children: [
+                    Icon(Icons.image_outlined, size: 18, color: CustomColors.textMain),
+                    SizedBox(width: 8),
+                    Text('Save to Gallery'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 1,
+                child: Row(
+                  children: [
+                    Icon(Icons.share_outlined, size: 18, color: CustomColors.textMain),
+                    SizedBox(width: 8),
+                    Text('Share'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
       ),
       body: Stack(
         children: [
@@ -189,7 +288,7 @@ class BookingSummaryScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Text('Stay Details', style: _sectionTitleStyle),
-                        if (!isPaid)
+                        if (!widget.isPaid)
                           TextButton(
                             style: TextButton.styleFrom(
                               padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
@@ -202,7 +301,7 @@ class BookingSummaryScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    if (isPaid) ...[
+                    if (widget.isPaid) ...[
                       // PAID MODE — static date/rooms grid from BookingModel
                       Row(
                         children: [
@@ -214,8 +313,8 @@ class BookingSummaryScreen extends StatelessWidget {
                                   const Text('CHECK-IN', style: _labelStyle),
                                   const SizedBox(height: 6),
                                   Text(
-                                    booking != null
-                                        ? DateFormat('MMM dd, yyyy').format(booking!.checkInDate)
+                                    widget.booking != null
+                                        ? DateFormat('MMM dd, yyyy').format(widget.booking!.checkInDate)
                                         : '—',
                                     style: _valueStyle,
                                   ),
@@ -234,8 +333,8 @@ class BookingSummaryScreen extends StatelessWidget {
                                   const Text('CHECK-OUT', style: _labelStyle),
                                   const SizedBox(height: 6),
                                   Text(
-                                    booking != null
-                                        ? DateFormat('MMM dd, yyyy').format(booking!.checkOutDate)
+                                    widget.booking != null
+                                        ? DateFormat('MMM dd, yyyy').format(widget.booking!.checkOutDate)
                                         : '—',
                                     style: _valueStyle,
                                   ),
@@ -273,8 +372,8 @@ class BookingSummaryScreen extends StatelessWidget {
                                       const Text('DURATION', style: _labelStyle),
                                       const SizedBox(height: 2),
                                       Text(
-                                        booking != null
-                                            ? '${booking!.nights} Night${booking!.nights == 1 ? '' : 's'}'
+                                        widget.booking != null
+                                            ? '${widget.booking!.nights} Night${widget.booking!.nights == 1 ? '' : 's'}'
                                             : '—',
                                         style: _valueStyle,
                                       ),
@@ -308,8 +407,8 @@ class BookingSummaryScreen extends StatelessWidget {
                                       const Text('ROOMS', style: _labelStyle),
                                       const SizedBox(height: 2),
                                       Text(
-                                        booking != null
-                                            ? '${booking!.numberOfRooms} Room${booking!.numberOfRooms == 1 ? '' : 's'}'
+                                        widget.booking != null
+                                            ? '${widget.booking!.numberOfRooms} Room${widget.booking!.numberOfRooms == 1 ? '' : 's'}'
                                             : '—',
                                         style: _valueStyle,
                                       ),
@@ -444,10 +543,10 @@ class BookingSummaryScreen extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // SELECTED ROOMS
-                    SelectedRoomsList(booking: isPaid ? booking : null),
+                    SelectedRoomsList(booking: widget.isPaid ? widget.booking : null),
                     
                     // PRICE BREAKDOWN
-                    if (isPaid && booking != null) ...[
+                    if (widget.isPaid && widget.booking != null) ...[
                       const Text('Price Details', style: _sectionTitleStyle),
                       const SizedBox(height: 10),
                       Container(
@@ -469,16 +568,16 @@ class BookingSummaryScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Subtotal', style: TextStyle(fontSize: 13, color: CustomColors.textMuted)),
-                                Text(formatPrice(booking!.grossTotal), style: const TextStyle(fontSize: 13, color: CustomColors.textMain)),
+                                Text(formatPrice(widget.booking!.grossTotal), style: const TextStyle(fontSize: 13, color: CustomColors.textMain)),
                               ],
                             ),
-                            if (booking!.discount > 0) ...[
+                            if (widget.booking!.discount > 0) ...[
                               const SizedBox(height: 8),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   const Text('Discount', style: TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
-                                  Text('- ${formatPrice(booking!.discount)}', style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
+                                  Text('- ${formatPrice(widget.booking!.discount)}', style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
                                 ],
                               ),
                             ],
@@ -490,14 +589,14 @@ class BookingSummaryScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text('Total Paid', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: CustomColors.textMain)),
-                                Text(formatPrice(booking!.netTotal), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: CustomColors.brandRed)),
+                                Text(formatPrice(widget.booking!.netTotal), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: CustomColors.brandRed)),
                               ],
                             ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 20),
-                    ] else if (!isPaid) ...[
+                    ] else if (!widget.isPaid) ...[
                       const Text('Price Details', style: _sectionTitleStyle),
                       const SizedBox(height: 10),
                       const PriceBreakdown(),
@@ -585,12 +684,12 @@ class BookingSummaryScreen extends StatelessWidget {
                 ],
               ),
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
-              child: isPaid
+              child: widget.isPaid
                   // STATUS BANNER — paid read-only mode
                   ? Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        if (booking!.bookingStatus == BookingStatus.cancelled)
+                        if (widget.booking!.bookingStatus == BookingStatus.cancelled)
                           Container(
                             height: 54,
                             decoration: BoxDecoration(
@@ -650,10 +749,10 @@ class BookingSummaryScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          if (booking!.bookingStatus != BookingStatus.completed) ...[
+                          if (widget.booking!.bookingStatus != BookingStatus.completed && !widget.isScreenshot) ...[
                             const SizedBox(height: 12),
                             OutlinedButton(
-                              onPressed: () => _showCancelDialog(context, booking!),
+                              onPressed: () => _showCancelDialog(context, widget.booking!),
                               style: OutlinedButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50),
                                 foregroundColor: CustomColors.brandRed,
