@@ -12,23 +12,49 @@ import 'package:url_launcher/url_launcher.dart';
 bool get kIsWindows => Platform.isWindows;
 
 class Utils {
+  static Future<void> launchWebUrl(String url) async {
+    final Uri uri = Uri.parse(url);
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        showToast("Could not open link");
+      }
+    } catch (e) {
+      showToast("Could not open link");
+    }
+  }
+
   static Future<void> launchEmail(String email) async {
     final Uri emailLaunchUri = Uri(
       scheme: 'mailto',
       path: email,
     );
-    if (await canLaunchUrl(emailLaunchUri)) {
-      await launchUrl(emailLaunchUri);
+    try {
+      if (await canLaunchUrl(emailLaunchUri)) {
+        await launchUrl(emailLaunchUri, mode: LaunchMode.externalApplication);
+      } else {
+        showToast("No email app found");
+      }
+    } catch (e) {
+      showToast("No email app found");
     }
   }
 
   static Future<void> launchPhone(String phone) async {
+    final String cleanPhone = phone.replaceAll(' ', '');
     final Uri phoneLaunchUri = Uri(
       scheme: 'tel',
-      path: phone,
+      path: cleanPhone,
     );
-    if (await canLaunchUrl(phoneLaunchUri)) {
-      await launchUrl(phoneLaunchUri);
+    try {
+      if (await canLaunchUrl(phoneLaunchUri)) {
+        await launchUrl(phoneLaunchUri, mode: LaunchMode.externalApplication);
+      } else {
+        showToast("No phone app found");
+      }
+    } catch (e) {
+      showToast("No phone app found");
     }
   }
 

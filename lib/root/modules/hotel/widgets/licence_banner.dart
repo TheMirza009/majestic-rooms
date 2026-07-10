@@ -9,45 +9,43 @@ class LicenceBanner extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool hasLicence = licenceNo?.isNotEmpty ?? false;
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: hasLicence
-            ? CustomColors.luxuryGold.withOpacity(0.15)
-            : CustomColors.brandRed.withOpacity(0.10),
-        border: Border.all(
-          width: 1.15,
+    return Transform.scale(
+      scale: 0.9,
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        decoration: BoxDecoration(
           color: hasLicence
-              ? CustomColors.luxuryGold
-              : CustomColors.brandRed.withAlpha(150),
-        ),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(
-            hasLicence
-                ? Icons.verified_rounded
-                : Icons.info_outline_rounded,
+              ? CustomColors.luxuryGold.withOpacity(0.15)
+              : CustomColors.brandRed.withOpacity(0.10),
+          border: Border.all(
+            width: 1.15,
             color: hasLicence
                 ? CustomColors.luxuryGold
-                : CustomColors.brandRed,
+                : CustomColors.brandRed.withAlpha(150),
           ),
-          const SizedBox(width: 12),
-          Text(
-            hasLicence
-                ? "Licence no: $licenceNo"
-                : "No licence number provided",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: hasLicence
-                  ? CustomColors.textMain
-                  : CustomColors.brandRed,
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              hasLicence ? Icons.verified_rounded : Icons.info_outline_rounded,
+              color: hasLicence ? CustomColors.luxuryGold : CustomColors.brandRed,
             ),
-          ),
-          const SizedBox(width: 12),
-        ],
+            const SizedBox(width: 12),
+            Text(
+              hasLicence
+                  ? "Licence no: $licenceNo"
+                  : "No licence number provided",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: hasLicence ? CustomColors.linkColor : CustomColors.brandRed,
+              ),
+            ),
+            const SizedBox(width: 12),
+          ],
+        ),
       ),
     );
   }
