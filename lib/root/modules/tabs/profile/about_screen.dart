@@ -9,7 +9,7 @@ class AboutScreen extends StatelessWidget {
   // ── Control Panel ─────────────────────────────────────────────────────────
   static const _scaffoldBg = Color(0xFFF7F7F9);
 
-  static const _description =
+  static const description =
       'We make finding hotels in Saudi Arabia easy. Our platform helps '
       'travelers book great stays, from cozy rooms to luxury hotels, '
       'all across the Kingdom.';
@@ -31,8 +31,8 @@ class AboutScreen extends StatelessWidget {
       'focus on clear information, easy navigation, and supporting local '
       'hotels to share their unique vibe.';
 
-  static const _valuesTitle = 'Our Values';
-  static const _values = <(String, String, IconData)>[
+  static const valuesTitle = 'Our Values';
+  static const values = <(String, String, IconData)>[
     (
       'Trust & Transparency',
       'Honest pricing, clear information, and lasting relationships with guests and hotel partners.',
@@ -86,13 +86,13 @@ class AboutScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-        title: const Text(_valuesTitle), 
+        title: const Text(valuesTitle), 
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              for (final (title, body, icon) in _values) ...[
+              for (final (title, body, icon) in values) ...[
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -224,7 +224,7 @@ class AboutScreen extends StatelessWidget {
 
           // DESCRIPTION
           const Text(
-            _description,
+            description,
             style: TextStyle(
               fontSize: 15,
               color: CustomColors.textMuted,

@@ -4,7 +4,7 @@ class Constants {
 
   // APP INFORMATION
   static const String appName    = 'Majestic Rooms';
-  static const String appVersion = '0.3.0';
+  static const String appVersion = '0.3.5';
 
   // WEB LINKS
   static const String webURL              = 'https://hotel-directory-admin.vercel.app';

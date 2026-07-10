@@ -5,78 +5,174 @@ import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/root/modules/tabs/bookings/booking_card.dart';
 
-class BookingsScreen extends StatelessWidget {
+class BookingsScreen extends StatefulWidget {
   const BookingsScreen({super.key});
 
+  @override
+  State<BookingsScreen> createState() => _BookingsScreenState();
+}
+
+class _BookingsScreenState extends State<BookingsScreen> {
+  // ── Control Panel ─────────────────────────────────────────────────────────
+  static const _scaffoldBg = Color(0xFFF7F7F9);
+
+  // ── Fields ────────────────────────────────────────────────────────────────
+  BookingStatus? _selectedStatus;
+  final Map<BookingStatus, GlobalKey> _chipKeys = {
+    for (final status in BookingStatus.values) status: GlobalKey(),
+  };
+
+  // ── Handlers ──────────────────────────────────────────────────────────────
+  void _onFilterSelected(BookingStatus status) {
+    setState(() {
+      _selectedStatus = (_selectedStatus == status) ? null : status;
+    });
+
+    final context = _chipKeys[status]?.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+        alignment: 0.5,
+      );
+    }
+  }
+
+  String _statusLabel(BookingStatus status) {
+    switch (status) {
+      case BookingStatus.pending: return 'Pending';
+      case BookingStatus.confirmed: return 'Confirmed';
+      case BookingStatus.cancelled: return 'Cancelled';
+      case BookingStatus.checkedIn: return 'Checked In';
+      case BookingStatus.completed: return 'Completed';
+    }
+  }
+
+  // ── Build ─────────────────────────────────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<CommonController>();
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F7F9),
+      backgroundColor: _scaffoldBg,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF7F7F9),
-        surfaceTintColor: const Color(0xFFF7F7F9),
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        backgroundColor: _scaffoldBg,
+        surfaceTintColor: _scaffoldBg,
+        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         centerTitle: true,
         title: const Text(
           'My Bookings',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: Obx(() {
-        // EMPTY STATE
-        if (controller.bookings.isEmpty) {
-          return const Center(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+      body: Column(
+        children: [
+          // ── Filter Chips ──────────────────────────────────────────────────
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
               children: [
-                Icon(
-                  Icons.bookmark_border_rounded,
-                  size: 56,
-                  color: CustomColors.hintColor,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'No bookings yet',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                    color: CustomColors.textMain,
+                for (final status in BookingStatus.values)
+                  Padding(
+                    key: _chipKeys[status],
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: Builder(
+                      builder: (context) {
+                        final isSelected = _selectedStatus == status;
+                        return ChoiceChip(
+                          label: Text(_statusLabel(status)),
+                          selected: isSelected,
+                          onSelected: (_) => _onFilterSelected(status),
+                          selectedColor: CustomColors.brandBlack,
+                          backgroundColor: CustomColors.surfaceWhite,
+                          labelStyle: TextStyle(
+                            color: isSelected ? CustomColors.textLight : CustomColors.textMuted,
+                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                            fontFamily: 'Fustat',
+                            fontSize: 14,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            side: const BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                          ),
+                          showCheckmark: false,
+                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                        );
+                      }
+                    ),
                   ),
-                ),
-                SizedBox(height: 6),
-                Text(
-                  'Your confirmed reservations will appear here.',
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: CustomColors.textMuted,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
               ],
             ),
-          );
-        }
+          ),
 
-        // LIST — newest first
-        final bookings = controller.bookings.reversed.toList();
-        return ListView.builder(
-          padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
-          physics: const BouncingScrollPhysics(),
-          itemCount: bookings.length + 2,
-          itemBuilder: (_, index) {
-            if (index < bookings.length) {
-              return BookingCard(booking: bookings[index]);
-            }
-            if (index == bookings.length) {
-              return const _DebugClearBookingsButton();
-            }
-            return const SizedBox(height: 100);
-          },
-        );
-      }),
+          // ── Content ───────────────────────────────────────────────────────
+          Expanded(
+            child: Obx(() {
+              final allBookings = controller.bookings.reversed.toList();
+              final bookings = _selectedStatus == null
+                  ? allBookings
+                  : allBookings.where((b) => b.bookingStatus == _selectedStatus).toList();
+
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: bookings.isEmpty
+                    ? Center(
+                        key: ValueKey('empty_${_selectedStatus?.name ?? 'all'}'),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(
+                              Icons.bookmark_border_rounded,
+                              size: 56,
+                              color: CustomColors.hintColor,
+                            ),
+                            const SizedBox(height: 16),
+                            const Text(
+                              'No bookings yet',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                                color: CustomColors.textMain,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              _selectedStatus == null
+                                  ? 'Your confirmed reservations will appear here.'
+                                  : 'No reservations match this filter.',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: CustomColors.textMuted,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        key: ValueKey('list_${_selectedStatus?.name ?? 'all'}'),
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: bookings.length + 2,
+                        itemBuilder: (_, index) {
+                          if (index < bookings.length) {
+                            return BookingCard(booking: bookings[index]);
+                          }
+                          if (index == bookings.length) {
+                            return const _DebugClearBookingsButton();
+                          }
+                          return const SizedBox(height: 100);
+                        },
+                      ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }
