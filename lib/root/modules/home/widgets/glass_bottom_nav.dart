@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/root/modules/home/widgets/glass_nav_item.dart';
 
 class GlassBottomNavBar extends StatelessWidget {
@@ -49,7 +50,7 @@ class GlassBottomNavBar extends StatelessWidget {
                       // EXPLORE
                       GlassNavItem(
                         icon: Icons.search_rounded,
-                        label: 'Explore',
+                        label: 'Explore'.tr,
                         isActive: currentIndex == 0,
                         onTap: () => onTap(0),
                       ),
@@ -57,7 +58,7 @@ class GlassBottomNavBar extends StatelessWidget {
                       // SAVED
                       GlassNavItem(
                         icon: Icons.favorite_outline,
-                        label: 'Saved',
+                        label: 'Saved'.tr,
                         isActive: currentIndex == 1,
                         onTap: () => onTap(1),
                       ),
@@ -65,7 +66,7 @@ class GlassBottomNavBar extends StatelessWidget {
                       // BOOKINGS
                       GlassNavItem(
                         icon: Icons.bookmark_outline,
-                        label: 'Bookings',
+                        label: 'Bookings'.tr,
                         isActive: currentIndex == 2,
                         onTap: () => onTap(2),
                       ),
@@ -73,7 +74,7 @@ class GlassBottomNavBar extends StatelessWidget {
                       // PROFILE
                       GlassNavItem(
                         icon: Icons.person_outline_rounded,
-                        label: 'Profile',
+                        label: 'Profile'.tr,
                         isActive: currentIndex == 3,
                         onTap: () => onTap(3),
                       ),

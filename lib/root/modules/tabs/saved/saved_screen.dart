@@ -46,7 +46,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(Icons.favorite_outline_outlined, size: 40),
-                    Text("No saved hotels"),
+                    Text('No saved hotels'.tr),
                   ],
                 ),
               )
@@ -55,7 +55,7 @@ class _SavedScreenState extends State<SavedScreen> {
               children: [
                 ExploreSearchBar(
                   controller: _searchController, 
-                  hintText: "Search your saved hotels",
+                  hintText: 'Search your saved hotels'.tr,
                   showSuffixIcon: false,
                   ),
                 Expanded(
@@ -106,20 +106,20 @@ class _SavedScreenState extends State<SavedScreen> {
   Future<void> confirmRemoveDialog(BuildContext context, Hotel hotel) async {
     return await showAdaptiveDialog(context: context, builder: (context) {
       return AlertDialog(
-        title: Text("Remove from saved"),
-        content: Text("Are you sure you want to remove this hotel from your saved list?"),
+        title: Text('Remove from saved'.tr),
+        content: Text('Are you sure you want to remove this hotel from your saved list?'.tr),
         actionsPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text("Cancel"),
+            child: Text('Cancel'.tr),
           ),
           TextButton(
             onPressed: () {
               controller.toggleHotelSave(hotel);
               Navigator.pop(context);
             },
-            child: Text("Remove"),
+            child: Text('Remove'.tr),
           ),
         ],
       );

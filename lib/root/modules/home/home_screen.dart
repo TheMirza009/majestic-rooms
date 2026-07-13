@@ -68,7 +68,7 @@ AppBar? buildAppBar(HomeController controller, BuildContext context) {
   }
 
   return AppBar(
-    title: Text(_titles[controller.currentIndex.value]),
+    title: Text(_titles[controller.currentIndex.value].tr),
     actions: [
       IconButton(
         onPressed: Utils.logoutDialog,
