@@ -73,7 +73,7 @@ class AboutScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-        title: Text(valuesTitle), 
+        title: Text(valuesTitle),
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -120,42 +120,37 @@ class AboutScreen extends StatelessWidget {
   // ── Widget helpers ─────────────────────────────────────────────────────────
 
   /// Thin divider used between every info tile row.
-  static Widget tileDivider() => const Divider(
-        height: 1,
-        indent: 56,
-        color: CustomColors.borderColor,
-      );
+  static Widget tileDivider() =>
+      const Divider(height: 1, indent: 56, color: CustomColors.borderColor);
 
   /// Expansion tile styled consistently for Story / Mission / License rows.
   static Widget infoExpansionTile({
     required IconData icon,
     required String title,
     required Widget child,
-  }) =>
-      ExpansionTile(
-        leading: Icon(icon, color: CustomColors.textMain),
-        title: Text(title, style: _tileTitleStyle),
-        iconColor: CustomColors.textMuted,
-        collapsedIconColor: CustomColors.textMuted,
-        textColor: CustomColors.textMain,
-        collapsedTextColor: CustomColors.textMain,
-        childrenPadding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
-        expandedAlignment: Alignment.centerLeft,
-        children: [child],
-      );
+  }) => ExpansionTile(
+    leading: Icon(icon, color: CustomColors.textMain),
+    title: Text(title, style: _tileTitleStyle),
+    iconColor: CustomColors.textMuted,
+    collapsedIconColor: CustomColors.textMuted,
+    textColor: CustomColors.textMain,
+    collapsedTextColor: CustomColors.textMain,
+    childrenPadding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
+    expandedAlignment: Alignment.centerLeft,
+    children: [child],
+  );
 
   /// Navigation list tile used for Values / Terms / Privacy / Contact / Call.
   static Widget infoListTile({
     required IconData icon,
     required String title,
     required VoidCallback onTap,
-  }) =>
-      ListTile(
-        leading: Icon(icon, color: CustomColors.textMain),
-        title: Text(title, style: _tileTitleStyle),
-        trailing: const Icon(Icons.chevron_right, color: CustomColors.textMuted),
-        onTap: onTap,
-      );
+  }) => ListTile(
+    leading: Icon(icon, color: CustomColors.textMain),
+    title: Text(title, style: _tileTitleStyle),
+    trailing: const Icon(Icons.chevron_right, color: CustomColors.textMuted),
+    onTap: onTap,
+  );
 
   // ── Build ──────────────────────────────────────────────────────────────────
   @override
@@ -197,14 +192,14 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              Text(
-                'Version: @version'.trParams({'version': Constants.appVersion}),
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: CustomColors.textMuted,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              // Text(
+              //   'Version: @version'.trParams({'version': Constants.appVersion}),
+              //   style: const TextStyle(
+              //     fontSize: 14,
+              //     color: CustomColors.textMuted,
+              //     fontWeight: FontWeight.w500,
+              //   ),
+              // ),
             ],
           ),
           const SizedBox(height: 32),
@@ -230,25 +225,21 @@ class AboutScreen extends StatelessWidget {
             ),
             clipBehavior: Clip.antiAlias,
             child: Theme(
-              data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+              data: Theme.of(
+                context,
+              ).copyWith(dividerColor: Colors.transparent),
               child: Column(
                 children: [
                   infoExpansionTile(
                     icon: Icons.auto_stories_outlined,
                     title: storyTitle,
-                    child: Text(
-                      storyContent, 
-                      style: _tileBodyStyle,
-                    ),
+                    child: Text(storyContent, style: _tileBodyStyle),
                   ),
                   tileDivider(),
                   infoExpansionTile(
                     icon: Icons.flag_outlined,
                     title: missionTitle,
-                    child: Text(
-                      missionContent,
-                      style: _tileBodyStyle,
-                    ),
+                    child: Text(missionContent, style: _tileBodyStyle),
                   ),
                   tileDivider(),
                   infoListTile(
@@ -263,13 +254,17 @@ class AboutScreen extends StatelessWidget {
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(Icons.verified, color: CustomColors.luxuryGold, size: 18),
+                        const Icon(
+                          Icons.verified,
+                          color: CustomColors.luxuryGold,
+                          size: 18,
+                        ),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
                             _licenseNumber,
                             style: const TextStyle(
-                              fontSize: 13, 
+                              fontSize: 13,
                               color: CustomColors.textMuted,
                             ),
                           ),
@@ -281,7 +276,8 @@ class AboutScreen extends StatelessWidget {
                   infoListTile(
                     icon: Icons.description_outlined,
                     title: 'terms_of_service'.tr,
-                    onTap: () => Utils.launchWebUrl(Constants.termsAndConditions),
+                    onTap: () =>
+                        Utils.launchWebUrl(Constants.termsAndConditions),
                   ),
                   tileDivider(),
                   infoListTile(

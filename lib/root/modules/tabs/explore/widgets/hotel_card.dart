@@ -118,7 +118,8 @@ class _HotelCardState extends State<HotelCard> {
         duration: _fadeDuration,
         // HERO IMAGE
         child: Hero(
-          tag: '${widget.heroTag ?? widget.hotel.id}_${widget.hotel.images.isNotEmpty ? widget.hotel.images.first.url : widget.hotel.imageUrl}',
+          tag:
+              '${widget.heroTag ?? widget.hotel.id}_${widget.hotel.images.isNotEmpty ? widget.hotel.images.first.url : widget.hotel.imageUrl}',
           child: Material(
             type: MaterialType.transparency,
             clipBehavior: Clip.antiAlias,
@@ -145,12 +146,16 @@ class _HotelCardState extends State<HotelCard> {
                   ),
 
                   // 2. PROMOTION BADGE
-                  if (widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true)
+                  if (widget.hotel.activePromotion != null &&
+                      widget.hotel.activePromotion?.isActive == true)
                     Positioned(
                       top: _inset,
                       left: _inset,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFFD700),
                           borderRadius: BorderRadius.circular(8),
@@ -158,10 +163,20 @@ class _HotelCardState extends State<HotelCard> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.local_offer_rounded, size: 14, color: Color(0xFF10141B)),
+                            const Icon(
+                              Icons.local_offer_rounded,
+                              size: 14,
+                              color: Color(0xFF10141B),
+                            ),
                             const SizedBox(width: 4),
                             Text(
-                              'discount_off'.trParams({'discount': widget.hotel.activePromotion!.discountPercent.toString()}),
+                              'discount_off'.trParams({
+                                'discount': widget
+                                    .hotel
+                                    .activePromotion!
+                                    .discountPercent
+                                    .toString(),
+                              }),
                               style: const TextStyle(
                                 color: Color(0xFF10141B),
                                 fontSize: 12,
@@ -188,18 +203,24 @@ class _HotelCardState extends State<HotelCard> {
                           padding: const EdgeInsets.all(_inset),
                           child: DecoratedBox(
                             decoration: BoxDecoration(
-                              color: _detailBg,
+                              color: _imageLoaded
+                                  ? _detailBg.withValues(alpha: 0.5)
+                                  : _detailBg,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 14),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                              ),
                               child: Row(
                                 children: [
                                   // NAME + ADDRESS + RATING · CITY
                                   Expanded(
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         // NAME
                                         Text(
@@ -212,7 +233,8 @@ class _HotelCardState extends State<HotelCard> {
 
                                         // ADDRESS
                                         Text(
-                                          widget.hotel.address ?? 'A City on Planet Earth'.tr,
+                                          widget.hotel.address ??
+                                              'A City on Planet Earth'.tr,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: _metaStyle,
@@ -222,7 +244,11 @@ class _HotelCardState extends State<HotelCard> {
                                         // STAR + RATING · CITY
                                         Row(
                                           children: [
-                                            const Icon(Icons.star_rounded, size: 13, color: _starColor),
+                                            const Icon(
+                                              Icons.star_rounded,
+                                              size: 13,
+                                              color: _starColor,
+                                            ),
                                             const SizedBox(width: 2),
                                             Expanded(
                                               child: Text(
@@ -243,12 +269,24 @@ class _HotelCardState extends State<HotelCard> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      if (widget.hotel.activePromotion != null &&
-                                          widget.hotel.activePromotion?.isActive == true &&
-                                          widget.hotel.activePromotion?.discountPercent != null)
+                                      if (widget.hotel.activePromotion !=
+                                              null &&
+                                          widget
+                                                  .hotel
+                                                  .activePromotion
+                                                  ?.isActive ==
+                                              true &&
+                                          widget
+                                                  .hotel
+                                                  .activePromotion
+                                                  ?.discountPercent !=
+                                              null)
                                         Text(
                                           '\$${widget.hotel.rates.first}',
-                                          style: _unitStyle.copyWith(decoration: TextDecoration.lineThrough),
+                                          style: _unitStyle.copyWith(
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
                                         ),
                                       Text(
                                         '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',

@@ -16,6 +16,7 @@ import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/price_breakdown.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/selected_rooms_list.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
+import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/booking_screenshot_widget.dart';
 
 // ── Shared style constants ────────────────────────────────────────────────────
 const _labelStyle = TextStyle(
@@ -45,7 +46,6 @@ class BookingSummaryScreen extends StatefulWidget {
     super.key,
     this.isPaid = false,
     this.booking,
-    this.isScreenshot = false,
   });
 
   /// When true: read-only mode — shows a green "Paid" banner instead of
@@ -56,10 +56,6 @@ class BookingSummaryScreen extends StatefulWidget {
   /// is true. Provides the hotel object, dates, rooms and price data without
   /// needing [BookingController].
   final BookingModel? booking;
-
-  /// Whether this screen is rendered for a screenshot.
-  /// Used for hiding elements we don't want in screenshots (like cancel button, back button, actions).
-  final bool isScreenshot;
 
   @override
   State<BookingSummaryScreen> createState() => _BookingSummaryScreenState();
@@ -74,21 +70,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
     setState(() => _isCapturing = true);
 
     try {
-      final Uint8List? imageBytes = await _screenshotController.captureFromWidget(
-        MediaQuery(
-          data: MediaQueryData.fromView(View.of(context)),
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(fontFamily: 'Fustat'),
-            home: Scaffold(
-              body: BookingSummaryScreen(
-                booking: widget.booking,
-                isPaid: widget.isPaid,
-                isScreenshot: true,
-              ),
-            ),
-          ),
-        ),
+      final Uint8List? imageBytes = await _screenshotController.capture(
         delay: const Duration(milliseconds: 200),
       );
 
@@ -139,11 +121,11 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
            style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
-        leading: widget.isScreenshot ? const SizedBox.shrink() : IconButton(
+        leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new_rounded),
             onPressed: () => Navigator.maybePop(context),
           ),
-        actions: widget.isScreenshot ? const [] : [
+        actions: [
           PopupMenuButton<int>(
             icon: const Icon(Icons.more_vert),
             onSelected: (value) {
@@ -177,6 +159,29 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
       ),
       body: Stack(
         children: [
+          // HIDDEN SCREENSHOT TARGET
+          Positioned(
+            left: 0,
+            right: 0,
+            top: -10000,
+            child: IgnorePointer(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: MediaQuery.sizeOf(context).width,
+                  child: Screenshot(
+                    controller: _screenshotController,
+                    child: Material(
+                      color: const Color(0xFFF7F7F9),
+                      child: BookingScreenshotWidget(
+                        booking: widget.booking,
+                        isPaid: widget.isPaid,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           // SCROLLABLE CONTENT
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
@@ -760,7 +765,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               ],
                             ),
                           ),
-                          if (widget.booking!.bookingStatus != BookingStatus.completed && !widget.isScreenshot) ...[
+                          if (widget.booking!.bookingStatus != BookingStatus.completed) ...[
                             const SizedBox(height: 12),
                             OutlinedButton(
                               onPressed: () => _showCancelDialog(context, widget.booking!),
