@@ -101,6 +101,7 @@ const Map<String, String> enUS = {
   'call_us': 'Call Us',
   'copyright_text': '© 2026 Majestic Rooms. All rights reserved.',
   'User Settings': 'User Settings',
+  'User': 'User',
   'My Bookings': 'My Bookings',
   'Saved Hotels': 'Saved Hotels',
   'Contact Support': 'Contact Support',

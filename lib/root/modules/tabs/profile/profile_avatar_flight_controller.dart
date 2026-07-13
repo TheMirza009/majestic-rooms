@@ -72,8 +72,10 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
             // Mid-animation the page is fractional, so subtract the remaining
             // scroll distance to get the avatar's final resting X coordinate.
             final pagePosition = homeCtrl.pageController.page ?? 3.0;
+            final isRtl = Directionality.of(context) == TextDirection.rtl;
+            final offset = (3.0 - pagePosition) * screenWidth;
             _cachedDestinationRect = Rect.fromLTWH(
-              destRect.left - (3.0 - pagePosition) * screenWidth,
+              destRect.left + (isRtl ? offset : -offset),
               destRect.top,
               destRect.width,
               destRect.height,

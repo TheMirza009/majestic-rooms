@@ -90,6 +90,7 @@ const Map<String, String> arSA = {
   'call_us': 'اتصل بنا',
   'copyright_text': '© 2026 Majestic Rooms. جميع الحقوق محفوظة.',
   'User Settings': 'إعدادات المستخدم',
+  'User': 'مستخدم',
   'My Bookings': 'حجوزاتي',
   'Saved Hotels': 'الفنادق المحفوظة',
   'Contact Support': 'التواصل مع الدعم',

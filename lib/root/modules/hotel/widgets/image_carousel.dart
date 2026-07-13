@@ -140,8 +140,8 @@ class _ImageCarouselState extends State<ImageCarousel> {
             },
           ),
           if (_currentIndex > 0)
-            Positioned(
-              left: 16.0,
+            PositionedDirectional(
+              start: 16.0,
               child: RoundIconButton(
                 size: 40,
                 backgroundColor: const Color.fromARGB(40, 0, 0, 0),
@@ -154,8 +154,8 @@ class _ImageCarouselState extends State<ImageCarousel> {
               ),
             ),
           if (_currentIndex < widget.images.length - 1)
-            Positioned(
-              right: 16.0,
+            PositionedDirectional(
+              end: 16.0,
               child: RoundIconButton(
                 size: 40,
                 backgroundColor: const Color.fromARGB(40, 0, 0, 0),

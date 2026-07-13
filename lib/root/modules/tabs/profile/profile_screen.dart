@@ -119,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  fullName ?? "User",
+                  fullName ?? "User".tr,
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,

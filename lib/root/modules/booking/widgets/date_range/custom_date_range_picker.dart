@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 /// user for DateTime formatting
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart' hide TextDirection;
 
 /// A custom date range picker widget that allows users to select a date range.
 /// `const CustomDateRangePicker({
@@ -306,17 +306,20 @@ void showCustomDateRangePicker(
   /// Show the CustomDateRangePicker dialog box
   showDialog<dynamic>(
     context: context,
-    builder: (BuildContext context) => CustomDateRangePicker(
-      barrierDismissible: true,
-      backgroundColor: backgroundColor,
-      primaryColor: primaryColor,
-      rangeColor: rangeColor,
-      minimumDate: minimumDate,
-      maximumDate: maximumDate,
-      initialStartDate: startDate,
-      initialEndDate: endDate,
-      onApplyClick: onApplyClick,
-      onCancelClick: onCancelClick,
+    builder: (BuildContext context) => Directionality(
+      textDirection: TextDirection.ltr,
+      child: CustomDateRangePicker(
+        barrierDismissible: true,
+        backgroundColor: backgroundColor,
+        primaryColor: primaryColor,
+        rangeColor: rangeColor,
+        minimumDate: minimumDate,
+        maximumDate: maximumDate,
+        initialStartDate: startDate,
+        initialEndDate: endDate,
+        onApplyClick: onApplyClick,
+        onCancelClick: onCancelClick,
+      ),
     ),
   );
 }

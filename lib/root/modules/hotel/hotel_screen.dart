@@ -79,13 +79,13 @@ class _HotelScreenState extends State<HotelScreen> {
         leadingWidth: 100,
         toolbarHeight: 66,
         leading: Align(
-          alignment: Alignment.topLeft,
+          alignment: AlignmentDirectional.topStart,
           child: Padding(
-            padding: const EdgeInsets.only(left: 12.0, top: 10.0),
+            padding: const EdgeInsetsDirectional.only(start: 12.0, top: 10.0),
             child: RoundIconButton(
               size: 46,
               icon: Padding(
-                padding: const EdgeInsets.only(right: 3.0),
+                padding: const EdgeInsetsDirectional.only(end: 3.0),
                 child: const Icon(
                   Icons.arrow_back_ios_new_rounded,
                   color: CustomColors.textLight,
@@ -98,11 +98,11 @@ class _HotelScreenState extends State<HotelScreen> {
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(left: 12.0, top: 10.0, right: 10),
+            padding: const EdgeInsetsDirectional.only(start: 12.0, top: 10.0, end: 10.0),
             child: RoundIconButton(
               size: 46,
               icon: Padding(
-                padding: const EdgeInsets.only(right: 3.0),
+                padding: const EdgeInsetsDirectional.only(end: 3.0),
                 child: const Icon(
                   Icons.share_outlined,
                   color: CustomColors.textLight,
@@ -113,7 +113,7 @@ class _HotelScreenState extends State<HotelScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(right: 12.0, top: 10.0),
+            padding: const EdgeInsetsDirectional.only(end: 12.0, top: 10.0),
             child: Obx(() {
               final CommonController commonController = Get.find<CommonController>();
               return FavoriteButton(
