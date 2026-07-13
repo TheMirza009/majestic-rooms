@@ -203,7 +203,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        'No hotels to show',
+                        'No hotels to show'.tr,
                         style: TextStyle(
                           fontSize: 15,
                           color: CustomColors.textMuted.withValues(alpha: 0.5),
@@ -238,7 +238,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Text(
-                                  '${hotels.length} result${hotels.length == 1 ? '' : 's'} found',
+                                  hotels.length == 1 ? 'result_found'.trParams({'count': hotels.length.toString()}) : 'results_found'.trParams({'count': hotels.length.toString()}),
                                   style: const TextStyle(fontSize: 14, color: CustomColors.textMuted),
                                 ),
                               ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/promotion.dart';
+import 'package:get/get.dart';
 
 class PromotionalBanner extends StatelessWidget {
   final Promotion promotion;
@@ -45,7 +46,7 @@ class PromotionalBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Special Offer! ${promotion.discountPercent != null ? '${promotion.discountPercent}% OFF' : ''}',
+                  '${'Special Offer!'.tr} ${promotion.discountPercent != null ? 'discount_off'.trParams({'discount': promotion.discountPercent.toString()}) : ''}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -54,7 +55,7 @@ class PromotionalBanner extends StatelessWidget {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  'Use code "${promotion.code}" at checkout.',
+                  'use_code'.trParams({'code': promotion.code}),
                   style: const TextStyle(
                     fontSize: 14,
                     color: CustomColors.textMain,
@@ -64,7 +65,7 @@ class PromotionalBanner extends StatelessWidget {
                 if (promotion.validTo != null) ...[
                   const SizedBox(height: 4),
                   Text(
-                    'Valid until ${promotion.validTo}',
+                    'valid_until'.trParams({'date': promotion.validTo!}),
                     style: const TextStyle(
                       fontSize: 12,
                       color: CustomColors.textMuted,

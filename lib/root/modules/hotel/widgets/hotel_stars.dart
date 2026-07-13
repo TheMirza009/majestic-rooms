@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 
 class HotelStars extends StatelessWidget {
@@ -42,7 +43,9 @@ class HotelStars extends StatelessWidget {
           if (reviewCount != null) ...[
             const SizedBox(width: 8),
             Text(
-              '·  $reviewCount review${reviewCount == 1 ? '' : 's'}',
+              reviewCount == 1 
+                  ? 'review_count'.trParams({'count': reviewCount.toString()}) 
+                  : 'reviews_count'.trParams({'count': reviewCount.toString()}),
               style: const TextStyle(
                 color: CustomColors.textMuted,
                 fontSize: 13,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 
 class LicenceBanner extends StatelessWidget {
@@ -36,8 +37,8 @@ class LicenceBanner extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               hasLicence
-                  ? "Licence no: $licenceNo"
-                  : "No licence number provided",
+                  ? 'licence_no'.trParams({'no': licenceNo!})
+                  : 'No licence number provided'.tr,
               style: TextStyle(
                 fontWeight: FontWeight.w600,
                 color: hasLicence ? CustomColors.linkColor : CustomColors.brandRed,

@@ -3,6 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:get/get.dart';
 
 class MapsPreview extends StatelessWidget {
   final double latitude;
@@ -85,8 +86,8 @@ class MapsPreview extends StatelessWidget {
                 onPressed: _openNativeMap,
                 backgroundColor: CustomColors.surfaceWhite,
                 icon: const Icon(Icons.map_outlined, color: CustomColors.brandRed),
-                label: const Text(
-                  'Open in Maps',
+                label: Text(
+                  'Open in Maps'.tr,
                   style: TextStyle(
                     color: CustomColors.textMain,
                     fontWeight: FontWeight.bold,

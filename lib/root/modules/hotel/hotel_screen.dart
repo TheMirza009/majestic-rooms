@@ -58,7 +58,11 @@ class _HotelScreenState extends State<HotelScreen> {
 
   void _onShare() {
     final webUrl = '${Constants.webURL}/hotel/${widget.hotel.slug}';
-    final text = 'Check out ${widget.hotel.name} on Majestic Rooms!\n\n${widget.hotel.address ?? ''}\n\n$webUrl';
+    final text = 'share_hotel'.trParams({
+      'hotel': widget.hotel.name,
+      'address': widget.hotel.address ?? '',
+      'url': webUrl,
+    });
     Share.share(text, subject: 'Majestic Rooms: ${widget.hotel.name}');
   }
 
@@ -169,7 +173,7 @@ class _HotelScreenState extends State<HotelScreen> {
                               const Icon(Icons.local_offer_rounded, size: 16, color: Color(0xFF10141B)),
                               const SizedBox(width: 6),
                               Text(
-                                '${hotel.activePromotion!.discountPercent}% OFF',
+                                'discount_off'.trParams({'discount': hotel.activePromotion!.discountPercent.toString()}),
                                 style: const TextStyle(
                                   color: Color(0xFF10141B),
                                   fontSize: 14,
@@ -198,7 +202,7 @@ class _HotelScreenState extends State<HotelScreen> {
                     style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 26, color: CustomColors.textMain),
                   ),
                   Text(
-                    hotel.address ?? "In a Galaxy far away", 
+                    hotel.address ?? 'In a Galaxy far away'.tr, 
                     style: const TextStyle(fontSize: 20, color: CustomColors.textMain),
                   ),
 
@@ -212,7 +216,7 @@ class _HotelScreenState extends State<HotelScreen> {
                   
                   // ABOUT
                   Text(
-                    "About",
+                    'About'.tr,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -220,7 +224,7 @@ class _HotelScreenState extends State<HotelScreen> {
                     ),
                   ),
                   Text(
-                    hotel.description?.isEmpty ?? true ? "No description given" : hotel.description!,
+                    hotel.description?.isEmpty ?? true ? 'No description given'.tr : hotel.description!,
                     style: TextStyle(
                       fontStyle: hotel.description?.isEmpty ?? true ? FontStyle.italic : FontStyle.normal,
                     ),
@@ -233,8 +237,8 @@ class _HotelScreenState extends State<HotelScreen> {
 
                   // SERVICES
                   if (hotel.facilities.isNotEmpty) ...[
-                    const Text(
-                      "Services",
+                    Text(
+                      'Services'.tr,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -246,7 +250,7 @@ class _HotelScreenState extends State<HotelScreen> {
                       spacing: 8.0,
                       runSpacing: 8.0,
                       children: hotel.facilities.map((f) => Chip(
-                        label: Text(f.name),
+                        label: Text(f.name.tr),
                         avatar: Icon(_getIconData(f.icon, f.name), size: 18, color: CustomColors.brandRed),
                         backgroundColor: CustomColors.surfaceWhite,
                         side: BorderSide(color: CustomColors.borderColor.withOpacity(0.2)),
@@ -259,7 +263,7 @@ class _HotelScreenState extends State<HotelScreen> {
                   
                   // LOCATION
                   Text(
-                    "Location",
+                    'Location'.tr,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -267,7 +271,7 @@ class _HotelScreenState extends State<HotelScreen> {
                     ),
                   ),
                   if (hotel.distanceFromHaram != null) Text(
-                    "${hotel.distanceFromHaram} KM from the Haram",
+                    'km_from_haram'.trParams({'km': hotel.distanceFromHaram.toString()}),
                     style: TextStyle(
                       fontStyle: hotel.distanceFromHaram == null ? FontStyle.italic : FontStyle.normal,
                     ),
@@ -286,7 +290,7 @@ class _HotelScreenState extends State<HotelScreen> {
 
                   // POLICIES
                   Text(
-                    "Policies",
+                    'Policies'.tr,
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -294,7 +298,7 @@ class _HotelScreenState extends State<HotelScreen> {
                     ),
                   ),
                   Text(
-                    hotel.terms ?? "Standard terms & conditions apply",
+                    hotel.terms ?? 'Standard terms & conditions apply'.tr,
                     style: TextStyle(
                       fontStyle: hotel.description == null ? FontStyle.italic : FontStyle.normal,
                     ),
@@ -308,8 +312,8 @@ class _HotelScreenState extends State<HotelScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          "Reviews",
+                        Text(
+                          'Reviews'.tr,
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -322,8 +326,8 @@ class _HotelScreenState extends State<HotelScreen> {
                             return _buildReviewsShimmer();
                           }
                           if (_controller.reviews.isEmpty) {
-                            return const Text(
-                              "No reviews yet.",
+                            return Text(
+                              'No reviews yet.'.tr,
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 color: CustomColors.textMuted,
@@ -376,7 +380,7 @@ class _HotelScreenState extends State<HotelScreen> {
                                         runSpacing: 8,
                                         children: review.detailRatings.map((dr) {
                                           return Chip(
-                                            label: Text('${dr.service.capitalizeFirst} ${dr.rating} ★', style: const TextStyle(fontSize: 11)),
+                                            label: Text('${dr.service.capitalizeFirst?.tr ?? dr.service} ${dr.rating} ★', style: const TextStyle(fontSize: 11)),
                                             backgroundColor: CustomColors.cardSubtleBg,
                                             side: BorderSide.none,
                                             padding: const EdgeInsets.symmetric(horizontal: 4),

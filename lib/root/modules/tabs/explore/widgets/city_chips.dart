@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/explore_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/city_avatar.dart';
@@ -101,7 +102,7 @@ class _CityChipsState extends State<CityChips> {
                         ),
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: Text(widget.categories[i]),
+                          child: Text(widget.categories[i].tr),
                         ),
                       ),
                     ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 
 class CheckAvailabilityBar extends StatelessWidget {
@@ -43,7 +44,7 @@ class CheckAvailabilityBar extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   minimumSize: const Size(0, 54),
                 ),
-                child: const Text("Check Availability"),
+                child: Text('Check Availability'.tr),
               ),
             ),
             const SizedBox(width: 16),
@@ -53,8 +54,8 @@ class CheckAvailabilityBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   if (rates.length > 1)
-                    const Text(
-                      "Starting from",
+                    Text(
+                      'Starting from'.tr,
                       style: TextStyle(
                         fontSize: 10,
                         color: CustomColors.textMuted,
@@ -75,8 +76,8 @@ class CheckAvailabilityBar extends StatelessWidget {
                           color: CustomColors.textMain,
                         ),
                       ),
-                      const Text(
-                        ' /night',
+                      Text(
+                        ' /night'.tr,
                         style: TextStyle(
                           fontSize: 11,
                           color: CustomColors.textMuted,

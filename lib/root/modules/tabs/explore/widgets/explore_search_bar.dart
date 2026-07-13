@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/theme/vector_strings.dart';
@@ -11,7 +12,7 @@ class ExploreSearchBar extends StatelessWidget {
   final VoidCallback?         onFilterTap;
   final Widget?               suffixIcon;
   final bool                  showSuffixIcon;
-  final String                hintText;
+  final String?               hintText;
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final VoidCallback?         onClear;
@@ -25,7 +26,7 @@ class ExploreSearchBar extends StatelessWidget {
     this.onFilterTap,
     this.suffixIcon,
     this.showSuffixIcon = true,
-    this.hintText = 'Search hotels, resorts...',
+    this.hintText,
     this.onChanged,
     this.onSubmitted,
     this.onClear,
@@ -46,7 +47,7 @@ class ExploreSearchBar extends StatelessWidget {
       onChanged: onChanged,
       onSubmitted: onSubmitted,
       decoration: InputDecoration(
-        hintText: hintText,
+        hintText: hintText ?? 'Search hotels, resorts...'.tr,
         prefixIcon: Padding(
           padding: const EdgeInsets.only(left: 4),
           child: IconButton(

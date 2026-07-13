@@ -65,7 +65,7 @@ class _ProfileBarState extends State<ProfileBar> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Welcome back  ', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: CustomColors.textMuted, height: 1.2)),
+                        Text('Welcome back  '.tr, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: CustomColors.textMuted, height: 1.2)),
                         Text('John Doe', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: CustomColors.brandBlack, fontWeight: FontWeight.w700, height: 1.2)),
                       ],
                     ),

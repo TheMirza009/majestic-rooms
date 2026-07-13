@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key});
@@ -10,7 +11,7 @@ class NotificationsScreen extends StatelessWidget {
         leading: IconButton(icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, ), onPressed: () {
           Navigator.pop(context);
         },), 
-        title: Text("Notifications"), 
+        title: Text('Notifications'.tr), 
         centerTitle: true,
         surfaceTintColor: Colors.white,
         ),  
@@ -19,7 +20,7 @@ class NotificationsScreen extends StatelessWidget {
         children: [
           Icon(Icons.notifications_outlined, size: 70, color: Colors.grey,), 
           SizedBox(height: 8,),
-          Text("No Notifications", style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),),
+          Text('No Notifications'.tr, style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),),
         ],
       )));
   }

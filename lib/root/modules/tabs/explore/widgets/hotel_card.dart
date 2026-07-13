@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/favorite_button.dart';
@@ -160,7 +161,7 @@ class _HotelCardState extends State<HotelCard> {
                             const Icon(Icons.local_offer_rounded, size: 14, color: Color(0xFF10141B)),
                             const SizedBox(width: 4),
                             Text(
-                              '${widget.hotel.activePromotion!.discountPercent}% OFF',
+                              'discount_off'.trParams({'discount': widget.hotel.activePromotion!.discountPercent.toString()}),
                               style: const TextStyle(
                                 color: Color(0xFF10141B),
                                 fontSize: 12,
@@ -211,7 +212,7 @@ class _HotelCardState extends State<HotelCard> {
 
                                         // ADDRESS
                                         Text(
-                                          widget.hotel.address ?? 'A City on Planet Earth',
+                                          widget.hotel.address ?? 'A City on Planet Earth'.tr,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: _metaStyle,
@@ -225,7 +226,7 @@ class _HotelCardState extends State<HotelCard> {
                                             const SizedBox(width: 2),
                                             Expanded(
                                               child: Text(
-                                                '${widget.hotel.rating.toStringAsFixed(1)}  ·  ${widget.hotel.city}',
+                                                '${widget.hotel.rating.toStringAsFixed(1)}  ·  ${widget.hotel.city.capitalizeFirst?.tr ?? widget.hotel.city}',
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: _metaStyle,
@@ -253,7 +254,7 @@ class _HotelCardState extends State<HotelCard> {
                                         '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',
                                         style: _rateStyle,
                                       ),
-                                      const Text('/night', style: _unitStyle),
+                                      Text('/night'.tr, style: _unitStyle),
                                     ],
                                   ),
                                 ],
