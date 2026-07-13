@@ -20,7 +20,7 @@ class SelectedRoomsList extends StatelessWidget {
       if (booking!.details.isEmpty) return const SizedBox.shrink();
       return _buildList(
         items: booking!.details.map((item) => _RoomItemData(
-          name: item.roomName ?? 'Standard Room',
+          name: item.roomName ?? 'Standard Room'.tr,
           roomNumber: null,
           qty: item.quantity,
           totalPrice: item.grossAmount,
@@ -38,7 +38,7 @@ class SelectedRoomsList extends StatelessWidget {
           final room = entry.key;
           final qty = entry.value;
           return _RoomItemData(
-            name: room.name ?? room.category?.name ?? 'Standard Room',
+            name: room.name ?? room.category?.name ?? 'Standard Room'.tr,
             roomNumber: room.roomNumber,
             qty: qty,
             totalPrice: room.pricePerNight * qty * nights,
@@ -53,9 +53,9 @@ class SelectedRoomsList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // HEADER
-        const Text(
-          'Selected Rooms',
-          style: TextStyle(
+        Text(
+          'Selected Rooms'.tr,
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: CustomColors.textMain,
@@ -98,7 +98,7 @@ class SelectedRoomsList extends StatelessWidget {
                         ),
                         if (item.roomNumber != null)
                           Text(
-                            'Room ${item.roomNumber}',
+                            'Room @number'.trParams({'number': item.roomNumber!}),
                             style: const TextStyle(
                               fontSize: 12,
                               color: CustomColors.textMuted,

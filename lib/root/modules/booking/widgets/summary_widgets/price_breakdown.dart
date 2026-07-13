@@ -22,15 +22,18 @@ class PriceBreakdown extends StatelessWidget {
         child: Column(
           children: [
             _PriceRow(
-              label: '${controller.totalQuantity} room(s) × ${controller.nights} night${controller.nights == 1 ? '' : 's'}',
+              label: 'rooms_nights_calc'.trParams({
+                'rooms': controller.totalQuantity.toString(),
+                'nights': controller.nights.toString(),
+              }),
               amount: formatPrice(subtotal),
             ),
             const SizedBox(height: 12),
             // SERVICE FEE ROW
-            _PriceRow(label: 'Service fee', amount: formatPrice(serviceFee)),
+            _PriceRow(label: 'Service fee'.tr, amount: formatPrice(serviceFee)),
             const SizedBox(height: 12),
             // TAXES ROW
-            _PriceRow(label: 'Occupancy taxes', amount: formatPrice(taxes)),
+            _PriceRow(label: 'Occupancy taxes'.tr, amount: formatPrice(taxes)),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 14),
               child: Divider(height: 1, color: Color(0xFFE5E7EB)),
@@ -39,9 +42,9 @@ class PriceBreakdown extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Total',
-                  style: TextStyle(
+                Text(
+                  'Total'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: CustomColors.textMain,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:get/get.dart';
 
 class ConfirmLogoutDialog extends StatelessWidget {
   final CommonController controller;
@@ -38,7 +39,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
 
             // TITLE
             Text(
-              'Are you sure you want to logout?',
+              'Are you sure you want to logout?'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black.withValues(alpha: 0.8),
@@ -50,7 +51,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
 
             // SUBTITLE
             Text(
-              'You will be taken back to the login screen.',
+              'You will be taken back to the login screen.'.tr,
               maxLines: 2,
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -66,7 +67,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('Cancel', style: TextStyle(fontWeight: FontWeight.w800)),
+                  child: Text('Cancel'.tr, style: const TextStyle(fontWeight: FontWeight.w800)),
                 ),
                 TextButton(
                   onPressed: () {
@@ -76,7 +77,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
                   style: TextButton.styleFrom(
                     foregroundColor: CustomColors.brandRed,
                   ),
-                  child: const Text('Logout', style: TextStyle(fontWeight: FontWeight.w800)),
+                  child: Text('Logout'.tr, style: const TextStyle(fontWeight: FontWeight.w800)),
                 ),
               ],
             ),

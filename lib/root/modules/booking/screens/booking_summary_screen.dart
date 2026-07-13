@@ -134,9 +134,9 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
         backgroundColor: const Color(0xFFF7F7F9),
         surfaceTintColor: const Color(0xFFF7F7F9),
         centerTitle: true,
-        title: const Text(
-          'Booking Summary',
-           style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          'Booking Summary'.tr,
+           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
         leading: widget.isScreenshot ? const SizedBox.shrink() : IconButton(
@@ -151,23 +151,23 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
               if (value == 1) _captureAndAction(saveToGallery: false);
             },
             itemBuilder: (context) => [
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 0,
                 child: Row(
                   children: [
-                    Icon(Icons.image_outlined, size: 18, color: CustomColors.textMain),
-                    SizedBox(width: 8),
-                    Text('Save to Gallery'),
+                    const Icon(Icons.image_outlined, size: 18, color: CustomColors.textMain),
+                    const SizedBox(width: 8),
+                    Text('Save to Gallery'.tr),
                   ],
                 ),
               ),
-              const PopupMenuItem(
+              PopupMenuItem(
                 value: 1,
                 child: Row(
                   children: [
-                    Icon(Icons.share_outlined, size: 18, color: CustomColors.textMain),
-                    SizedBox(width: 8),
-                    Text('Share'),
+                    const Icon(Icons.share_outlined, size: 18, color: CustomColors.textMain),
+                    const SizedBox(width: 8),
+                    Text('Share'.tr),
                   ],
                 ),
               ),
@@ -287,7 +287,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Stay Details', style: _sectionTitleStyle),
+                        Text('Stay Details'.tr, style: _sectionTitleStyle),
                         if (!widget.isPaid)
                           TextButton(
                             style: TextButton.styleFrom(
@@ -296,7 +296,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () => controller!.selectDateRange(context),
-                            child: const Text('Edit', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: CustomColors.brandRed)),
+                            child: Text('Edit'.tr, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: CustomColors.brandRed)),
                           ),
                       ],
                     ),
@@ -310,16 +310,16 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('CHECK-IN', style: _labelStyle),
+                                  Text('CHECK-IN'.tr, style: _labelStyle),
                                   const SizedBox(height: 6),
                                   Text(
                                     widget.booking != null
-                                        ? DateFormat('MMM dd, yyyy').format(widget.booking!.checkInDate)
+                                        ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(widget.booking!.checkInDate)
                                         : '—',
                                     style: _valueStyle,
                                   ),
                                   const SizedBox(height: 2),
-                                  const Text('After 02:00 PM', style: _subValueStyle),
+                                  Text('After 02:00 PM'.tr, style: _subValueStyle),
                                 ],
                               ),
                             ),
@@ -330,16 +330,16 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('CHECK-OUT', style: _labelStyle),
+                                  Text('CHECK-OUT'.tr, style: _labelStyle),
                                   const SizedBox(height: 6),
                                   Text(
                                     widget.booking != null
-                                        ? DateFormat('MMM dd, yyyy').format(widget.booking!.checkOutDate)
+                                        ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(widget.booking!.checkOutDate)
                                         : '—',
                                     style: _valueStyle,
                                   ),
                                   const SizedBox(height: 2),
-                                  const Text('Before 11:00 AM', style: _subValueStyle),
+                                  Text('Before 11:00 AM'.tr, style: _subValueStyle),
                                 ],
                               ),
                             ),
@@ -369,11 +369,13 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Text('DURATION', style: _labelStyle),
+                                      Text('DURATION'.tr, style: _labelStyle),
                                       const SizedBox(height: 2),
                                       Text(
                                         widget.booking != null
-                                            ? '${widget.booking!.nights} Night${widget.booking!.nights == 1 ? '' : 's'}'
+                                            ? widget.booking!.nights == 1
+                                                ? 'night_count'.trParams({'count': widget.booking!.nights.toString()})
+                                                : 'nights_count'.trParams({'count': widget.booking!.nights.toString()})
                                             : '—',
                                         style: _valueStyle,
                                       ),
@@ -404,11 +406,13 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      const Text('ROOMS', style: _labelStyle),
+                                      Text('ROOMS'.tr, style: _labelStyle),
                                       const SizedBox(height: 2),
                                       Text(
                                         widget.booking != null
-                                            ? '${widget.booking!.numberOfRooms} Room${widget.booking!.numberOfRooms == 1 ? '' : 's'}'
+                                            ? widget.booking!.numberOfRooms == 1 
+                                                ? 'room_count'.trParams({'count': widget.booking!.numberOfRooms.toString()})
+                                                : 'rooms_count'.trParams({'count': widget.booking!.numberOfRooms.toString()})
                                             : '—',
                                         style: _valueStyle,
                                       ),
@@ -423,8 +427,8 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                     ] else
                       Obx(() {
                         final dateRange = controller!.dateRange.value;
-                        final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.start) : 'Not selected';
-                        final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy').format(dateRange.end) : 'Not selected';
+                        final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(dateRange.start) : 'Not selected'.tr;
+                        final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(dateRange.end) : 'Not selected'.tr;
                         final nights = controller.nights;
                         
                         return Column(
@@ -437,11 +441,11 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Text('CHECK-IN', style: _labelStyle),
+                                        Text('CHECK-IN'.tr, style: _labelStyle),
                                         const SizedBox(height: 6),
                                         Text(checkInStr, style: _valueStyle),
                                         const SizedBox(height: 2),
-                                        const Text('After 02:00 PM', style: _subValueStyle),
+                                        Text('After 02:00 PM'.tr, style: _subValueStyle),
                                       ],
                                     ),
                                   ),
@@ -453,11 +457,11 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        const Text('CHECK-OUT', style: _labelStyle),
+                                        Text('CHECK-OUT'.tr, style: _labelStyle),
                                         const SizedBox(height: 6),
                                         Text(checkOutStr, style: _valueStyle),
                                         const SizedBox(height: 2),
-                                        const Text('Before 11:00 AM', style: _subValueStyle),
+                                        Text('Before 11:00 AM'.tr, style: _subValueStyle),
                                       ],
                                     ),
                                   ),
@@ -489,9 +493,14 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                         Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
-                                            const Text('DURATION', style: _labelStyle),
+                                            Text('DURATION'.tr, style: _labelStyle),
                                             const SizedBox(height: 2),
-                                            Text('$nights Night${nights == 1 ? '' : 's'}', style: _valueStyle),
+                                            Text(
+                                              nights == 1
+                                                  ? 'night_count'.trParams({'count': nights.toString()})
+                                                  : 'nights_count'.trParams({'count': nights.toString()}),
+                                              style: _valueStyle,
+                                            ),
                                           ],
                                         ),
                                       ],
@@ -523,10 +532,12 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const Text('ROOMS', style: _labelStyle),
+                                            Text('ROOMS'.tr, style: _labelStyle),
                                             const SizedBox(height: 2),
                                             Text(
-                                              '${controller.totalQuantity} Room${controller.totalQuantity == 1 ? '' : 's'}',
+                                              controller.totalQuantity == 1
+                                                  ? 'room_count'.trParams({'count': controller.totalQuantity.toString()})
+                                                  : 'rooms_count'.trParams({'count': controller.totalQuantity.toString()}),
                                               style: _valueStyle,
                                             ),
                                           ],
@@ -547,7 +558,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                     
                     // PRICE BREAKDOWN
                     if (widget.isPaid && widget.booking != null) ...[
-                      const Text('Price Details', style: _sectionTitleStyle),
+                      Text('Price Details'.tr, style: _sectionTitleStyle),
                       const SizedBox(height: 10),
                       Container(
                         padding: const EdgeInsets.all(16),
@@ -567,7 +578,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Subtotal', style: TextStyle(fontSize: 13, color: CustomColors.textMuted)),
+                                Text('Subtotal'.tr, style: const TextStyle(fontSize: 13, color: CustomColors.textMuted)),
                                 Text(formatPrice(widget.booking!.grossTotal), style: const TextStyle(fontSize: 13, color: CustomColors.textMain)),
                               ],
                             ),
@@ -576,7 +587,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Text('Discount', style: TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
+                                  Text('Discount'.tr, style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
                                   Text('- ${formatPrice(widget.booking!.discount)}', style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
                                 ],
                               ),
@@ -588,7 +599,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                const Text('Total Paid', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: CustomColors.textMain)),
+                                Text('Total Paid'.tr, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: CustomColors.textMain)),
                                 Text(formatPrice(widget.booking!.netTotal), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: CustomColors.brandRed)),
                               ],
                             ),
@@ -597,7 +608,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                       ),
                       const SizedBox(height: 20),
                     ] else if (!widget.isPaid) ...[
-                      const Text('Price Details', style: _sectionTitleStyle),
+                      Text('Price Details'.tr, style: _sectionTitleStyle),
                       const SizedBox(height: 10),
                       const PriceBreakdown(),
                       const SizedBox(height: 20),
@@ -630,9 +641,9 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  'Cancellation Policy',
-                                  style: TextStyle(
+                                Text(
+                                  'Cancellation Policy'.tr,
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                     color: CustomColors.textMain,
@@ -641,7 +652,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                 const SizedBox(height: 4),
                                 Text(
                                   effectiveHotel.terms ??
-                                      'Free cancellation before check-in date. Review our full terms before confirming.',
+                                      'free_cancellation_fallback'.tr,
                                   style: const TextStyle(
                                     fontSize: 13,
                                     color: CustomColors.textMuted,
@@ -697,14 +708,14 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               borderRadius: BorderRadius.circular(100),
                             ),
                             alignment: Alignment.center,
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.cancel_rounded, size: 20, color: CustomColors.brandRed),
-                                SizedBox(width: 8),
+                                const Icon(Icons.cancel_rounded, size: 20, color: CustomColors.brandRed),
+                                const SizedBox(width: 8),
                                 Text(
-                                  'Cancelled',
-                                  style: TextStyle(
+                                  'Cancelled'.tr,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                     color: CustomColors.brandRed,
@@ -731,15 +742,15 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                               ],
                             ),
                             alignment: Alignment.center,
-                            child: const Row(
+                            child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.check_circle_rounded,
+                                const Icon(Icons.check_circle_rounded,
                                     size: 20, color: Colors.white),
-                                SizedBox(width: 8),
+                                const SizedBox(width: 8),
                                 Text(
-                                  'Paid',
-                                  style: TextStyle(
+                                  'Paid'.tr,
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -759,7 +770,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                 side: const BorderSide(color: CustomColors.brandRed, width: 1.5),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
                               ),
-                              child: const Text('Cancel Booking', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
+                              child: Text('Cancel Booking'.tr, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15)),
                             ),
                           ],
                         ],
@@ -792,11 +803,11 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                 child: AnimatedSwitcher(
                                   duration: const Duration(milliseconds: 300),
                                   child: controller.isBooking.value
-                                      ? const Row(
+                                      ? Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          key: ValueKey('booking'),
+                                          key: const ValueKey('booking'),
                                           children: [
-                                            SizedBox(
+                                            const SizedBox(
                                               width: 20,
                                               height: 20,
                                               child: CircularProgressIndicator(
@@ -804,10 +815,10 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                                 strokeWidth: 2.5,
                                               ),
                                             ),
-                                            SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                             Text(
-                                              'Booking...',
-                                              style: TextStyle(
+                                              'Booking...'.tr,
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.white,
@@ -816,21 +827,21 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                             ),
                                           ],
                                         )
-                                      : const Row(
+                                      : Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
-                                          key: ValueKey('confirm'),
+                                          key: const ValueKey('confirm'),
                                           children: [
                                             Text(
-                                              'Confirm Booking',
-                                              style: TextStyle(
+                                              'Confirm Booking'.tr,
+                                              style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w700,
                                                 color: Colors.white,
                                                 letterSpacing: 0.3,
                                               ),
                                             ),
-                                            SizedBox(width: 6),
-                                            Icon(
+                                            const SizedBox(width: 6),
+                                            const Icon(
                                               Icons.arrow_forward_ios_rounded,
                                               size: 14,
                                               color: Colors.white,
@@ -847,8 +858,8 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'Total price',
+                              Text(
+                                'Total price'.tr,
                                 style: TextStyle(
                                   fontSize: 12,
                                   color: CustomColors.textMuted,
@@ -884,14 +895,14 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
           backgroundColor: CustomColors.surfaceWhite,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
-          title: const Text('Cancel Booking?', style: TextStyle(fontWeight: FontWeight.w800)),
+          title: Text('Cancel Booking?'.tr, style: const TextStyle(fontWeight: FontWeight.w800)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Are you sure you want to cancel this booking? Cancelling a booking may incur extra charges depending on the hotel policy.',
-                style: TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
+              Text(
+                'cancel_booking_desc'.tr,
+                style: const TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
               ),
               const SizedBox(height: 16),
               Container(
@@ -908,7 +919,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        booking.hotel.terms ?? 'Free cancellation before check-in date. Review our full terms before confirming.',
+                        booking.hotel.terms ?? 'free_cancellation_fallback'.tr,
                         style: const TextStyle(fontSize: 13, color: CustomColors.brandRed, fontWeight: FontWeight.w500, height: 1.4),
                       ),
                     ),
@@ -921,7 +932,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
             TextButton(
               onPressed: () => Navigator.pop(ctx),
               style: TextButton.styleFrom(foregroundColor: CustomColors.textMuted),
-              child: const Text('Keep Booking', style: TextStyle(fontWeight: FontWeight.w600)),
+              child: Text('Keep Booking'.tr, style: const TextStyle(fontWeight: FontWeight.w600)),
             ),
             TextButton(
               onPressed: () {
@@ -930,7 +941,7 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                 tempController.cancelBooking(booking, context);
               },
               style: TextButton.styleFrom(foregroundColor: Colors.white, backgroundColor: CustomColors.brandRed.withOpacity(0.10)),
-              child: const Text('Cancel Booking', style: TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
+              child: Text('Cancel Booking'.tr, style: const TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
             ),
           ],
         );

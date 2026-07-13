@@ -44,11 +44,11 @@ class _BookingsScreenState extends State<BookingsScreen> {
 
   String _statusLabel(BookingStatus status) {
     switch (status) {
-      case BookingStatus.pending: return 'Pending';
-      case BookingStatus.confirmed: return 'Confirmed';
-      case BookingStatus.cancelled: return 'Cancelled';
-      case BookingStatus.checkedIn: return 'Checked In';
-      case BookingStatus.completed: return 'Completed';
+      case BookingStatus.pending: return 'Pending'.tr;
+      case BookingStatus.confirmed: return 'Confirmed'.tr;
+      case BookingStatus.cancelled: return 'Cancelled'.tr;
+      case BookingStatus.checkedIn: return 'Checked In'.tr;
+      case BookingStatus.completed: return 'Completed'.tr;
     }
   }
 
@@ -63,9 +63,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
         surfaceTintColor: _scaffoldBg,
         systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         centerTitle: true,
-        title: const Text(
-          'My Bookings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          'My Bookings'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       body: Column(
@@ -131,9 +131,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
                               color: CustomColors.hintColor,
                             ),
                             const SizedBox(height: 16),
-                            const Text(
-                              'No bookings yet',
-                              style: TextStyle(
+                            Text(
+                              'No bookings yet'.tr,
+                              style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
                                 color: CustomColors.textMain,
@@ -142,8 +142,8 @@ class _BookingsScreenState extends State<BookingsScreen> {
                             const SizedBox(height: 6),
                             Text(
                               _selectedStatus == null
-                                  ? 'Your confirmed reservations will appear here.'
-                                  : 'No reservations match this filter.',
+                                  ? 'Your confirmed reservations will appear here.'.tr
+                                  : 'No reservations match this filter.'.tr,
                               style: const TextStyle(
                                 fontSize: 13,
                                 color: CustomColors.textMuted,

@@ -194,7 +194,7 @@ class BookingController extends GetxController {
     } catch (e) {
       debugPrint('❌ [BookingController] Failed to confirm booking: $e');
       if (context.mounted) {
-         Get.snackbar('Error', 'Failed to confirm booking.', snackPosition: SnackPosition.BOTTOM);
+         Get.snackbar('Error'.tr, 'Failed to confirm booking.'.tr, snackPosition: SnackPosition.BOTTOM);
       }
     } finally {
       isBooking.value = false;
@@ -220,8 +220,8 @@ class BookingController extends GetxController {
         if (context.mounted) {
           Navigator.pop(context); // Go back to bookings screen
           Get.snackbar(
-            'Local Mode',
-            'Hotel does not exist on the server. Booking cancelled locally.',
+            'Local Mode'.tr,
+            'Hotel does not exist on the server. Booking cancelled locally.'.tr,
             snackPosition: SnackPosition.BOTTOM,
             margin: const EdgeInsets.all(16),
           );
@@ -261,8 +261,8 @@ class BookingController extends GetxController {
       if (context.mounted) {
         Navigator.pop(context); // Go back to bookings screen
         Get.snackbar(
-          'Booking Cancelled',
-          'Your booking has been successfully cancelled.',
+          'Booking Cancelled'.tr,
+          'Your booking has been successfully cancelled.'.tr,
           snackPosition: SnackPosition.BOTTOM,
         );
       }
@@ -270,8 +270,8 @@ class BookingController extends GetxController {
       debugPrint('❌ [BookingController] Failed to cancel booking: $e');
       if (context.mounted) {
         Get.snackbar(
-          'Error',
-          'Failed to cancel booking. Please try again.',
+          'Error'.tr,
+          'Failed to cancel booking. Please try again.'.tr,
           snackPosition: SnackPosition.BOTTOM,
         );
       }

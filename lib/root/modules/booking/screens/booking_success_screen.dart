@@ -117,7 +117,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
         await Gal.putImage(file.path);
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Saved to gallery!', style: TextStyle(color: Colors.white)), backgroundColor: CustomColors.brandRed),
+            SnackBar(content: Text('Saved to gallery!'.tr, style: const TextStyle(color: Colors.white)), backgroundColor: CustomColors.brandRed),
           );
         }
       } else {
@@ -126,7 +126,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: $e', style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
+          SnackBar(content: Text('Error: @error'.trParams({'error': e.toString()}), style: const TextStyle(color: Colors.white)), backgroundColor: Colors.red),
         );
       }
     } finally {
@@ -155,8 +155,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
   @override
   Widget build(BuildContext context) {
     final booking = widget.booking;
-    final checkIn = DateFormat('MMM dd, yyyy').format(booking.checkInDate);
-    final checkOut = DateFormat('MMM dd, yyyy').format(booking.checkOutDate);
+    final checkIn = DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(booking.checkInDate);
+    final checkOut = DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(booking.checkOutDate);
 
     return PopScope(
       canPop: false,
@@ -208,8 +208,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
               const SizedBox(height: 28),
 
               // SUCCESS TEXT
-              const Text(
-                'Booking Confirmed!',
+              Text(
+                'Booking Confirmed!'.tr,
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.w800,
@@ -222,7 +222,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
 
               // SUBTITLE
               Text(
-                'Your reservation at ${booking.hotelName} is confirmed.\nCheck your Bookings tab for full details.',
+                'reservation_confirmed'.trParams({'hotel': booking.hotelName}),
                 style: const TextStyle(
                   fontSize: 14,
                   color: CustomColors.textMuted,
@@ -270,7 +270,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text('HOTEL', style: _snapshotLabelStyle),
+                              Text('HOTEL'.tr, style: _snapshotLabelStyle),
                               const SizedBox(height: 2),
                               Text(
                                 booking.hotelName,
@@ -292,8 +292,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'CHECK-IN',
+                              Text(
+                                'CHECK-IN'.tr,
                                 style: _snapshotLabelStyle,
                               ),
                               const SizedBox(height: 4),
@@ -320,8 +320,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              const Text(
-                                'CHECK-OUT',
+                              Text(
+                                'CHECK-OUT'.tr,
                                 style: _snapshotLabelStyle,
                               ),
                               const SizedBox(height: 4),
@@ -342,10 +342,12 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('DURATION', style: _snapshotLabelStyle),
+                            Text('DURATION'.tr, style: _snapshotLabelStyle),
                             const SizedBox(height: 4),
                             Text(
-                              '${booking.nights} Night${booking.nights == 1 ? '' : 's'}',
+                              booking.nights == 1 
+                                  ? 'night_count'.trParams({'count': booking.nights.toString()})
+                                  : 'nights_count'.trParams({'count': booking.nights.toString()}),
                               style: _snapshotValueStyle,
                             ),
                           ],
@@ -353,8 +355,8 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            const Text(
-                              'TOTAL PAID',
+                            Text(
+                              'TOTAL PAID'.tr,
                               style: _snapshotLabelStyle,
                             ),
                             const SizedBox(height: 4),
@@ -396,18 +398,18 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           ],
                         ),
                         alignment: Alignment.center,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.bookmark_rounded,
                               size: 18,
                               color: Colors.white,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Go to Bookings',
-                              style: TextStyle(
+                              'Go to Bookings'.tr,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
@@ -435,18 +437,18 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           ),
                         ),
                         alignment: Alignment.center,
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.explore_rounded,
                               size: 18,
                               color: CustomColors.brandRed,
                             ),
-                            SizedBox(width: 8),
+                            const SizedBox(width: 8),
                             Text(
-                              'Back to Exploring',
-                              style: TextStyle(
+                              'Back to Exploring'.tr,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
                                 color: CustomColors.brandRed,
@@ -464,13 +466,13 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                     children: [
                       _buildChipButton(
                         icon: Icons.image_outlined,
-                        label: _isCapturing ? 'Saving...' : 'Save to Gallery',
+                        label: _isCapturing ? 'Saving...'.tr : 'Save to Gallery'.tr,
                         onTap: () => _captureAndAction(saveToGallery: true),
                       ),
                       const SizedBox(width: 12),
                       _buildChipButton(
                         icon: Icons.share_outlined,
-                        label: 'Share',
+                        label: 'Share'.tr,
                         onTap: () => _captureAndAction(saveToGallery: false),
                       ),
                     ],

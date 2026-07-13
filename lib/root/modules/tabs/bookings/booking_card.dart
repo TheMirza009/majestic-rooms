@@ -6,6 +6,7 @@ import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/booking_summary_screen.dart';
+import 'package:get/get.dart';
 
 // ── Shared style constants ─────────────────────────────────────────────────────
 const _labelStyle = TextStyle(
@@ -14,11 +15,7 @@ const _labelStyle = TextStyle(
   letterSpacing: 0.5,
   color: CustomColors.textMuted,
 );
-const _valueStyle = TextStyle(
-  fontSize: 13,
-  fontWeight: FontWeight.w600,
-  color: CustomColors.textMain,
-);
+
 
 class BookingCard extends StatelessWidget {
   const BookingCard({super.key, required this.booking});
@@ -44,17 +41,17 @@ class BookingCard extends StatelessWidget {
       };
 
   String _badgeLabel(BookingStatus status) => switch (status) {
-        BookingStatus.confirmed  => 'Confirmed',
-        BookingStatus.cancelled  => 'Cancelled',
-        BookingStatus.checkedIn  => 'Checked In',
-        BookingStatus.completed  => 'Completed',
-        BookingStatus.pending    => 'Pending',
+        BookingStatus.confirmed  => 'Confirmed'.tr,
+        BookingStatus.cancelled  => 'Cancelled'.tr,
+        BookingStatus.checkedIn  => 'Checked In'.tr,
+        BookingStatus.completed  => 'Completed'.tr,
+        BookingStatus.pending    => 'Pending'.tr,
       };
 
   @override
   Widget build(BuildContext context) {
-    final checkIn  = DateFormat('MMM dd').format(booking.checkInDate);
-    final checkOut = DateFormat('MMM dd, yyyy').format(booking.checkOutDate);
+    final checkIn  = DateFormat('MMM dd', Get.locale?.languageCode).format(booking.checkInDate);
+    final checkOut = DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(booking.checkOutDate);
 
     return GestureDetector(
       onTap: () => Navigator.push(
@@ -178,9 +175,10 @@ class BookingCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 5),
                         Text(
-                          '${booking.nights} Night${booking.nights == 1 ? '' : 's'}'
-                          ' · '
-                          '${booking.numberOfRooms} Room${booking.numberOfRooms == 1 ? '' : 's'}',
+                          'nights_rooms_dot'.trParams({
+                            'nights': booking.nights.toString(),
+                            'rooms': booking.numberOfRooms.toString()
+                          }),
                           style: _labelStyle,
                         ),
                       ],

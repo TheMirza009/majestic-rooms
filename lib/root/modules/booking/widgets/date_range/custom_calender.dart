@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// user for DateTime formatting
 import 'package:intl/intl.dart';
@@ -141,7 +142,7 @@ class CustomCalendarState extends State<CustomCalendar> {
                   child: AnimatedSwitcher(
                     duration: animationDuration,
                     child: Text(
-                      DateFormat('MMMM, yyyy').format(currentMonthDate),
+                      DateFormat('MMMM, yyyy', Get.locale?.languageCode).format(currentMonthDate),
                       key: ValueKey<String>(DateFormat('yyyy-MM').format(currentMonthDate)),
                       style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.grey.shade700),
                     ),
@@ -180,7 +181,7 @@ class CustomCalendarState extends State<CustomCalendar> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      DateFormat('EEE').format(DateTime(2024, 1, 1 + weekday)),
+                      DateFormat('EEE', Get.locale?.languageCode).format(DateTime(2024, 1, 1 + weekday)),
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: widget.primaryColor),
                     ),
                   ),

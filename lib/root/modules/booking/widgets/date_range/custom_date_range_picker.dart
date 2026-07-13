@@ -1,5 +1,6 @@
 import 'package:majestic_rooms/root/modules/booking/widgets/date_range/custom_calender.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 /// user for DateTime formatting
 import 'package:intl/intl.dart';
@@ -136,7 +137,7 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'From',
+                                  'From'.tr,
                                   textAlign: TextAlign.left,
                                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: Colors.grey.shade700),
                                 ),
@@ -144,7 +145,7 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                                 AnimatedSwitcher(
                                   duration: animationDuration,
                                   child: Text(
-                                    startDate != null ? DateFormat('EEE, dd MMM').format(startDate!) : '--/-- ',
+                                    startDate != null ? DateFormat('EEE, dd MMM', Get.locale?.languageCode).format(startDate!) : '--/-- ',
                                     key: ValueKey<String>('from-${startDate?.toIso8601String()}'),
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.grey.shade700),
                                   ),
@@ -160,14 +161,14 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  'To',
+                                  'To'.tr,
                                   style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: Colors.grey.shade700),
                                 ),
                                 const SizedBox(height: 4),
                                 AnimatedSwitcher(
                                   duration: animationDuration,
                                   child: Text(
-                                    endDate != null ? DateFormat('EEE, dd MMM').format(endDate!) : '--/-- ',
+                                    endDate != null ? DateFormat('EEE, dd MMM', Get.locale?.languageCode).format(endDate!) : '--/-- ',
                                     key: ValueKey<String>('to-${endDate?.toIso8601String()}'),
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.grey.shade700),
                                   ),
@@ -211,8 +212,8 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                                     backgroundColor: WidgetStateProperty.all(widget.primaryColor),
                                   ),
                                   onPressed: onCancelPressed,
-                                  child: const Center(
-                                    child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                  child: Center(
+                                    child: Text('Cancel'.tr, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
                                   ),
                                 ),
                               ),
@@ -231,8 +232,8 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                                     backgroundColor: WidgetStateProperty.all(widget.primaryColor),
                                   ),
                                   onPressed: onApplyPressed,
-                                  child: const Center(
-                                    child: Text('Apply', style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                  child: Center(
+                                    child: Text('Apply'.tr, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
                                   ),
                                 ),
                               ),

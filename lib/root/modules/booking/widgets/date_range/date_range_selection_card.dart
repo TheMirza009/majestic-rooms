@@ -54,8 +54,8 @@ class DateRangeSelectionCard extends StatelessWidget {
       child: Obx(() {
         final range = controller.dateRange.value;
         final subtitle = range == null
-            ? 'Tap to select'
-            : '${_fmt(range.start)} → ${_fmt(range.end)}  ·  ${controller.nights} night${controller.nights == 1 ? '' : 's'}';
+            ? 'Tap to select'.tr
+            : '${_fmt(range.start)} → ${_fmt(range.end)}  ·  ${controller.nights == 1 ? 'night_count'.trParams({'count': controller.nights.toString()}) : 'nights_count'.trParams({'count': controller.nights.toString()})}';
 
         return Container(
           decoration: BoxDecoration(
@@ -94,7 +94,7 @@ class DateRangeSelectionCard extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text('Stay Dates', style: _titleStyle),
+                          Text('Stay Dates'.tr, style: _titleStyle),
                           const SizedBox(height: 3),
                           Text(
                             subtitle,
@@ -109,7 +109,7 @@ class DateRangeSelectionCard extends StatelessWidget {
                     // EDIT
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: const Text('Edit', style: _editStyle),
+                      child: Text('Edit'.tr, style: _editStyle),
                     ),
                   ],
                 ),

@@ -8,6 +8,7 @@ import 'package:majestic_rooms/core/theme/app_theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/routes/app_routes.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,8 @@ Future<void> main() async {
   final langCode = prefs.getString('language_code') ?? 'en';
   final countryCode = prefs.getString('country_code') ?? 'US';
   final locale = Locale(langCode, countryCode);
+  
+  await initializeDateFormatting(locale.languageCode, null);
   
   // Option A (Current): Direct Navigation.
   // Since `Supabase.initialize` synchronously restores the session from local

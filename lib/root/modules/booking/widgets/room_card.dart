@@ -5,6 +5,7 @@ import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/hotel/screens/image_viewer_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
+import 'package:get/get.dart';
 class RoomCard extends StatelessWidget {
   final HotelRoom room;
   final String? hotelImageUrl;
@@ -106,7 +107,7 @@ class RoomCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            room.name ?? room.category?.name ?? "Standard Room",
+                            room.name?.tr ?? room.category?.name.tr ?? "Standard Room".tr,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -126,7 +127,9 @@ class RoomCard extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
-                                  "${room.beds} Bed${room.beds! > 1 ? 's' : ''}",
+                                  room.beds == 1
+                                      ? 'bed_count'.trParams({'count': room.beds.toString()})
+                                      : 'beds_count'.trParams({'count': room.beds.toString()}),
                                   style: const TextStyle(
                                     fontSize: 14,
                                     // color: CustomColors.textLight,
@@ -167,7 +170,7 @@ class RoomCard extends StatelessWidget {
                                         final bool isStandard = room.category?.isStandard ?? true;
                                         return Chip(
                                           label: Text(
-                                            room.category!.name,
+                                            room.category!.name.tr,
                                             style: TextStyle(
                                               fontSize: 11,
                                               color: isStandard 
@@ -191,7 +194,7 @@ class RoomCard extends StatelessWidget {
                                     ),
                                   if (room.cityView == true) 
                                     Chip(
-                                      label: const Text('City View', style: TextStyle(fontSize: 11, color: CustomColors.premiumAmber)),
+                                      label: Text('City View'.tr, style: const TextStyle(fontSize: 11, color: CustomColors.premiumAmber)),
                                       backgroundColor: CustomColors.premiumAmber.withOpacity(0.15),
                                       side: const BorderSide(color: CustomColors.premiumAmber, width: 0.8),
                                       padding: const EdgeInsets.symmetric(horizontal: 4),
@@ -207,7 +210,7 @@ class RoomCard extends StatelessWidget {
                             child: Text(
                               room.description?.trim().isNotEmpty == true
                                   ? room.description!
-                                  : 'No information given',
+                                  : 'No information given'.tr,
                               style: TextStyle(
                                 fontSize: 13,
                                 color: CustomColors.textMuted,
@@ -235,8 +238,8 @@ class RoomCard extends StatelessWidget {
                                   color: CustomColors.brandRed,
                                 ),
                               ),
-                              const Text(
-                                " / night",
+                              Text(
+                                " / night".tr,
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: CustomColors.textMuted,
@@ -250,7 +253,7 @@ class RoomCard extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
-                                'With breakfast: ${formatPrice(room.pricePerNightWithBreakfast!)} / night',
+                                'with_breakfast'.trParams({'price': formatPrice(room.pricePerNightWithBreakfast!)}),
                                 style: TextStyle(fontSize: 12, color: CustomColors.textMuted.withOpacity(0.8)),
                               ),
                             ),

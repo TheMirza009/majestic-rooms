@@ -30,16 +30,16 @@ class RoomsScreen extends StatelessWidget {
         final shouldCancel = await showDialog<bool>(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text("Discard Selections?"),
-            content: const Text("Are you sure you want to go back? Your room selections and dates will be reset."),
+            title: Text("Discard Selections?".tr),
+            content: Text("Are you sure you want to go back? Your room selections and dates will be reset.".tr),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
-                child: const Text("Keep Editing"),
+                child: Text("Keep Editing".tr),
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: const Text("Discard", style: TextStyle(color: CustomColors.brandRed)),
+                child: Text("Discard".tr, style: const TextStyle(color: CustomColors.brandRed)),
               ),
             ],
           ),
@@ -54,9 +54,9 @@ class RoomsScreen extends StatelessWidget {
         // backgroundColor: CustomColors.background,
         appBar: AppBar(
           elevation: 0,
-          title: const Text(
-            "Select Rooms",
-            style: TextStyle(fontWeight: FontWeight.bold),
+          title: Text(
+            "Select Rooms".tr,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           leading: IconButton(
@@ -72,15 +72,15 @@ class RoomsScreen extends StatelessWidget {
             SizedBox(height: 8),
             Expanded(
               child: hotel.rooms.isEmpty
-                  ? const Center(
+                  ? Center(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.meeting_room_outlined, size: 64, color: CustomColors.hintColor),
-                          SizedBox(height: 16),
+                          const Icon(Icons.meeting_room_outlined, size: 64, color: CustomColors.hintColor),
+                          const SizedBox(height: 16),
                           Text(
-                            "No rooms available",
-                            style: TextStyle(
+                            "No rooms available".tr,
+                            style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
                               color: CustomColors.textLight,
