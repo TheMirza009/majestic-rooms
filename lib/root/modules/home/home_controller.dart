@@ -69,7 +69,7 @@ class HomeController extends GetxController {
     } else {
       _lastBackPressTime = now;
       Fluttertoast.showToast(
-        msg: "Press back again to exit",
+        msg: 'Press back again to exit'.tr,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         // backgroundColor: const Color(0xFF2E2E2E),

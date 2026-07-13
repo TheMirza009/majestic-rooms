@@ -53,10 +53,10 @@ class UserController extends GetxController {
       _commonController.currentUser.value = _supabase.auth.currentUser;
 
       debugPrint('✅ [UserController] Profile photo updated successfully for user: $userId');
-      Utils.showBottomSnackBar('Success', 'Profile photo updated successfully.');
+      Utils.showBottomSnackBar('Success'.tr, 'Profile photo updated successfully.'.tr);
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update profile photo: $e');
-      Utils.showBottomSnackBarError('Update Failed', 'Could not update profile photo.');
+      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update profile photo.'.tr);
     } finally {
       isLoading.value = false;
     }
@@ -84,10 +84,10 @@ class UserController extends GetxController {
       _commonController.currentUser.value = _supabase.auth.currentUser;
       
       debugPrint('✅ [UserController] Name updated successfully to: ${newName.trim()}');
-      Utils.showBottomSnackBar('Success', 'Name updated successfully.');
+      Utils.showBottomSnackBar('Success'.tr, 'Name updated successfully.'.tr);
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update name: $e');
-      Utils.showBottomSnackBarError('Update Failed', 'Could not update name.');
+      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update name.'.tr);
     } finally {
       isLoading.value = false;
     }
@@ -111,10 +111,10 @@ class UserController extends GetxController {
       _commonController.currentUser.value = _supabase.auth.currentUser;
       
       debugPrint('✅ [UserController] Email updated successfully to: ${newEmail.trim()}');
-      Utils.showBottomSnackBar('Success', 'Email updated successfully. Please verify your new email.');
+      Utils.showBottomSnackBar('Success'.tr, 'Email updated successfully. Please verify your new email.'.tr);
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update email: $e');
-      Utils.showBottomSnackBarError('Update Failed', 'Could not update email.');
+      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update email.'.tr);
     } finally {
       isLoading.value = false;
     }
@@ -122,7 +122,7 @@ class UserController extends GetxController {
 
   Future<bool> updatePassword(String newPassword) async {
     if (newPassword.trim().length < 6) {
-      Utils.showBottomSnackBarError('Invalid Password', 'Password must be at least 6 characters.');
+      Utils.showBottomSnackBarError('Invalid Password'.tr, 'Password must be at least 6 characters.'.tr);
       return false;
     }
     try {
@@ -135,11 +135,11 @@ class UserController extends GetxController {
       await _supabase.auth.updateUser(UserAttributes(password: newPassword.trim()));
 
       debugPrint('✅ [UserController] Password updated successfully.');
-      Utils.showBottomSnackBar('Success', 'Password updated successfully.');
+      Utils.showBottomSnackBar('Success'.tr, 'Password updated successfully.'.tr);
       return true;
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update password: $e');
-      Utils.showBottomSnackBarError('Update Failed', 'Could not update password.');
+      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update password.'.tr);
       return false;
     } finally {
       isLoading.value = false;
@@ -169,10 +169,10 @@ class UserController extends GetxController {
       await _supabase.from('accounts').update({'public_data': publicData}).eq('id', userId);
 
       debugPrint('✅ [UserController] Phone number updated successfully to: ${newPhone.trim()}');
-      Utils.showBottomSnackBar('Success', 'Phone number updated successfully.');
+      Utils.showBottomSnackBar('Success'.tr, 'Phone number updated successfully.'.tr);
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update phone: $e');
-      Utils.showBottomSnackBarError('Update Failed', 'Could not update phone number.');
+      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update phone number.'.tr);
     } finally {
       isLoading.value = false;
     }
@@ -182,6 +182,6 @@ class UserController extends GetxController {
 
   void deleteAccount() {
     // Stub implementation as requested
-    Utils.showBottomSnackBarError('Action Denied', 'Cannot delete this account.');
+    Utils.showBottomSnackBarError('Action Denied'.tr, 'Cannot delete this account.'.tr);
   }
 }

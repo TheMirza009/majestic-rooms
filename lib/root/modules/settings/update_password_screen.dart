@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/user_controller.dart';
+import 'package:majestic_rooms/root/modules/settings/user_controller.dart';
 import 'package:majestic_rooms/root/widgets/entry_field.dart';
 
 class UpdatePasswordScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         surfaceTintColor: const Color(0xFFF7F7F9),
         elevation: 0,
         centerTitle: true,
-        title: const Text('Update Password', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text('Update Password'.tr, style: const TextStyle(fontWeight: FontWeight.bold)),
         leadingWidth: 70,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -90,16 +90,16 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
-                        'Choose a strong password',
+                      Text(
+                        'Choose a strong password'.tr,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        "Use a long, random password you don't use anywhere else to keep your account secure.",
+                      Text(
+                        'password_desc'.tr,
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
+                        style: const TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
                       ),
                       const SizedBox(height: 32),
 
@@ -107,15 +107,15 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                       fieldCard(
                         child: LabeledEntryField(
                           controller: currentPasswordController,
-                          labelText: 'Current Password',
-                          hintText: 'Enter current password',
+                          labelText: 'Current Password'.tr,
+                          hintText: 'Enter current password'.tr,
                           obscure: obscureCurrent,
                           suffix: IconButton(
                             icon: Icon(obscureCurrent ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
                             onPressed: () => setState(() => obscureCurrent = !obscureCurrent),
                           ),
                           validator: (String? val) {
-                            if (val == null || val.isEmpty) return 'Current password is required';
+                            if (val == null || val.isEmpty) return 'Current password is required'.tr;
                             return null;
                           },
                         ),
@@ -129,16 +129,16 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           children: <Widget>[
                             LabeledEntryField(
                               controller: newPasswordController,
-                              labelText: 'New Password',
-                              hintText: 'Enter new password',
+                              labelText: 'New Password'.tr,
+                              hintText: 'Enter new password'.tr,
                               obscure: obscureNew,
                               suffix: IconButton(
                                 icon: Icon(obscureNew ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
                                 onPressed: () => setState(() => obscureNew = !obscureNew),
                               ),
                               validator: (String? val) {
-                                if (val == null || val.isEmpty) return 'New password is required';
-                                if (val.length < minPasswordLength) return 'Must be at least 6 characters';
+                                if (val == null || val.isEmpty) return 'New password is required'.tr;
+                                if (val.length < minPasswordLength) return 'Must be at least 6 characters'.tr;
                                 return null;
                               },
                             ),
@@ -183,15 +183,15 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                             const SizedBox(height: fieldSpacing),
                             LabeledEntryField(
                               controller: confirmPasswordController,
-                              labelText: 'Confirm New Password',
-                              hintText: 'Re-type new password',
+                              labelText: 'Confirm New Password'.tr,
+                              hintText: 'Re-type new password'.tr,
                               obscure: obscureConfirm,
                               suffix: IconButton(
                                 icon: Icon(obscureConfirm ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
                                 onPressed: () => setState(() => obscureConfirm = !obscureConfirm),
                               ),
                               validator: (String? val) {
-                                if (val != newPasswordController.text) return 'Passwords do not match';
+                                if (val != newPasswordController.text) return 'Passwords do not match'.tr;
                                 return null;
                               },
                             ),
@@ -221,10 +221,10 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     width: 22,
                                     child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
                                   )
-                                : const Text(
-                                    'Update Password',
-                                    key: ValueKey<String>('label'),
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                : Text(
+                                    'Update Password'.tr,
+                                    key: const ValueKey<String>('label'),
+                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                   ),
                           ),
                         ),
@@ -279,9 +279,9 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   }
 
   String strengthLabel(double strength) {
-    if (strength < 0.4) return 'Weak';
-    if (strength < 0.7) return 'Medium';
-    return 'Strong';
+    if (strength < 0.4) return 'Weak'.tr;
+    if (strength < 0.7) return 'Medium'.tr;
+    return 'Strong'.tr;
   }
 
   // Validates, submits, then pops with a success confirmation.
@@ -294,8 +294,8 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
     if (!mounted) return;
     Navigator.pop(context);
     Get.snackbar(
-      'Password updated',
-      'Your password has been changed successfully.',
+      'Password updated'.tr,
+      'Your password has been changed successfully.'.tr,
       snackPosition: SnackPosition.BOTTOM,
       backgroundColor: CustomColors.brandRed,
       colorText: Colors.white,

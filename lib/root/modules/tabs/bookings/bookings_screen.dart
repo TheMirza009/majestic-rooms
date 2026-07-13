@@ -194,7 +194,7 @@ class _DebugClearBookingsButton extends StatelessWidget {
             final user = supabase.auth.currentUser;
             if (user == null) {
                Get.find<CommonController>().bookings.clear();
-               Get.snackbar('Debug', 'Local bookings cleared (No user logged in).', snackPosition: SnackPosition.BOTTOM);
+               Get.snackbar('Debug'.tr, 'Local bookings cleared (No user logged in).'.tr, snackPosition: SnackPosition.BOTTOM);
                return;
             }
             final userId = user.id;
@@ -211,8 +211,8 @@ class _DebugClearBookingsButton extends StatelessWidget {
             Get.find<CommonController>().bookings.clear();
             if (context.mounted) {
               Get.snackbar(
-                'Debug',
-                'All bookings completely deleted from backend and app.',
+                'Debug'.tr,
+                'All bookings completely deleted from backend and app.'.tr,
                 snackPosition: SnackPosition.BOTTOM,
                 margin: EdgeInsets.all(16),
               );
@@ -221,8 +221,8 @@ class _DebugClearBookingsButton extends StatelessWidget {
             debugPrint('❌ [Debug] Failed to wipe bookings: $e');
             if (context.mounted) {
               Get.snackbar(
-                'Error',
-                'Failed to delete bookings: $e',
+                'Error'.tr,
+                'failed_to_delete_bookings_error'.trParams({'error': e.toString()}),
                 snackPosition: SnackPosition.BOTTOM,
                 margin: EdgeInsets.all(16),
               );

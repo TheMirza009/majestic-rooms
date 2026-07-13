@@ -22,7 +22,7 @@ class HotelScreenController extends GetxController {
     try {
       if (hotelId.startsWith('local_')) {
         debugPrint('Hotel $hotelId is a local hotel. Skipping reviews fetch.');
-        Utils.showToast('Could not fetch reviews');
+        Utils.showToast('Could not fetch reviews'.tr);
         return;
       }
 
@@ -36,7 +36,7 @@ class HotelScreenController extends GetxController {
 
       if (hotelRow == null) {
         debugPrint('Hotel $hotelId does not exist on server. Skipping reviews fetch.');
-        Utils.showToast('Could not fetch reviews');
+        Utils.showToast('Could not fetch reviews'.tr);
         return;
       }
 
@@ -48,7 +48,7 @@ class HotelScreenController extends GetxController {
       reviews.assignAll((response as List).map((e) => Review.fromJson(e)).toList());
     } catch (e) {
       debugPrint('Reviews fetch error: $e');
-      Utils.showToast('Could not fetch reviews');
+      Utils.showToast('Could not fetch reviews'.tr);
     } finally {
       isLoadingReviews.value = false;
     }

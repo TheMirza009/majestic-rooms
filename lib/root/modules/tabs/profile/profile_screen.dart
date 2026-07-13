@@ -6,9 +6,9 @@ import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_controller.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/settings_screen.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/user_settings_screen.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/about_screen.dart';
+import 'package:majestic_rooms/root/modules/settings/settings_screen.dart';
+import 'package:majestic_rooms/root/modules/settings/user_settings_screen.dart';
+import 'package:majestic_rooms/root/modules/settings/about/about_screen.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter/cupertino.dart';
@@ -140,7 +140,7 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
             clipBehavior: Clip.antiAlias,
             child: _Tile(
               icon: Icons.person_outline,
-              title: 'User Settings',
+              title: 'User Settings'.tr,
               onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const UserSettingsScreen())),
             ),
           ),
@@ -155,13 +155,13 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               children: [
                 _Tile(
                   icon: Icons.bookmark_border,
-                  title: 'My Bookings',
+                  title: 'My Bookings'.tr,
                   onTap: () => homeController.navigateTo(2),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.favorite_border,
-                  title: 'Saved Hotels',
+                  title: 'Saved Hotels'.tr,
                   onTap: () => homeController.navigateTo(1),
                 ),
               ],
@@ -178,33 +178,33 @@ class _ProfileScreenState extends State<ProfileScreen> with SingleTickerProvider
               children: [
                 _Tile(
                   icon: Icons.email_outlined,
-                  title: 'Contact Support',
+                  title: 'Contact Support'.tr,
                   subtitle: Constants.email,
                   onTap: () => Utils.launchEmail(Constants.email),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.phone_outlined,
-                  title: 'Helpline',
-                  subtitle: Constants.phone,
+                  title: 'Helpline'.tr,
+                  subtitle: '\u200E${Constants.phone}',
                   onTap: () => Utils.launchPhone(Constants.phone),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.info_outline,
-                  title: 'About',
+                  title: 'About'.tr,
                   onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const AboutScreen())),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.settings_outlined,
-                  title: 'Settings',
+                  title: 'Settings'.tr,
                   onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const SettingsScreen())),
                 ),
                 const Divider(height: 1, indent: _dividerIndent, color: CustomColors.borderColor),
                 _Tile(
                   icon: Icons.logout,
-                  title: 'Log Out',
+                  title: 'Log Out'.tr,
                   iconColor: CustomColors.brandRed,
                   titleColor: CustomColors.brandRed,
                   trailing: const SizedBox.shrink(),

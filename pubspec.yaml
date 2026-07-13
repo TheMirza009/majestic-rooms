@@ -2,7 +2,7 @@ name: majestic_rooms
 description: "A new Flutter project."
 
 publish_to: 'none'
-version: 0.3.5+1
+version: 0.3.6+2
 
 environment:
   sdk: ^3.12.0

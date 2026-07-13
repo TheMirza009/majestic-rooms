@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/app_binding.dart';
+import 'package:majestic_rooms/core/localization/app_translations.dart';
 import 'package:majestic_rooms/core/routes/app_pages.dart';
 import 'package:majestic_rooms/core/supabase/environment.dart';
 import 'package:majestic_rooms/core/theme/app_theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/routes/app_routes.dart';
 
@@ -13,6 +15,11 @@ Future<void> main() async {
     url: Environment.supabaseUrl,
     publishableKey: Environment.supabaseAnonKey,
   );
+  
+  final prefs = await SharedPreferences.getInstance();
+  final langCode = prefs.getString('language_code') ?? 'en';
+  final countryCode = prefs.getString('country_code') ?? 'US';
+  final locale = Locale(langCode, countryCode);
   
   // Option A (Current): Direct Navigation.
   // Since `Supabase.initialize` synchronously restores the session from local
@@ -26,13 +33,14 @@ Future<void> main() async {
   final session = Supabase.instance.client.auth.currentSession;
   final initialRoute = session != null ? AppRoutes.home : AppRoutes.login;
 
-  runApp(MyApp(initialRoute: initialRoute));
+  runApp(MyApp(initialRoute: initialRoute, locale: locale));
 }
 
 class MyApp extends StatelessWidget {
   final String initialRoute;
+  final Locale locale;
   
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({super.key, required this.initialRoute, required this.locale});
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +49,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       initialBinding: AppBinding(),
+      translations: AppTranslations(),
+      locale: locale,
+      fallbackLocale: const Locale('en', 'US'),
       initialRoute: initialRoute,
       getPages: AppPages.routes,
     );

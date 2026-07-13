@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/user_controller.dart';
+import 'package:majestic_rooms/root/modules/settings/user_controller.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
-import 'package:majestic_rooms/root/modules/tabs/profile/update_password_screen.dart';
+import 'package:majestic_rooms/root/modules/settings/update_password_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class UserSettingsScreen extends StatefulWidget {
@@ -28,26 +28,26 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           backgroundColor: CustomColors.surfaceWhite,
           surfaceTintColor: Colors.transparent,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Update $title', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          title: Text('Update @title'.trParams({'title': title.tr}), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           content: TextField(
             controller: textController,
             obscureText: isPassword,
             decoration: InputDecoration(
-              hintText: 'Enter new $title',
+              hintText: 'Enter new @title'.trParams({'title': title.tr}),
               focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: CustomColors.brandRed)),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('Cancel', style: TextStyle(color: CustomColors.textMuted)),
+              child: Text('Cancel'.tr, style: const TextStyle(color: CustomColors.textMuted)),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 onSave(textController.text);
               },
-              child: const Text('Save', style: TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
+              child: Text('Save'.tr, style: const TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
             ),
           ],
         );
@@ -63,9 +63,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         backgroundColor: const Color(0xFFF7F7F9),
         surfaceTintColor: const Color(0xFFF7F7F9),
         centerTitle: true,
-        title: const Text(
-          'User Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          'User Settings'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
         leading: IconButton(
@@ -111,9 +111,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   ),
                 ),
                 const SizedBox(height: 32),
-                const Text(
-                  'Personal Information',
-                  style: TextStyle(
+                Text(
+                  'Personal Information'.tr,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
                     color: CustomColors.textMain,
@@ -131,28 +131,28 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                     children: [
                       _SettingsTile(
                         icon: Icons.person_outline,
-                        title: 'Full Name',
-                        value: fullName.isEmpty ? 'Set name' : fullName,
+                        title: 'Full Name'.tr,
+                        value: fullName.isEmpty ? 'Set name'.tr : fullName,
                         onTap: () => _showEditDialog('Name', fullName, (val) => _userController.updateName(val)),
                       ),
                       const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
                       _SettingsTile(
                         icon: Icons.email_outlined,
-                        title: 'Email',
-                        value: email.isEmpty ? 'Set email' : email,
+                        title: 'Email'.tr,
+                        value: email.isEmpty ? 'Set email'.tr : email,
                         onTap: () => _showEditDialog('Email', email, (val) => _userController.updateEmail(val)),
                       ),
                       const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
                       _SettingsTile(
                         icon: Icons.phone_outlined,
-                        title: 'Phone Number',
-                        value: 'Update phone',
+                        title: 'Phone Number'.tr,
+                        value: 'Update phone'.tr,
                         onTap: () => _showEditDialog('Phone', '', (val) => _userController.updatePhone(val)),
                       ),
                       const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
                       _SettingsTile(
                         icon: Icons.lock_outline,
-                        title: 'Password',
+                        title: 'Password'.tr,
                         value: '••••••••',
                         onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const UpdatePasswordScreen())),
                       ),
@@ -169,9 +169,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
                     leading: const Icon(Icons.delete_outline, color: CustomColors.brandRed),
-                    title: const Text(
-                      'Delete Account',
-                      style: TextStyle(
+                    title: Text(
+                      'Delete Account'.tr,
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: CustomColors.brandRed,

@@ -53,11 +53,11 @@ class LoginController extends GetxController {
       debugPrint(
         '❌ [Login] AuthException: ${e.message} (status: ${e.statusCode})',
       );
-      Utils.showBottomSnackBarError('Sign In Failed', e.message);
+      Utils.showBottomSnackBarError('Sign In Failed'.tr, e.message);
     } catch (e) {
       debugPrint('💥 [Login] Unexpected error: $e');
       Utils.showBottomSnackBarError(
-        'Sign In Failed',
+        'Sign In Failed'.tr,
         'An unexpected error occurred.',
       );
     } finally {

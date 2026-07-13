@@ -32,6 +32,7 @@ class CommonController extends GetxController {
   void onInit() {
     super.onInit();
     currentUser.value = _supabase.currentUser;
+    languageCode.value = Get.locale?.languageCode ?? 'en';
     _initData();
 
     _authSubscription = _supabase.onAuthStateChange.listen((authState) {
@@ -99,6 +100,23 @@ class CommonController extends GetxController {
   /// Active currency symbol. Read by [formatPrice] throughout the app.
   /// Change this from Settings whenever that screen is built.
   final RxString currencySymbol = r'$'.obs;
+
+  /// Active language code.
+  final RxString languageCode = 'en'.obs;
+
+  Future<void> changeLanguage(String lang, String country) async {
+    languageCode.value = lang;
+    final locale = Locale(lang, country);
+    Get.updateLocale(locale);
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('language_code', lang);
+      await prefs.setString('country_code', country);
+    } catch (e) {
+      debugPrint('❌ [CommonController] Failed to save language: $e');
+    }
+  }
 
   final RxList<Hotel> savedHotels = <Hotel>[].obs;
 

@@ -126,7 +126,7 @@ class ExploreController extends GetxController {
   Future<void> onSearchSubmit(String query) async {
     final q = query.trim();
     if (q.isEmpty && searchQuery.value.trim().isEmpty) {
-      Utils.showToast('Search query cannot be empty');
+      Utils.showToast('Search query cannot be empty'.tr);
       return;
     }
     final effectiveQuery = q.isNotEmpty ? q : searchQuery.value.trim();
@@ -234,7 +234,7 @@ class ExploreController extends GetxController {
       _mergeIntoCache(parsedHotels);
       _applyFilters();
 
-      if (hotels.isEmpty) Utils.showToast('No hotels found');
+      if (hotels.isEmpty) Utils.showToast('No hotels found'.tr);
     } catch (e) {
       debugPrint("Search hotels error: $e");
       if (e is PostgrestException && (e.code == 'PGRST303' || e.message.toLowerCase().contains('jwt expired'))) {

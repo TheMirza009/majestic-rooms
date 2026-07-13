@@ -18,10 +18,10 @@ class Utils {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        showToast("Could not open link");
+        showToast('could_not_open_link'.tr);
       }
     } catch (e) {
-      showToast("Could not open link");
+      showToast('could_not_open_link'.tr);
     }
   }
 
@@ -34,10 +34,10 @@ class Utils {
       if (await canLaunchUrl(emailLaunchUri)) {
         await launchUrl(emailLaunchUri, mode: LaunchMode.externalApplication);
       } else {
-        showToast("No email app found");
+        showToast('no_email_app_found'.tr);
       }
     } catch (e) {
-      showToast("No email app found");
+      showToast('no_email_app_found'.tr);
     }
   }
 
@@ -51,10 +51,10 @@ class Utils {
       if (await canLaunchUrl(phoneLaunchUri)) {
         await launchUrl(phoneLaunchUri, mode: LaunchMode.externalApplication);
       } else {
-        showToast("No phone app found");
+        showToast('no_phone_app_found'.tr);
       }
     } catch (e) {
-      showToast("No phone app found");
+      showToast('no_phone_app_found'.tr);
     }
   }
 
@@ -166,7 +166,7 @@ class Utils {
       title,
       message,
       icon: const Icon(Icons.error_outline, color: CustomColors.brandRed),
-      mainButtonText: mainButtonText ?? "Close",
+      mainButtonText: mainButtonText ?? 'Close'.tr,
       onMainButtonTap: onMainButtonTap ?? () => Get.back(),
       animationDuration: animationDuration,
       barBlur: barBlur,
@@ -192,23 +192,23 @@ class Utils {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog.adaptive(
-          title: const Text('About'),
-          content: const Column(
+          title: Text('About'.tr),
+          content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'App Name: ${Constants.appName}',
-                style: TextStyle(fontWeight: FontWeight.bold),
+                'app_name_text'.trParams({'appName': Constants.appName}),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 8),
-              Text('Version: ${Constants.appVersion}'),
+              const SizedBox(height: 8),
+              Text('Version: @version'.trParams({'version': Constants.appVersion})),
             ],
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text('OK'),
+              child: Text('OK'.tr),
             ),
           ],
         );

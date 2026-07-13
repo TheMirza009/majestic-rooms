@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
@@ -9,64 +10,50 @@ class AboutScreen extends StatelessWidget {
   // ── Control Panel ─────────────────────────────────────────────────────────
   static const _scaffoldBg = Color(0xFFF7F7F9);
 
-  static const description =
-      'We make finding hotels in Saudi Arabia easy. Our platform helps '
-      'travelers book great stays, from cozy rooms to luxury hotels, '
-      'all across the Kingdom.';
+  static String get description => 'about_description'.tr;
 
-  static const storyTitle = 'Our Story';
-  static const storyContent =
-      'Started in 2023 by a group of Saudi travel lovers, MajesticRooms '
-      'began with a goal to make hotel booking simple. We saw too many '
-      'outdated websites and wanted to create one place where people could '
-      'find trusted hotels in Saudi Arabia, from Riyadh\'s busy streets to '
-      'Jeddah\'s calm beaches. Now, we help thousands of travelers find '
-      'their perfect stay.';
+  static String get storyTitle => 'our_story_title'.tr;
+  static String get storyContent => 'our_story_content'.tr;
 
-  static const missionTitle = 'Our Mission';
-  static const missionContent =
-      'Our goal is to make hotel booking in Saudi Arabia smooth and reliable. '
-      'We want travelers to easily find hotels that match their needs, whether '
-      'they\'re visiting Mecca, exploring Al-Ula, or working in Dammam. We '
-      'focus on clear information, easy navigation, and supporting local '
-      'hotels to share their unique vibe.';
+  static String get missionTitle => 'our_mission_title'.tr;
+  static String get missionContent => 'our_mission_content'.tr;
 
-  static const valuesTitle = 'Our Values';
-  static const values = <(String, String, IconData)>[
+  static String get valuesTitle => 'our_values_title'.tr;
+  static List<(String, String, IconData)> get values => [
     (
-      'Trust & Transparency',
-      'Honest pricing, clear information, and lasting relationships with guests and hotel partners.',
+      'value_trust_title'.tr,
+      'value_trust_content'.tr,
       Icons.handshake_outlined,
     ),
     (
-      'Customer First',
-      'Your satisfaction is our priority. Support is available 24/7 for any queries.',
+      'value_customer_title'.tr,
+      'value_customer_content'.tr,
       Icons.support_agent_outlined,
     ),
     (
-      'Passion for Travel',
-      'We understand the joy of travel and work tirelessly to make every journey memorable.',
+      'value_passion_title'.tr,
+      'value_passion_content'.tr,
       Icons.explore_outlined,
     ),
     (
-      'Simplicity',
-      'Our platform is intuitive and easy to use, making hotel booking a breeze.',
+      'value_simplicity_title'.tr,
+      'value_simplicity_content'.tr,
       Icons.touch_app_outlined,
     ),
     (
-      'Security & Privacy',
-      'Your data and payment information are protected with industry-leading security measures.',
+      'value_security_title'.tr,
+      'value_security_content'.tr,
       Icons.security_outlined,
     ),
     (
-      'Local Expertise',
-      'Our deep knowledge of Saudi Arabia helps us recommend the best hotels for pilgrims and travelers alike.',
+      'value_expertise_title'.tr,
+      'value_expertise_content'.tr,
       Icons.location_on_outlined,
     ),
   ];
 
-  static const _licenseLabel = 'Licensed Company';
-  static const _licenseNumber = 'Ministry of Tourism — No. 73105591';
+  static String get _licenseLabel => 'licensed_company'.tr;
+  static String get _licenseNumber => 'license_number'.tr;
 
   // ── Styles ─────────────────────────────────────────────────────────────────
   static const _tileTitleStyle = TextStyle(
@@ -86,7 +73,7 @@ class AboutScreen extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         insetPadding: const EdgeInsets.symmetric(horizontal: 16),
-        title: const Text(valuesTitle), 
+        title: Text(valuesTitle), 
         content: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +110,7 @@ class AboutScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
+            child: Text('Close'.tr),
           ),
         ],
       ),
@@ -179,9 +166,9 @@ class AboutScreen extends StatelessWidget {
         backgroundColor: _scaffoldBg,
         surfaceTintColor: _scaffoldBg,
         centerTitle: true,
-        title: const Text(
-          'About',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        title: Text(
+          'About'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         leadingWidth: 70,
         leading: IconButton(
@@ -210,9 +197,9 @@ class AboutScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                'Version ${Constants.appVersion}',
-                style: TextStyle(
+              Text(
+                'Version: @version'.trParams({'version': Constants.appVersion}),
+                style: const TextStyle(
                   fontSize: 14,
                   color: CustomColors.textMuted,
                   fontWeight: FontWeight.w500,
@@ -223,9 +210,9 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 32),
 
           // DESCRIPTION
-          const Text(
+          Text(
             description,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               color: CustomColors.textMuted,
               height: 1.6,
@@ -249,7 +236,7 @@ class AboutScreen extends StatelessWidget {
                   infoExpansionTile(
                     icon: Icons.auto_stories_outlined,
                     title: storyTitle,
-                    child: const Text(
+                    child: Text(
                       storyContent, 
                       style: _tileBodyStyle,
                     ),
@@ -258,7 +245,7 @@ class AboutScreen extends StatelessWidget {
                   infoExpansionTile(
                     icon: Icons.flag_outlined,
                     title: missionTitle,
-                    child: const Text(
+                    child: Text(
                       missionContent,
                       style: _tileBodyStyle,
                     ),
@@ -266,22 +253,22 @@ class AboutScreen extends StatelessWidget {
                   tileDivider(),
                   infoListTile(
                     icon: Icons.stars_outlined,
-                    title: 'Our Values',
+                    title: 'our_values_title'.tr,
                     onTap: () => _onValuesTap(context),
                   ),
                   tileDivider(),
                   infoExpansionTile(
                     icon: Icons.verified_outlined,
                     title: _licenseLabel,
-                    child: const Row(
+                    child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Icon(Icons.verified, color: CustomColors.luxuryGold, size: 18),
-                        SizedBox(width: 6),
+                        const Icon(Icons.verified, color: CustomColors.luxuryGold, size: 18),
+                        const SizedBox(width: 6),
                         Expanded(
                           child: Text(
                             _licenseNumber,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 13, 
                               color: CustomColors.textMuted,
                             ),
@@ -293,25 +280,25 @@ class AboutScreen extends StatelessWidget {
                   tileDivider(),
                   infoListTile(
                     icon: Icons.description_outlined,
-                    title: 'Terms of Service',
+                    title: 'terms_of_service'.tr,
                     onTap: () => Utils.launchWebUrl(Constants.termsAndConditions),
                   ),
                   tileDivider(),
                   infoListTile(
                     icon: Icons.privacy_tip_outlined,
-                    title: 'Privacy Policy',
+                    title: 'privacy_policy'.tr,
                     onTap: () => Utils.launchWebUrl(Constants.privacyPolicy),
                   ),
                   tileDivider(),
                   infoListTile(
                     icon: Icons.email_outlined,
-                    title: 'Contact Us',
+                    title: 'contact_us'.tr,
                     onTap: () => Utils.launchEmail(Constants.email),
                   ),
                   tileDivider(),
                   infoListTile(
                     icon: Icons.phone_outlined,
-                    title: 'Call Us',
+                    title: 'call_us'.tr,
                     onTap: () => Utils.launchPhone(Constants.phone),
                   ),
                 ],
@@ -321,10 +308,10 @@ class AboutScreen extends StatelessWidget {
           const SizedBox(height: 32),
 
           // COPYRIGHT
-          const Center(
+          Center(
             child: Text(
-              '© 2026 Majestic Rooms. All rights reserved.',
-              style: TextStyle(
+              'copyright_text'.tr,
+              style: const TextStyle(
                 fontSize: 12,
                 color: CustomColors.textMuted,
               ),
