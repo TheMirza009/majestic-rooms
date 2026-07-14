@@ -4,12 +4,7 @@ class Facility {
   final String? slug;
   final String? icon;
 
-  const Facility({
-    required this.id,
-    required this.name,
-    this.slug,
-    this.icon,
-  });
+  const Facility({required this.id, required this.name, this.slug, this.icon});
 
   factory Facility.fromJson(Map<String, dynamic> json) {
     return Facility(
@@ -23,9 +18,7 @@ class Facility {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Facility &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Facility && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

@@ -69,7 +69,8 @@ class CustomDateRangePicker extends StatefulWidget {
   CustomDateRangePickerState createState() => CustomDateRangePickerState();
 }
 
-class CustomDateRangePickerState extends State<CustomDateRangePicker> with TickerProviderStateMixin {
+class CustomDateRangePickerState extends State<CustomDateRangePicker>
+    with TickerProviderStateMixin {
   // ── Control Panel ──────────────────────────────────────────────────────
   static const Duration animationDuration = Duration(milliseconds: 250);
 
@@ -81,7 +82,10 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
 
   @override
   void initState() {
-    animationController = AnimationController(duration: const Duration(milliseconds: 400), vsync: this);
+    animationController = AnimationController(
+      duration: const Duration(milliseconds: 400),
+      vsync: this,
+    );
     startDate = widget.initialStartDate;
     endDate = widget.initialEndDate;
     animationController?.forward();
@@ -117,7 +121,11 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                   color: widget.backgroundColor,
                   borderRadius: const BorderRadius.all(Radius.circular(24.0)),
                   boxShadow: <BoxShadow>[
-                    BoxShadow(color: Colors.grey.withValues(alpha: 0.2), offset: const Offset(4, 4), blurRadius: 8.0),
+                    BoxShadow(
+                      color: Colors.grey.withValues(alpha: 0.2),
+                      offset: const Offset(4, 4),
+                      blurRadius: 8.0,
+                    ),
                   ],
                 ),
                 child: InkWell(
@@ -139,21 +147,40 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                                 Text(
                                   'From'.tr,
                                   textAlign: TextAlign.left,
-                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: Colors.grey.shade700),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 AnimatedSwitcher(
                                   duration: animationDuration,
                                   child: Text(
-                                    startDate != null ? DateFormat('EEE, dd MMM', Get.locale?.languageCode).format(startDate!) : '--/-- ',
-                                    key: ValueKey<String>('from-${startDate?.toIso8601String()}'),
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.grey.shade700),
+                                    startDate != null
+                                        ? DateFormat(
+                                            'EEE, dd MMM',
+                                            Get.locale?.languageCode,
+                                          ).format(startDate!)
+                                        : '--/-- ',
+                                    key: ValueKey<String>(
+                                      'from-${startDate?.toIso8601String()}',
+                                    ),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.grey.shade700,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          Container(height: 74, width: 1, color: Colors.grey.shade200),
+                          Container(
+                            height: 74,
+                            width: 1,
+                            color: Colors.grey.shade200,
+                          ),
                           // TO LABEL
                           Expanded(
                             child: Column(
@@ -162,20 +189,35 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                               children: <Widget>[
                                 Text(
                                   'To'.tr,
-                                  style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16, color: Colors.grey.shade700),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 16,
+                                    color: Colors.grey.shade700,
+                                  ),
                                 ),
                                 const SizedBox(height: 4),
                                 AnimatedSwitcher(
                                   duration: animationDuration,
                                   child: Text(
-                                    endDate != null ? DateFormat('EEE, dd MMM', Get.locale?.languageCode).format(endDate!) : '--/-- ',
-                                    key: ValueKey<String>('to-${endDate?.toIso8601String()}'),
-                                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Colors.grey.shade700),
+                                    endDate != null
+                                        ? DateFormat(
+                                            'EEE, dd MMM',
+                                            Get.locale?.languageCode,
+                                          ).format(endDate!)
+                                        : '--/-- ',
+                                    key: ValueKey<String>(
+                                      'to-${endDate?.toIso8601String()}',
+                                    ),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
+                                      color: Colors.grey.shade700,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                          )
+                          ),
                         ],
                       ),
                       const Divider(height: 1),
@@ -187,33 +229,58 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                         initialStartDate: widget.initialStartDate,
                         primaryColor: widget.primaryColor,
                         rangeColor: widget.rangeColor,
-                        startEndDateChange: (DateTime? startDateData, DateTime? endDateData) {
-                          setState(() {
-                            startDate = startDateData;
-                            endDate = endDateData;
-                          });
-                        },
+                        startEndDateChange:
+                            (DateTime? startDateData, DateTime? endDateData) {
+                              setState(() {
+                                startDate = startDateData;
+                                endDate = endDateData;
+                              });
+                            },
                       ),
                       // ACTION BUTTONS
                       Padding(
-                        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16, top: 8),
+                        padding: const EdgeInsets.only(
+                          left: 16,
+                          right: 16,
+                          bottom: 16,
+                          top: 8,
+                        ),
                         child: Row(
                           children: <Widget>[
                             Expanded(
                               child: Container(
                                 height: 48,
-                                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(24.0))),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(24.0),
+                                  ),
+                                ),
                                 child: OutlinedButton(
                                   style: ButtonStyle(
-                                    side: WidgetStateProperty.all(BorderSide(color: widget.primaryColor)),
-                                    shape: WidgetStateProperty.all(
-                                      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24.0))),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(color: widget.primaryColor),
                                     ),
-                                    backgroundColor: WidgetStateProperty.all(widget.primaryColor),
+                                    shape: WidgetStateProperty.all(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(24.0),
+                                        ),
+                                      ),
+                                    ),
+                                    backgroundColor: WidgetStateProperty.all(
+                                      widget.primaryColor,
+                                    ),
                                   ),
                                   onPressed: onCancelPressed,
                                   child: Center(
-                                    child: Text('Cancel'.tr, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                    child: Text(
+                                      'Cancel'.tr,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -222,25 +289,44 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
                             Expanded(
                               child: Container(
                                 height: 48,
-                                decoration: const BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(24.0))),
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(24.0),
+                                  ),
+                                ),
                                 child: OutlinedButton(
                                   style: ButtonStyle(
-                                    side: WidgetStateProperty.all(BorderSide(color: widget.primaryColor)),
-                                    shape: WidgetStateProperty.all(
-                                      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(24.0))),
+                                    side: WidgetStateProperty.all(
+                                      BorderSide(color: widget.primaryColor),
                                     ),
-                                    backgroundColor: WidgetStateProperty.all(widget.primaryColor),
+                                    shape: WidgetStateProperty.all(
+                                      const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(24.0),
+                                        ),
+                                      ),
+                                    ),
+                                    backgroundColor: WidgetStateProperty.all(
+                                      widget.primaryColor,
+                                    ),
                                   ),
                                   onPressed: onApplyPressed,
                                   child: Center(
-                                    child: Text('Apply'.tr, style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                    child: Text(
+                                      'Apply'.tr,
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -263,7 +349,7 @@ class CustomDateRangePickerState extends State<CustomDateRangePicker> with Ticke
   // Applies the current range: notifies the caller, then closes the dialog.
   void onApplyPressed() {
     if (startDate == null) return;
-    
+
     try {
       final end = endDate ?? startDate!;
       widget.onApplyClick(startDate!, end);

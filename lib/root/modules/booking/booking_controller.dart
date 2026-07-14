@@ -6,20 +6,20 @@ import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/data/models/booking.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/booking_summary_screen.dart';
 import 'package:majestic_rooms/root/modules/booking/screens/booking_success_screen.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/date_range/custom_date_range_picker.dart';
 
 class BookingController extends GetxController {
   final Hotel hotel;
-  
+
   // Track selected rooms and their quantities
   final RxMap<HotelRoom, int> selectedRooms = <HotelRoom, int>{}.obs;
 
   // Date range
   late final Rx<DateTimeRange?> dateRange;
-  
+
   // Loading state
   final RxBool isBooking = false.obs;
 
@@ -62,7 +62,9 @@ class BookingController extends GetxController {
 
   int get nights {
     if (dateRange.value == null) return 1;
-    final duration = dateRange.value!.end.difference(dateRange.value!.start).inDays;
+    final duration = dateRange.value!.end
+        .difference(dateRange.value!.start)
+        .inDays;
     return duration == 0 ? 1 : duration;
   }
 
@@ -80,7 +82,7 @@ class BookingController extends GetxController {
   void selectDateRange(BuildContext context) {
     final DateTime now = DateTime.now();
     final DateTime today = DateTime(now.year, now.month, now.day);
-    
+
     showCustomDateRangePicker(
       context,
       dismissible: true,
@@ -88,16 +90,16 @@ class BookingController extends GetxController {
       maximumDate: today.add(const Duration(days: 365)),
       startDate: dateRange.value?.start,
       endDate: dateRange.value?.end,
-      backgroundColor: CustomColors.surfaceWhite,
-      primaryColor: CustomColors.brandRed,
-      rangeColor: CustomColors.brandRed.withValues(alpha: 0.1),
+      backgroundColor: context.surfaceColor,
+      primaryColor: context.primaryColor,
+      rangeColor: context.primaryColor.withValues(alpha: 0.1),
       onApplyClick: (start, end) {
         dateRange.value = DateTimeRange(start: start, end: end);
       },
       onCancelClick: () {
         // Option 1: Clear the date range
         // dateRange.value = null;
-        
+
         // Option 2: Do nothing on cancel to preserve existing selection
       },
     );
@@ -105,9 +107,12 @@ class BookingController extends GetxController {
 
   void proceedToNextStep() {
     if (selectedRooms.isEmpty) return;
-    
+
     // Future implementation: Navigate to Guest Details Screen
-    Navigator.push(Get.context!, CupertinoPageRoute(builder: (_) => BookingSummaryScreen()));
+    Navigator.push(
+      Get.context!,
+      CupertinoPageRoute(builder: (_) => BookingSummaryScreen()),
+    );
     // Get.snackbar(
     //   "Rooms Selected",
     //   "Proceeding to checkout for $totalQuantity room(s) for $nights night(s). Total: \$${totalPrice.toStringAsFixed(2)}",
@@ -124,7 +129,7 @@ class BookingController extends GetxController {
   /// If missing, falls back to a dummy local mode for UI continuity.
   Future<void> confirmBooking(BuildContext context) async {
     if (isBooking.value) return;
-    
+
     isBooking.value = true;
     final commonController = Get.find<CommonController>();
     final supabase = Supabase.instance.client;
@@ -144,19 +149,21 @@ class BookingController extends GetxController {
           'Local Mode',
           'Hotel does not exist on the server. Proceeding in local mode.',
           snackPosition: SnackPosition.BOTTOM,
-          margin: EdgeInsets.all(16)
+          margin: EdgeInsets.all(16),
         );
         commonController.addBooking(booking);
       } else {
         // Backend insert
         final result = await supabase
             .from('booking')
-            .insert(booking.toInsertJson(accountId: supabase.auth.currentUser?.id))
+            .insert(
+              booking.toInsertJson(accountId: supabase.auth.currentUser?.id),
+            )
             .select('id')
             .single();
 
         final serverId = result['id'] as String;
-        
+
         await supabase
             .from('booking_detail')
             .insert(booking.detailsToInsertJson(serverId));
@@ -179,7 +186,7 @@ class BookingController extends GetxController {
             bookingDate: booking.bookingDate,
             bookingStatus: booking.bookingStatus,
             details: booking.details,
-          )
+          ),
         );
       }
 
@@ -194,17 +201,21 @@ class BookingController extends GetxController {
     } catch (e) {
       debugPrint('❌ [BookingController] Failed to confirm booking: $e');
       if (context.mounted) {
-         Get.snackbar('Error'.tr, 'Failed to confirm booking.'.tr, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Error'.tr,
+          'Failed to confirm booking.'.tr,
+          snackPosition: SnackPosition.BOTTOM,
+        );
       }
     } finally {
       isBooking.value = false;
     }
   }
-  
+
   Future<void> cancelBooking(BookingModel booking, BuildContext context) async {
     try {
       final supabase = Supabase.instance.client;
-      
+
       // 1. Check if hotel exists on backend
       final hotelRow = await supabase
           .from('hotel')
@@ -216,7 +227,7 @@ class BookingController extends GetxController {
         // Dummy local mode cancellation
         final commonController = Get.find<CommonController>();
         commonController.bookings.removeWhere((b) => b.id == booking.id);
-        
+
         if (context.mounted) {
           Navigator.pop(context); // Go back to bookings screen
           Get.snackbar(
@@ -235,7 +246,9 @@ class BookingController extends GetxController {
           .eq('id', booking.id);
 
       final commonController = Get.find<CommonController>();
-      final index = commonController.bookings.indexWhere((b) => b.id == booking.id);
+      final index = commonController.bookings.indexWhere(
+        (b) => b.id == booking.id,
+      );
       if (index != -1) {
         final updatedBooking = BookingModel(
           id: booking.id,

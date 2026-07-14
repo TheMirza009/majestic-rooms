@@ -17,7 +17,7 @@ class SavedScreen extends StatefulWidget {
 class _SavedScreenState extends State<SavedScreen> {
   final TextEditingController _searchController = TextEditingController();
   final CommonController controller = Get.find<CommonController>();
-  
+
   @override
   void initState() {
     super.initState();
@@ -31,7 +31,7 @@ class _SavedScreenState extends State<SavedScreen> {
     _searchController.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Obx(() {
@@ -51,78 +51,98 @@ class _SavedScreenState extends State<SavedScreen> {
                 ),
               )
             : Column(
-              spacing: 12,
-              children: [
-                ExploreSearchBar(
-                  controller: _searchController, 
-                  hintText: 'Search your saved hotels'.tr,
-                  showSuffixIcon: false,
+                spacing: 12,
+                children: [
+                  ExploreSearchBar(
+                    controller: _searchController,
+                    hintText: 'Search your saved hotels'.tr,
+                    showSuffixIcon: false,
                   ),
-                Expanded(
-                  child: Builder(
-                    builder: (context) {
-                      final query = _searchController.text.trim().toLowerCase();
-                      var hotels = controller.savedHotels.toList();
-                      
-                      if (query.isNotEmpty) {
-                        hotels = hotels.where((hotel) {
-                          final nameMatch = hotel.name.toLowerCase().contains(query);
-                          final cityMatch = hotel.city.toLowerCase().contains(query);
-                          final addressMatch = hotel.address?.toLowerCase().contains(query) ?? false;
-                          return nameMatch || cityMatch || addressMatch;
-                        }).toList();
-                      }
-                      
-                      if (hotels.isEmpty && query.isNotEmpty) {
-                        return const NoResultsWidget();
-                      }
-                      
-                      return ListView.separated(
+                  Expanded(
+                    child: Builder(
+                      builder: (context) {
+                        final query = _searchController.text
+                            .trim()
+                            .toLowerCase();
+                        var hotels = controller.savedHotels.toList();
+
+                        if (query.isNotEmpty) {
+                          hotels = hotels.where((hotel) {
+                            final nameMatch = hotel.name.toLowerCase().contains(
+                              query,
+                            );
+                            final cityMatch = hotel.city.toLowerCase().contains(
+                              query,
+                            );
+                            final addressMatch =
+                                hotel.address?.toLowerCase().contains(query) ??
+                                false;
+                            return nameMatch || cityMatch || addressMatch;
+                          }).toList();
+                        }
+
+                        if (hotels.isEmpty && query.isNotEmpty) {
+                          return const NoResultsWidget();
+                        }
+
+                        return ListView.separated(
                           itemBuilder: (context, index) {
                             final Hotel hotel = hotels[index];
                             return HotelCard(
                               hotel: hotel,
                               heroTag: '${hotel.id}_saved',
-                              initialSaveValue: controller.savedHotels.contains(hotel),
-                              onSaveTap: (_) => confirmRemoveDialog(context, hotel),
-                              onTap: () => Get.to(() => HotelScreen(
-                                hotel: hotel,
-                                heroTag: '${hotel.id}_saved',
-                              )),
+                              initialSaveValue: controller.savedHotels.contains(
+                                hotel,
+                              ),
+                              onSaveTap: (_) =>
+                                  confirmRemoveDialog(context, hotel),
+                              onTap: () => Get.to(
+                                () => HotelScreen(
+                                  hotel: hotel,
+                                  heroTag: '${hotel.id}_saved',
+                                ),
+                              ),
                             );
                           },
-                          separatorBuilder: (context, index) => const SizedBox(height: 16),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 16),
                           itemCount: hotels.length,
                         );
-                    }
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
+                ],
+              ),
       );
     });
   }
 
   Future<void> confirmRemoveDialog(BuildContext context, Hotel hotel) async {
-    return await showAdaptiveDialog(context: context, builder: (context) {
-      return AlertDialog(
-        title: Text('Remove from saved'.tr),
-        content: Text('Are you sure you want to remove this hotel from your saved list?'.tr),
-        actionsPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'.tr),
+    return await showAdaptiveDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Remove from saved'.tr),
+          content: Text(
+            'Are you sure you want to remove this hotel from your saved list?'
+                .tr,
           ),
-          TextButton(
-            onPressed: () {
-              controller.toggleHotelSave(hotel);
-              Navigator.pop(context);
-            },
-            child: Text('Remove'.tr),
-          ),
-        ],
-      );
-    });
+          actionsPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'.tr),
+            ),
+            TextButton(
+              onPressed: () {
+                controller.toggleHotelSave(hotel);
+                Navigator.pop(context);
+              },
+              child: Text('Remove'.tr),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

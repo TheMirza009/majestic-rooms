@@ -30,7 +30,8 @@ class Hotel {
   final Promotion? activePromotion;
 
   // Compatibility getters for UI
-  String get imageUrl => images.isNotEmpty ? images.first.url : 'https://picsum.photos/600/400';
+  String get imageUrl =>
+      images.isNotEmpty ? images.first.url : 'https://picsum.photos/600/400';
   List<num> get rates => rooms.map((e) => e.pricePerNight).toList();
   double get rating => hotelClass?.toDouble() ?? 0.0;
 
@@ -78,19 +79,25 @@ class Hotel {
       phoneNumber: json['phone_number']?.toString(),
       email: json['email']?.toString(),
       isActive: json['is_active'] as bool?,
-      images: (json['hotel_images'] as List<dynamic>?)
+      images:
+          (json['hotel_images'] as List<dynamic>?)
               ?.map((e) => HotelImage.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      rooms: (json['hotel_rooms'] as List<dynamic>?)
+      rooms:
+          (json['hotel_rooms'] as List<dynamic>?)
               ?.map((e) => HotelRoom.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
-      facilities: (json['hotel_facility'] as List<dynamic>?)
-              ?.map((e) => Facility.fromJson(e['facility'] as Map<String, dynamic>))
+      facilities:
+          (json['hotel_facility'] as List<dynamic>?)
+              ?.map(
+                (e) => Facility.fromJson(e['facility'] as Map<String, dynamic>),
+              )
               .toList() ??
           [],
-      reviews: (json['review'] as List<dynamic>?)
+      reviews:
+          (json['review'] as List<dynamic>?)
               ?.map((e) => Review.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -113,9 +120,7 @@ class Hotel {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Hotel &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Hotel && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

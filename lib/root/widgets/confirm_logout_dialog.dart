@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:get/get.dart';
 
 class ConfirmLogoutDialog extends StatelessWidget {
@@ -15,8 +15,8 @@ class ConfirmLogoutDialog extends StatelessWidget {
         width: 400,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
         decoration: BoxDecoration(
-          color: CustomColors.brandWhite,
-          borderRadius: BorderRadius.circular(16),
+          color: context.surfaceColor,
+          borderRadius: BorderRadius.circular(context.dimens.radiusLarge),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -26,12 +26,12 @@ class ConfirmLogoutDialog extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: CustomColors.brandRed.withValues(alpha: 0.1),
+                color: context.primaryColor.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.exit_to_app,
-                color: CustomColors.brandRed,
+                color: context.primaryColor,
                 size: 28,
               ),
             ),
@@ -42,7 +42,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
               'Are you sure you want to logout?'.tr,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.black.withValues(alpha: 0.8),
+                color: context.textMainColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
@@ -54,10 +54,7 @@ class ConfirmLogoutDialog extends StatelessWidget {
               'You will be taken back to the login screen.'.tr,
               maxLines: 2,
               textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.black.withValues(alpha: 0.55),
-                fontSize: 14,
-              ),
+              style: TextStyle(color: context.textMutedColor, fontSize: 14),
             ),
             const SizedBox(height: 20),
 
@@ -67,7 +64,10 @@ class ConfirmLogoutDialog extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel'.tr, style: const TextStyle(fontWeight: FontWeight.w800)),
+                  child: Text(
+                    'Cancel'.tr,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
                 ),
                 TextButton(
                   onPressed: () {
@@ -75,9 +75,12 @@ class ConfirmLogoutDialog extends StatelessWidget {
                     controller.logOutUser();
                   },
                   style: TextButton.styleFrom(
-                    foregroundColor: CustomColors.brandRed,
+                    foregroundColor: context.primaryColor,
                   ),
-                  child: Text('Logout'.tr, style: const TextStyle(fontWeight: FontWeight.w800)),
+                  child: Text(
+                    'Logout'.tr,
+                    style: const TextStyle(fontWeight: FontWeight.w800),
+                  ),
                 ),
               ],
             ),

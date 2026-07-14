@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 
 const _kRadius = BorderRadius.all(Radius.circular(20));
 const _kShadow = [
-  BoxShadow(
-    color: Color(0x0D000000),
-    blurRadius: 8,
-    offset: Offset(0, 2),
-  ),
+  BoxShadow(color: Color(0x0D000000), blurRadius: 8, offset: Offset(0, 2)),
 ];
 
 /// A card shell with the standard booking summary surface — white bg,
@@ -26,8 +22,8 @@ class SummaryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: padding,
-      decoration: const BoxDecoration(
-        color: CustomColors.surfaceWhite,
+      decoration: BoxDecoration(
+        color: context.surfaceColor,
         borderRadius: _kRadius,
         boxShadow: _kShadow,
       ),

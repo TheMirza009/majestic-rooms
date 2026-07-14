@@ -37,7 +37,7 @@ class CommonController extends GetxController {
 
     _authSubscription = _supabase.onAuthStateChange.listen((authState) {
       currentUser.value = authState.session?.user;
-      
+
       // Auto-logout: if the session expires in the background or the user
       // is deleted/signed out remotely, force them back to the login screen.
       if (authState.event == AuthChangeEvent.signedOut ||
@@ -63,20 +63,24 @@ class CommonController extends GetxController {
     try {
       final prefs = await SharedPreferences.getInstance();
       final savedSlugs = prefs.getStringList('saved_hotels') ?? [];
-      
+
       if (savedSlugs.isEmpty) {
         savedHotels.clear();
         return;
       }
-      
+
       final response = await Supabase.instance.client
           .from('hotel')
-          .select('*, hotel_images(*), hotel_rooms(*, room_images(*)), hotel_facility(facility(*)), promotion(*)')
+          .select(
+            '*, hotel_images(*), hotel_rooms(*, room_images(*)), hotel_facility(facility(*)), promotion(*)',
+          )
           .inFilter('slug', savedSlugs);
-          
+
       final List<dynamic> data = response;
-      final fetchedHotels = data.map((json) => Hotel.fromJson(json as Map<String, dynamic>)).toList();
-      
+      final fetchedHotels = data
+          .map((json) => Hotel.fromJson(json as Map<String, dynamic>))
+          .toList();
+
       // Preserve the order of savedSlugs if possible, or just assign them
       savedHotels.assignAll(fetchedHotels);
     } catch (e) {
@@ -149,8 +153,10 @@ class CommonController extends GetxController {
           .order('booking_date', ascending: false);
 
       final List<dynamic> data = response;
-      final fetchedBookings = data.map((json) => BookingModel.fromJson(json as Map<String, dynamic>)).toList();
-      
+      final fetchedBookings = data
+          .map((json) => BookingModel.fromJson(json as Map<String, dynamic>))
+          .toList();
+
       bookings.assignAll(fetchedBookings);
     } catch (e) {
       debugPrint('❌ [CommonController] Failed to fetch bookings: $e');

@@ -98,7 +98,10 @@ class CustomCalendarState extends State<CustomCalendar> {
     totalMonths = monthsBetween(minMonth, maxMonth) + 1;
 
     final DateTime anchorDate = startDate ?? today;
-    final int initialPage = monthsBetween(baseMonth, DateTime(anchorDate.year, anchorDate.month)).clamp(0, totalMonths - 1);
+    final int initialPage = monthsBetween(
+      baseMonth,
+      DateTime(anchorDate.year, anchorDate.month),
+    ).clamp(0, totalMonths - 1);
     pageController = PageController(initialPage: initialPage);
     currentMonthDate = monthAtPage(initialPage);
   }
@@ -115,7 +118,12 @@ class CustomCalendarState extends State<CustomCalendar> {
       children: <Widget>[
         // MONTH HEADER — arrows animate the PageView instead of jump-cutting the grid
         Padding(
-          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 4, bottom: 4),
+          padding: const EdgeInsets.only(
+            left: 8.0,
+            right: 8.0,
+            top: 4,
+            bottom: 4,
+          ),
           child: Row(
             children: <Widget>[
               Padding(
@@ -130,9 +138,14 @@ class CustomCalendarState extends State<CustomCalendar> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(24.0),
+                      ),
                       onTap: goToPreviousMonth,
-                      child: const Icon(Icons.keyboard_arrow_left, color: Colors.grey),
+                      child: const Icon(
+                        Icons.keyboard_arrow_left,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -142,9 +155,18 @@ class CustomCalendarState extends State<CustomCalendar> {
                   child: AnimatedSwitcher(
                     duration: animationDuration,
                     child: Text(
-                      DateFormat('MMMM, yyyy', Get.locale?.languageCode).format(currentMonthDate),
-                      key: ValueKey<String>(DateFormat('yyyy-MM').format(currentMonthDate)),
-                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20, color: Colors.grey.shade700),
+                      DateFormat(
+                        'MMMM, yyyy',
+                        Get.locale?.languageCode,
+                      ).format(currentMonthDate),
+                      key: ValueKey<String>(
+                        DateFormat('yyyy-MM').format(currentMonthDate),
+                      ),
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20,
+                        color: Colors.grey.shade700,
+                      ),
                     ),
                   ),
                 ),
@@ -161,9 +183,14 @@ class CustomCalendarState extends State<CustomCalendar> {
                   child: Material(
                     color: Colors.transparent,
                     child: InkWell(
-                      borderRadius: const BorderRadius.all(Radius.circular(24.0)),
+                      borderRadius: const BorderRadius.all(
+                        Radius.circular(24.0),
+                      ),
                       onTap: goToNextMonth,
-                      child: const Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+                      child: const Icon(
+                        Icons.keyboard_arrow_right,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                 ),
@@ -181,8 +208,15 @@ class CustomCalendarState extends State<CustomCalendar> {
                 Expanded(
                   child: Center(
                     child: Text(
-                      DateFormat('EEE', Get.locale?.languageCode).format(DateTime(2024, 1, 1 + weekday)),
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: widget.primaryColor),
+                      DateFormat(
+                        'EEE',
+                        Get.locale?.languageCode,
+                      ).format(DateTime(2024, 1, 1 + weekday)),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: widget.primaryColor,
+                      ),
                     ),
                   ),
                 ),
@@ -194,12 +228,15 @@ class CustomCalendarState extends State<CustomCalendar> {
         Padding(
           padding: const EdgeInsets.only(right: 8, left: 8),
           child: SizedBox(
-            height: MediaQuery.of(context).size.width * (gridRows / gridColumns),
+            height:
+                MediaQuery.of(context).size.width * (gridRows / gridColumns),
             child: PageView.builder(
               controller: pageController,
               itemCount: totalMonths,
-              onPageChanged: (int page) => setState(() => currentMonthDate = monthAtPage(page)),
-              itemBuilder: (BuildContext context, int page) => monthGrid(monthAtPage(page)),
+              onPageChanged: (int page) =>
+                  setState(() => currentMonthDate = monthAtPage(page)),
+              itemBuilder: (BuildContext context, int page) =>
+                  monthGrid(monthAtPage(page)),
             ),
           ),
         ),
@@ -210,13 +247,18 @@ class CustomCalendarState extends State<CustomCalendar> {
   // ── Paging helpers ───────────────────────────────────────────────────
 
   // Number of whole calendar months between two month-truncated DateTimes.
-  int monthsBetween(DateTime from, DateTime to) => (to.year - from.year) * 12 + (to.month - from.month);
+  int monthsBetween(DateTime from, DateTime to) =>
+      (to.year - from.year) * 12 + (to.month - from.month);
 
-  DateTime monthAtPage(int page) => DateTime(baseMonth.year, baseMonth.month + page);
+  DateTime monthAtPage(int page) =>
+      DateTime(baseMonth.year, baseMonth.month + page);
 
   // Animates the PageView one month back; onPageChanged updates currentMonthDate.
   void goToPreviousMonth() {
-    pageController.previousPage(duration: animationDuration, curve: animationCurve);
+    pageController.previousPage(
+      duration: animationDuration,
+      curve: animationCurve,
+    );
   }
 
   // Animates the PageView one month forward; onPageChanged updates currentMonthDate.
@@ -226,18 +268,27 @@ class CustomCalendarState extends State<CustomCalendar> {
 
   // ── Date helpers ─────────────────────────────────────────────────────
 
-  bool isSameDate(DateTime a, DateTime b) => a.year == b.year && a.month == b.month && a.day == b.day;
+  bool isSameDate(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
 
   /// Builds the fixed 6x7 (42-cell) day list for [monthDate], padded with the
   /// trailing days of the previous month and leading days of the next month.
   List<DateTime> datesForMonth(DateTime monthDate) {
     final List<DateTime> dates = <DateTime>[];
-    final DateTime lastDayOfPreviousMonth = DateTime(monthDate.year, monthDate.month, 0);
+    final DateTime lastDayOfPreviousMonth = DateTime(
+      monthDate.year,
+      monthDate.month,
+      0,
+    );
     int previousMonthDays = 0;
     if (lastDayOfPreviousMonth.weekday < 7) {
       previousMonthDays = lastDayOfPreviousMonth.weekday;
       for (int i = 1; i <= previousMonthDays; i++) {
-        dates.add(lastDayOfPreviousMonth.subtract(Duration(days: previousMonthDays - i)));
+        dates.add(
+          lastDayOfPreviousMonth.subtract(
+            Duration(days: previousMonthDays - i),
+          ),
+        );
       }
     }
     for (int i = 0; i < (gridRows * gridColumns - previousMonthDays); i++) {
@@ -247,10 +298,24 @@ class CustomCalendarState extends State<CustomCalendar> {
   }
 
   bool isDateSelectable(DateTime date) {
-    if (widget.minimumDate != null && date.isBefore(DateTime(widget.minimumDate!.year, widget.minimumDate!.month, widget.minimumDate!.day))) {
+    if (widget.minimumDate != null &&
+        date.isBefore(
+          DateTime(
+            widget.minimumDate!.year,
+            widget.minimumDate!.month,
+            widget.minimumDate!.day,
+          ),
+        )) {
       return false;
     }
-    if (widget.maximumDate != null && date.isAfter(DateTime(widget.maximumDate!.year, widget.maximumDate!.month, widget.maximumDate!.day))) {
+    if (widget.maximumDate != null &&
+        date.isAfter(
+          DateTime(
+            widget.maximumDate!.year,
+            widget.maximumDate!.month,
+            widget.maximumDate!.day,
+          ),
+        )) {
       return false;
     }
     return true;
@@ -260,7 +325,10 @@ class CustomCalendarState extends State<CustomCalendar> {
   Alignment alignmentForIndex(int index) {
     final int row = index ~/ gridColumns;
     final int col = index % gridColumns;
-    return Alignment(-1 + col * (2 / (gridColumns - 1)), -1 + row * (2 / (gridRows - 1)));
+    return Alignment(
+      -1 + col * (2 / (gridColumns - 1)),
+      -1 + row * (2 / (gridRows - 1)),
+    );
   }
 
   // Handles taps in priority order: first pick, deselect toggles, then range
@@ -305,15 +373,26 @@ class CustomCalendarState extends State<CustomCalendar> {
   Widget monthGrid(DateTime monthDate) {
     final List<DateTime> dates = datesForMonth(monthDate);
 
-    final DateTime? lowDate =
-        startDate == null ? null : (endDate == null || startDate!.isBefore(endDate!) ? startDate : endDate);
-    final DateTime? highDate =
-        endDate == null ? null : (startDate == null || startDate!.isBefore(endDate!) ? endDate : startDate);
+    final DateTime? lowDate = startDate == null
+        ? null
+        : (endDate == null || startDate!.isBefore(endDate!)
+              ? startDate
+              : endDate);
+    final DateTime? highDate = endDate == null
+        ? null
+        : (startDate == null || startDate!.isBefore(endDate!)
+              ? endDate
+              : startDate);
 
-    final int lowIndex = lowDate == null ? -1 : dates.indexWhere((DateTime d) => isSameDate(d, lowDate));
-    final int highIndex = highDate == null ? -1 : dates.indexWhere((DateTime d) => isSameDate(d, highDate));
+    final int lowIndex = lowDate == null
+        ? -1
+        : dates.indexWhere((DateTime d) => isSameDate(d, lowDate));
+    final int highIndex = highDate == null
+        ? -1
+        : dates.indexWhere((DateTime d) => isSameDate(d, highDate));
 
-    final Color rangeColor = widget.rangeColor ?? widget.primaryColor.withValues(alpha: 0.4);
+    final Color rangeColor =
+        widget.rangeColor ?? widget.primaryColor.withValues(alpha: 0.4);
 
     return Stack(
       children: <Widget>[
@@ -326,7 +405,12 @@ class CustomCalendarState extends State<CustomCalendar> {
                   child: Row(
                     children: <Widget>[
                       for (int col = 0; col < gridColumns; col++)
-                        streakCell(dates[row * gridColumns + col], lowDate, highDate, rangeColor),
+                        streakCell(
+                          dates[row * gridColumns + col],
+                          lowDate,
+                          highDate,
+                          rangeColor,
+                        ),
                     ],
                   ),
                 ),
@@ -335,10 +419,8 @@ class CustomCalendarState extends State<CustomCalendar> {
         ),
 
         // SELECTION CIRCLES — slide between cells within the visible month
-        if (lowIndex != -1)
-          selectionCircle(alignmentForIndex(lowIndex)),
-        if (highIndex != -1)
-          selectionCircle(alignmentForIndex(highIndex)),
+        if (lowIndex != -1) selectionCircle(alignmentForIndex(lowIndex)),
+        if (highIndex != -1) selectionCircle(alignmentForIndex(highIndex)),
 
         // DAY NUMBERS + TAP TARGETS
         Column(
@@ -348,7 +430,12 @@ class CustomCalendarState extends State<CustomCalendar> {
                 child: Row(
                   children: <Widget>[
                     for (int col = 0; col < gridColumns; col++)
-                      dayCell(dates[row * gridColumns + col], monthDate, lowDate, highDate),
+                      dayCell(
+                        dates[row * gridColumns + col],
+                        monthDate,
+                        lowDate,
+                        highDate,
+                      ),
                   ],
                 ),
               ),
@@ -358,8 +445,14 @@ class CustomCalendarState extends State<CustomCalendar> {
     );
   }
 
-  Widget streakCell(DateTime date, DateTime? lowDate, DateTime? highDate, Color rangeColor) {
-    final bool inStreak = lowDate != null &&
+  Widget streakCell(
+    DateTime date,
+    DateTime? lowDate,
+    DateTime? highDate,
+    Color rangeColor,
+  ) {
+    final bool inStreak =
+        lowDate != null &&
         highDate != null &&
         !date.isBefore(lowDate) &&
         !date.isAfter(highDate);
@@ -370,17 +463,28 @@ class CustomCalendarState extends State<CustomCalendar> {
       child: AspectRatio(
         aspectRatio: 1.0,
         child: Padding(
-          padding: EdgeInsets.only(top: 3, bottom: 3, left: isLowEdge ? 4 : 0, right: isHighEdge ? 4 : 0),
+          padding: EdgeInsets.only(
+            top: 3,
+            bottom: 3,
+            left: isLowEdge ? 4 : 0,
+            right: isHighEdge ? 4 : 0,
+          ),
           child: AnimatedContainer(
             duration: animationDuration,
             curve: animationCurve,
             decoration: BoxDecoration(
               color: inStreak ? rangeColor : rangeColor.withValues(alpha: 0),
               borderRadius: BorderRadius.only(
-                bottomLeft: isLowEdge ? const Radius.circular(24.0) : Radius.zero,
+                bottomLeft: isLowEdge
+                    ? const Radius.circular(24.0)
+                    : Radius.zero,
                 topLeft: isLowEdge ? const Radius.circular(24.0) : Radius.zero,
-                topRight: isHighEdge ? const Radius.circular(24.0) : Radius.zero,
-                bottomRight: isHighEdge ? const Radius.circular(24.0) : Radius.zero,
+                topRight: isHighEdge
+                    ? const Radius.circular(24.0)
+                    : Radius.zero,
+                bottomRight: isHighEdge
+                    ? const Radius.circular(24.0)
+                    : Radius.zero,
               ),
             ),
           ),
@@ -408,7 +512,11 @@ class CustomCalendarState extends State<CustomCalendar> {
                 shape: BoxShape.circle,
                 border: Border.all(color: Colors.white, width: 2),
                 boxShadow: <BoxShadow>[
-                  BoxShadow(color: Colors.grey.withValues(alpha: 0.6), blurRadius: 4, offset: const Offset(0, 0)),
+                  BoxShadow(
+                    color: Colors.grey.withValues(alpha: 0.6),
+                    blurRadius: 4,
+                    offset: const Offset(0, 0),
+                  ),
                 ],
               ),
             ),
@@ -418,11 +526,22 @@ class CustomCalendarState extends State<CustomCalendar> {
     );
   }
 
-  Widget dayCell(DateTime date, DateTime monthDate, DateTime? lowDate, DateTime? highDate) {
+  Widget dayCell(
+    DateTime date,
+    DateTime monthDate,
+    DateTime? lowDate,
+    DateTime? highDate,
+  ) {
     final bool isCurrentMonth = date.month == monthDate.month;
-    final bool isSelected = (lowDate != null && isSameDate(date, lowDate)) || (highDate != null && isSameDate(date, highDate));
+    final bool isSelected =
+        (lowDate != null && isSameDate(date, lowDate)) ||
+        (highDate != null && isSameDate(date, highDate));
     final bool isToday = isSameDate(date, DateTime.now());
-    final bool inStreak = lowDate != null && highDate != null && !date.isBefore(lowDate) && !date.isAfter(highDate);
+    final bool inStreak =
+        lowDate != null &&
+        highDate != null &&
+        !date.isBefore(lowDate) &&
+        !date.isAfter(highDate);
 
     return Expanded(
       child: AspectRatio(
@@ -444,10 +563,14 @@ class CustomCalendarState extends State<CustomCalendar> {
                         color: isSelected
                             ? Colors.white
                             : isCurrentMonth
-                                ? widget.primaryColor
-                                : Colors.grey.withValues(alpha: 0.6),
-                        fontSize: MediaQuery.of(context).size.width > 360 ? 18 : 16,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+                            ? widget.primaryColor
+                            : Colors.grey.withValues(alpha: 0.6),
+                        fontSize: MediaQuery.of(context).size.width > 360
+                            ? 18
+                            : 16,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                       ),
                       child: Text('${date.day}'),
                     ),
@@ -463,7 +586,9 @@ class CustomCalendarState extends State<CustomCalendar> {
                 height: 6,
                 width: 6,
                 decoration: BoxDecoration(
-                  color: isToday ? (inStreak ? Colors.white : widget.primaryColor) : Colors.transparent,
+                  color: isToday
+                      ? (inStreak ? Colors.white : widget.primaryColor)
+                      : Colors.transparent,
                   shape: BoxShape.circle,
                 ),
               ),

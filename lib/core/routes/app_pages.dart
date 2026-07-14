@@ -8,7 +8,6 @@ import 'package:majestic_rooms/root/modules/home/home_screen.dart';
 
 /// Maps each route name to its page and its (lazy) controller binding.
 class AppPages {
-
   static final routes = <GetPage>[
     GetPage(
       name: AppRoutes.login,

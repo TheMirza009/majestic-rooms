@@ -11,13 +11,14 @@ import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 /// Drives the flying-avatar pseudo-hero animation between ProfileBar and
 /// ProfileScreen. A real Hero can't be used here since both widgets live
 /// inside the same PageView rather than separate Navigator routes.
-class ProfileAvatarFlightController extends GetxController with GetTickerProviderStateMixin {
+class ProfileAvatarFlightController extends GetxController
+    with GetTickerProviderStateMixin {
   // ── Control Panel ────────────────────────────────────────────────────────
-  static const Duration _flightDuration  = Duration(milliseconds: 450);
-  static const int      _maxSettleFrames = 30; // ~0.5s safety cap, first flight only
+  static const Duration _flightDuration = Duration(milliseconds: 450);
+  static const int _maxSettleFrames = 30; // ~0.5s safety cap, first flight only
 
   // ── Fields ───────────────────────────────────────────────────────────────
-  GlobalKey barAvatarKey    = GlobalKey();
+  GlobalKey barAvatarKey = GlobalKey();
   GlobalKey screenAvatarKey = GlobalKey();
   final isFlying = false.obs;
 
@@ -33,31 +34,39 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
   Future<void> flyToProfile(BuildContext context, String? avatarUrl) async {
     if (isFlying.value) return;
 
-    final sourceBox = barAvatarKey.currentContext?.findRenderObject() as RenderBox?;
+    final sourceBox =
+        barAvatarKey.currentContext?.findRenderObject() as RenderBox?;
     if (sourceBox == null || !sourceBox.attached) {
       Get.find<HomeController>().navigateTo(3);
       return;
     }
-    final sourceRect  = sourceBox.localToGlobal(Offset.zero) & sourceBox.size;
-    final overlay     = Overlay.of(context);
+    final sourceRect = sourceBox.localToGlobal(Offset.zero) & sourceBox.size;
+    final overlay = Overlay.of(context);
     final screenWidth = MediaQuery.sizeOf(context).width;
-    final homeCtrl    = Get.find<HomeController>();
+    final homeCtrl = Get.find<HomeController>();
 
     isFlying.value = true;
     homeCtrl.navigateTo(3);
 
     // Insert overlay at source position immediately — no blank frames between
     // the ProfileBar avatar hiding (isFlying=true) and the overlay appearing.
-    final animCtrl = AnimationController(vsync: this, duration: _flightDuration);
-    Rect liveRect  = sourceRect;
+    final animCtrl = AnimationController(
+      vsync: this,
+      duration: _flightDuration,
+    );
+    Rect liveRect = sourceRect;
 
     late OverlayEntry entry;
-    entry = OverlayEntry(builder: (_) {
-      return Positioned.fromRect(
-        rect: liveRect,
-        child: IgnorePointer(child: UserAvatar(imageUrl: avatarUrl, size: liveRect.width)),
-      );
-    });
+    entry = OverlayEntry(
+      builder: (_) {
+        return Positioned.fromRect(
+          rect: liveRect,
+          child: IgnorePointer(
+            child: UserAvatar(imageUrl: avatarUrl, size: liveRect.width),
+          ),
+        );
+      },
+    );
     overlay.insert(entry);
 
     try {
@@ -65,9 +74,10 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
       if (_cachedDestinationRect == null) {
         for (int i = 0; i < _maxSettleFrames; i++) {
           await SchedulerBinding.instance.endOfFrame;
-          final destBox = screenAvatarKey.currentContext?.findRenderObject() as RenderBox?;
+          final destBox =
+              screenAvatarKey.currentContext?.findRenderObject() as RenderBox?;
           if (destBox != null && destBox.attached) {
-            final destRect     = destBox.localToGlobal(Offset.zero) & destBox.size;
+            final destRect = destBox.localToGlobal(Offset.zero) & destBox.size;
             // % screenWidth is only correct when measured at page == 0 (integer rest).
             // Mid-animation the page is fractional, so subtract the remaining
             // scroll distance to get the avatar's final resting X coordinate.
@@ -89,10 +99,13 @@ class ProfileAvatarFlightController extends GetxController with GetTickerProvide
       if (destinationRect == null) return;
 
       final rectTween = RectTween(begin: sourceRect, end: destinationRect);
-      final curved    = CurvedAnimation(parent: animCtrl, curve: Curves.easeInOutCubic);
+      final curved = CurvedAnimation(
+        parent: animCtrl,
+        curve: Curves.easeInOutCubic,
+      );
       animCtrl.addListener(() {
         final baseRect = rectTween.evaluate(curved)!;
-        
+
         // Use a sine wave based on the animation value to create a "bump".
         // math.sin(x * pi) starts at 0, peaks at 1 in the middle (0.5), and ends at 0.
         // We multiply by a factor (e.g., 15.0) to dictate how many pixels it inflates by.

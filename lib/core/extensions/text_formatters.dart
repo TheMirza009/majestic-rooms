@@ -1,11 +1,13 @@
-
 import 'package:flutter/services.dart';
 
 class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter(
-      {required int? decimalRange, required bool activatedNegativeValues})
-      : assert(decimalRange == null || decimalRange >= 0,
-            'DecimalTextInputFormatter declaretion error') {
+  DecimalTextInputFormatter({
+    required int? decimalRange,
+    required bool activatedNegativeValues,
+  }) : assert(
+         decimalRange == null || decimalRange >= 0,
+         'DecimalTextInputFormatter declaretion error',
+       ) {
     String dp = (decimalRange != null && decimalRange > 0)
         ? "([.][0-9]{0,$decimalRange}){0,1}"
         : "";
@@ -37,6 +39,5 @@ class UpperCaseTextFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
     TextEditingValue oldValue,
     TextEditingValue newValue,
-  ) =>
-      newValue.copyWith(text: newValue.text.toUpperCase());
+  ) => newValue.copyWith(text: newValue.text.toUpperCase());
 }

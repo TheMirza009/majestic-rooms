@@ -16,22 +16,22 @@ Future<void> main() async {
     url: Environment.supabaseUrl,
     publishableKey: Environment.supabaseAnonKey,
   );
-  
+
   final prefs = await SharedPreferences.getInstance();
   final langCode = prefs.getString('language_code') ?? 'en';
   final countryCode = prefs.getString('country_code') ?? 'US';
   final locale = Locale(langCode, countryCode);
-  
+
   await initializeDateFormatting(locale.languageCode, null);
-  
+
   // Option A (Current): Direct Navigation.
   // Since `Supabase.initialize` synchronously restores the session from local
   // storage, we can instantly determine the route before the first frame is drawn.
   // This bypasses any fake delays and shows the correct screen immediately.
-  // 
+  //
   // Option B (Future): If you ever need a dedicated Flutter Splash Screen
   // (e.g., to run a logo animation or do heavy data prefetching), change this
-  // back to `const MyApp(initialRoute: AppRoutes.splash)` and let the 
+  // back to `const MyApp(initialRoute: AppRoutes.splash)` and let the
   // SplashController handle the navigation check after a delay.
   final session = Supabase.instance.client.auth.currentSession;
   final initialRoute = session != null ? AppRoutes.home : AppRoutes.login;
@@ -42,7 +42,7 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   final String initialRoute;
   final Locale locale;
-  
+
   const MyApp({super.key, required this.initialRoute, required this.locale});
 
   @override

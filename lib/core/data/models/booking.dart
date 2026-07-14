@@ -56,15 +56,15 @@ class BookingDetailItem {
   ///
   /// Future wiring: pass the result of `supabase.from('booking_detail').insert(toInsertJson(id))`.
   Map<String, dynamic> toInsertJson(String bookingId) => {
-        'booking_id': bookingId,
-        'room_id': roomId,
-        'no_of_rooms': quantity,
-        'room_price': pricePerNight,
-        'gross_amount': grossAmount,
-        'discount': discount,
-        'net_amount': netAmount,
-        'includes_breakfast': includesBreakfast,
-      };
+    'booking_id': bookingId,
+    'room_id': roomId,
+    'no_of_rooms': quantity,
+    'room_price': pricePerNight,
+    'gross_amount': grossAmount,
+    'discount': discount,
+    'net_amount': netAmount,
+    'includes_breakfast': includesBreakfast,
+  };
 
   factory BookingDetailItem.fromJson(Map<String, dynamic> json) {
     return BookingDetailItem(
@@ -192,21 +192,23 @@ class BookingModel {
 
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     final String hotelSlug = json['hotel_slug'] as String? ?? 'unknown';
-    
+
     Hotel? fetchedHotel;
     if (json['hotel'] != null && json['hotel'] is Map) {
       fetchedHotel = Hotel.fromJson(json['hotel'] as Map<String, dynamic>);
     }
-    
+
     // Resolve hotel from fetched data or create a placeholder if it's missing
-    final Hotel hotel = fetchedHotel ?? Hotel(
-      id: hotelSlug,
-      slug: hotelSlug,
-      name: 'Unknown Hotel',
-      city: 'Unknown',
-      images: [],
-      rooms: [],
-    );
+    final Hotel hotel =
+        fetchedHotel ??
+        Hotel(
+          id: hotelSlug,
+          slug: hotelSlug,
+          name: 'Unknown Hotel',
+          city: 'Unknown',
+          images: [],
+          rooms: [],
+        );
 
     final detailsJson = json['booking_detail'] as List<dynamic>? ?? [];
     final details = detailsJson
@@ -219,15 +221,23 @@ class BookingModel {
       hotelSlug: hotelSlug,
       hotelName: hotel.name,
       hotelImageUrl: hotel.imageUrl,
-      checkInDate: DateTime.tryParse(json['check_in_date'] as String? ?? '') ?? DateTime.now(),
-      checkOutDate: DateTime.tryParse(json['check_out_date'] as String? ?? '') ?? DateTime.now(),
+      checkInDate:
+          DateTime.tryParse(json['check_in_date'] as String? ?? '') ??
+          DateTime.now(),
+      checkOutDate:
+          DateTime.tryParse(json['check_out_date'] as String? ?? '') ??
+          DateTime.now(),
       nights: json['nights'] as int? ?? 1,
       numberOfRooms: json['number_of_rooms'] as int? ?? 1,
       grossTotal: (json['gross_total'] as num?)?.toDouble() ?? 0.0,
       discount: (json['discount'] as num?)?.toDouble() ?? 0.0,
       netTotal: (json['net_total'] as num?)?.toDouble() ?? 0.0,
-      bookingDate: DateTime.tryParse(json['booking_date'] as String? ?? '') ?? DateTime.now(),
-      bookingStatus: BookingStatus.fromValue(json['booking_status'] as String? ?? ''),
+      bookingDate:
+          DateTime.tryParse(json['booking_date'] as String? ?? '') ??
+          DateTime.now(),
+      bookingStatus: BookingStatus.fromValue(
+        json['booking_status'] as String? ?? '',
+      ),
       details: details,
     );
   }
@@ -246,18 +256,18 @@ class BookingModel {
   /// final serverId = result['id'] as String;
   /// ```
   Map<String, dynamic> toInsertJson({String? accountId}) => {
-        'hotel_slug': hotelSlug,
-        'check_in_date': _dateString(checkInDate),
-        'check_out_date': _dateString(checkOutDate),
-        'nights': nights,
-        'number_of_rooms': numberOfRooms,
-        'booking_status': bookingStatus.value,
-        'booking_date': _dateString(bookingDate),
-        'gross_total': grossTotal,
-        'discount': discount,
-        'net_total': netTotal,
-        'account_id': accountId,
-      };
+    'hotel_slug': hotelSlug,
+    'check_in_date': _dateString(checkInDate),
+    'check_out_date': _dateString(checkOutDate),
+    'nights': nights,
+    'number_of_rooms': numberOfRooms,
+    'booking_status': bookingStatus.value,
+    'booking_date': _dateString(bookingDate),
+    'gross_total': grossTotal,
+    'discount': discount,
+    'net_total': netTotal,
+    'account_id': accountId,
+  };
 
   /// Produces the list of Maps for `booking_detail` INSERTs.
   ///

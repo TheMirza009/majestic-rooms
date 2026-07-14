@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/settings/user_controller.dart';
 import 'package:majestic_rooms/root/widgets/entry_field.dart';
 
@@ -16,7 +16,8 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   static const Duration animationDuration = Duration(milliseconds: 250);
   static const double fieldSpacing = 20;
   static const double cardRadius = 16;
-  static const int minPasswordLength = 6; // identical threshold to the original validator
+  static const int minPasswordLength =
+      6; // identical threshold to the original validator
 
   final UserController userController = Get.find<UserController>();
 
@@ -29,7 +30,8 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
   bool obscureNew = true;
   bool obscureConfirm = true;
 
-  double passwordStrength = 0; // 0..1, purely cosmetic — does not affect validation
+  double passwordStrength =
+      0; // 0..1, purely cosmetic — does not affect validation
 
   @override
   void initState() {
@@ -55,7 +57,10 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         surfaceTintColor: const Color(0xFFF7F7F9),
         elevation: 0,
         centerTitle: true,
-        title: Text('Update Password'.tr, style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          'Update Password'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         leadingWidth: 70,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new_rounded),
@@ -83,23 +88,34 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           height: 72,
                           width: 72,
                           decoration: BoxDecoration(
-                            color: CustomColors.brandRed.withValues(alpha: 0.1),
+                            color: context.primaryColor.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
-                          child: const Icon(Icons.lock_rounded, color: CustomColors.brandRed, size: 32),
+                          child: Icon(
+                            Icons.lock_rounded,
+                            color: context.primaryColor,
+                            size: 32,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 16),
                       Text(
                         'Choose a strong password'.tr,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
                       ),
                       const SizedBox(height: 8),
                       Text(
                         'password_desc'.tr,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
+                        style: TextStyle(
+                          color: context.textMutedColor,
+                          fontSize: 14,
+                          height: 1.4,
+                        ),
                       ),
                       const SizedBox(height: 32),
 
@@ -111,11 +127,19 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                           hintText: 'Enter current password'.tr,
                           obscure: obscureCurrent,
                           suffix: IconButton(
-                            icon: Icon(obscureCurrent ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
-                            onPressed: () => setState(() => obscureCurrent = !obscureCurrent),
+                            icon: Icon(
+                              obscureCurrent
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
+                              color: context.textMutedColor,
+                            ),
+                            onPressed: () => setState(
+                              () => obscureCurrent = !obscureCurrent,
+                            ),
                           ),
                           validator: (String? val) {
-                            if (val == null || val.isEmpty) return 'Current password is required'.tr;
+                            if (val == null || val.isEmpty)
+                              return 'Current password is required'.tr;
                             return null;
                           },
                         ),
@@ -133,12 +157,20 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                               hintText: 'Enter new password'.tr,
                               obscure: obscureNew,
                               suffix: IconButton(
-                                icon: Icon(obscureNew ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
-                                onPressed: () => setState(() => obscureNew = !obscureNew),
+                                icon: Icon(
+                                  obscureNew
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: context.textMutedColor,
+                                ),
+                                onPressed: () =>
+                                    setState(() => obscureNew = !obscureNew),
                               ),
                               validator: (String? val) {
-                                if (val == null || val.isEmpty) return 'New password is required'.tr;
-                                if (val.length < minPasswordLength) return 'Must be at least 6 characters'.tr;
+                                if (val == null || val.isEmpty)
+                                  return 'New password is required'.tr;
+                                if (val.length < minPasswordLength)
+                                  return 'Must be at least 6 characters'.tr;
                                 return null;
                               },
                             ),
@@ -151,20 +183,34 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                   : Padding(
                                       padding: const EdgeInsets.only(top: 12),
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.stretch,
                                         children: <Widget>[
                                           ClipRRect(
-                                            borderRadius: BorderRadius.circular(4),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
                                             child: TweenAnimationBuilder<double>(
                                               duration: animationDuration,
                                               curve: Curves.easeInOut,
-                                              tween: Tween<double>(begin: 0, end: passwordStrength),
-                                              builder: (BuildContext context, double value, Widget? child) => LinearProgressIndicator(
-                                                value: value,
-                                                minHeight: 6,
-                                                backgroundColor: const Color(0xFFEDEDED),
-                                                color: strengthColor(passwordStrength),
+                                              tween: Tween<double>(
+                                                begin: 0,
+                                                end: passwordStrength,
                                               ),
+                                              builder:
+                                                  (
+                                                    BuildContext context,
+                                                    double value,
+                                                    Widget? child,
+                                                  ) => LinearProgressIndicator(
+                                                    value: value,
+                                                    minHeight: 6,
+                                                    backgroundColor:
+                                                        const Color(0xFFEDEDED),
+                                                    color: strengthColor(
+                                                      passwordStrength,
+                                                    ),
+                                                  ),
                                             ),
                                           ),
                                           const SizedBox(height: 6),
@@ -172,8 +218,16 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                             duration: animationDuration,
                                             child: Text(
                                               strengthLabel(passwordStrength),
-                                              key: ValueKey<String>(strengthLabel(passwordStrength)),
-                                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: strengthColor(passwordStrength)),
+                                              key: ValueKey<String>(
+                                                strengthLabel(passwordStrength),
+                                              ),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color: strengthColor(
+                                                  passwordStrength,
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -187,11 +241,19 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                               hintText: 'Re-type new password'.tr,
                               obscure: obscureConfirm,
                               suffix: IconButton(
-                                icon: Icon(obscureConfirm ? Icons.visibility_off : Icons.visibility, color: CustomColors.textMuted),
-                                onPressed: () => setState(() => obscureConfirm = !obscureConfirm),
+                                icon: Icon(
+                                  obscureConfirm
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: context.textMutedColor,
+                                ),
+                                onPressed: () => setState(
+                                  () => obscureConfirm = !obscureConfirm,
+                                ),
                               ),
                               validator: (String? val) {
-                                if (val != newPasswordController.text) return 'Passwords do not match'.tr;
+                                if (val != newPasswordController.text)
+                                  return 'Passwords do not match'.tr;
                                 return null;
                               },
                             ),
@@ -206,10 +268,13 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                         child: ElevatedButton(
                           onPressed: isLoading ? null : submit,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: CustomColors.brandRed,
-                            disabledBackgroundColor: CustomColors.brandRed.withValues(alpha: 0.6),
+                            backgroundColor: context.primaryColor,
+                            disabledBackgroundColor: context.primaryColor
+                                .withValues(alpha: 0.6),
                             foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                             elevation: 0,
                           ),
                           child: AnimatedSwitcher(
@@ -219,12 +284,18 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
                                     key: ValueKey<String>('loading'),
                                     height: 22,
                                     width: 22,
-                                    child: CircularProgressIndicator(strokeWidth: 2.4, color: Colors.white),
+                                    child: CircularProgressIndicator(
+                                      strokeWidth: 2.4,
+                                      color: Colors.white,
+                                    ),
                                   )
                                 : Text(
                                     'Update Password'.tr,
                                     key: const ValueKey<String>('label'),
-                                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                           ),
                         ),
@@ -248,7 +319,11 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
         color: Colors.white,
         borderRadius: BorderRadius.circular(cardRadius),
         boxShadow: <BoxShadow>[
-          BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: const Offset(0, 4)),
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
+          ),
         ],
       ),
       child: child,
@@ -297,7 +372,7 @@ class UpdatePasswordScreenState extends State<UpdatePasswordScreen> {
       'Password updated'.tr,
       'Your password has been changed successfully.'.tr,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: CustomColors.brandRed,
+      backgroundColor: context.primaryColor,
       colorText: Colors.white,
       margin: const EdgeInsets.all(16),
       borderRadius: 12,

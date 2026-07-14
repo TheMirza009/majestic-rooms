@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
@@ -11,7 +11,7 @@ import 'package:majestic_rooms/core/data/models/booking.dart';
 /// Can optionally accept a [BookingModel] to render static data in paid mode.
 class SelectedRoomsList extends StatelessWidget {
   const SelectedRoomsList({super.key, this.booking});
-  
+
   final BookingModel? booking;
 
   @override
@@ -19,12 +19,17 @@ class SelectedRoomsList extends StatelessWidget {
     if (booking != null) {
       if (booking!.details.isEmpty) return const SizedBox.shrink();
       return _buildList(
-        items: booking!.details.map((item) => _RoomItemData(
-          name: item.roomName ?? 'Standard Room'.tr,
-          roomNumber: null,
-          qty: item.quantity,
-          totalPrice: item.grossAmount,
-        )).toList(),
+        context,
+        items: booking!.details
+            .map(
+              (item) => _RoomItemData(
+                name: item.roomName ?? 'Standard Room'.tr,
+                roomNumber: null,
+                qty: item.quantity,
+                totalPrice: item.grossAmount,
+              ),
+            )
+            .toList(),
       );
     }
 
@@ -34,6 +39,7 @@ class SelectedRoomsList extends StatelessWidget {
       final nights = controller.nights;
       if (rooms.isEmpty) return const SizedBox.shrink();
       return _buildList(
+        context,
         items: rooms.entries.map((entry) {
           final room = entry.key;
           final qty = entry.value;
@@ -48,17 +54,20 @@ class SelectedRoomsList extends StatelessWidget {
     });
   }
 
-  Widget _buildList({required List<_RoomItemData> items}) {
+  Widget _buildList(
+    BuildContext context, {
+    required List<_RoomItemData> items,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // HEADER
         Text(
           'Selected Rooms'.tr,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
-            color: CustomColors.textMain,
+            color: context.textMainColor,
           ),
         ),
         const SizedBox(height: 10),
@@ -74,13 +83,13 @@ class SelectedRoomsList extends StatelessWidget {
                     width: 44,
                     height: 44,
                     decoration: BoxDecoration(
-                      color: CustomColors.brandRed.withOpacity(0.08),
+                      color: context.primaryColor.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.king_bed_outlined,
                       size: 22,
-                      color: CustomColors.brandRed,
+                      color: context.primaryColor,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -90,18 +99,20 @@ class SelectedRoomsList extends StatelessWidget {
                       children: [
                         Text(
                           item.name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: CustomColors.textMain,
+                            color: context.textMainColor,
                           ),
                         ),
                         if (item.roomNumber != null)
                           Text(
-                            'Room @number'.trParams({'number': item.roomNumber!}),
-                            style: const TextStyle(
+                            'Room @number'.trParams({
+                              'number': item.roomNumber!,
+                            }),
+                            style: TextStyle(
                               fontSize: 12,
-                              color: CustomColors.textMuted,
+                              color: context.textMutedColor,
                             ),
                           ),
                       ],
@@ -112,18 +123,18 @@ class SelectedRoomsList extends StatelessWidget {
                     children: [
                       Text(
                         'x${item.qty}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
-                          color: CustomColors.textMuted,
+                          color: context.textMutedColor,
                         ),
                       ),
                       Text(
                         formatPrice(item.totalPrice),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.w800,
-                          color: CustomColors.brandRed,
+                          color: context.primaryColor,
                         ),
                       ),
                     ],

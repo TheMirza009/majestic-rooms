@@ -1,21 +1,22 @@
-
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/explore_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/city_avatar.dart';
 
 class CityChips extends StatefulWidget {
-  final List<String>      categories;
-  final List<City>        cities;
-  final Set<int>          selectedIndices;
-  final bool              isLoading;
+  final List<String> categories;
+  final List<City> cities;
+  final Set<int> selectedIndices;
+  final bool isLoading;
+
   /// When true, chips are greyed out and taps are ignored (e.g. while a search is in flight).
-  final bool              isLocked;
+  final bool isLocked;
   final ValueChanged<int> onSelected;
 
   const CityChips({
-    super.key, 
+    super.key,
     required this.categories,
     required this.cities,
     required this.selectedIndices,
@@ -30,13 +31,9 @@ class CityChips extends StatefulWidget {
 
 class _CityChipsState extends State<CityChips> {
   // ── Control Panel ──────────────────────────────────────────────────────
-  static const Duration _animDuration  = Duration(milliseconds: 200);
-  static const Curve    _animCurve     = Curves.easeInOut;
-  static const Color    _activeBg      = CustomColors.brandBlack;
-  static const Color    _inactiveBg    = CustomColors.surfaceWhite;
-  static const Color    _activeText    = CustomColors.textLight;
-  static const Color    _inactiveText  = CustomColors.textMuted;
-  static const Color    _borderColor   = Color.fromRGBO(231, 231, 231, 1);
+  static const Duration _animDuration = Duration(milliseconds: 200);
+  static const Curve _animCurve = Curves.easeInOut;
+  static const Color _borderColor = Color.fromRGBO(231, 231, 231, 1);
 
   final Map<int, GlobalKey> _chipKeys = {};
 
@@ -46,7 +43,7 @@ class _CityChipsState extends State<CityChips> {
 
   void _handleTap(int index) {
     widget.onSelected(index);
-    
+
     // Animate scroll to bring chip into view
     final context = _chipKeys[index]?.currentContext;
     if (context != null) {
@@ -61,6 +58,11 @@ class _CityChipsState extends State<CityChips> {
 
   @override
   Widget build(BuildContext context) {
+    final _activeBg = CustomColors.brandBlack;
+    final _inactiveBg = context.surfaceColor;
+    final _activeText = context.textLightColor;
+    final _inactiveText = context.textMutedColor;
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -68,7 +70,9 @@ class _CityChipsState extends State<CityChips> {
           final isSelected = widget.selectedIndices.contains(i);
           return Padding(
             key: _getKey(i),
-            padding: EdgeInsets.only(right: i < widget.categories.length - 1 ? 8 : 0),
+            padding: EdgeInsets.only(
+              right: i < widget.categories.length - 1 ? 8 : 0,
+            ),
             child: Opacity(
               opacity: widget.isLocked ? 0.4 : 1.0,
               child: GestureDetector(
@@ -76,11 +80,14 @@ class _CityChipsState extends State<CityChips> {
                 child: AnimatedContainer(
                   duration: _animDuration,
                   curve: _animCurve,
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 6,
+                  ),
                   decoration: BoxDecoration(
                     color: isSelected ? _activeBg : _inactiveBg,
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color:_borderColor)
+                    border: Border.all(color: _borderColor),
                   ),
                   child: Row(
                     spacing: 8,
@@ -96,7 +103,9 @@ class _CityChipsState extends State<CityChips> {
                         curve: _animCurve,
                         style: TextStyle(
                           color: isSelected ? _activeText : _inactiveText,
-                          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                          fontWeight: isSelected
+                              ? FontWeight.w600
+                              : FontWeight.w400,
                           fontFamily: 'Fustat',
                           fontSize: 14,
                         ),

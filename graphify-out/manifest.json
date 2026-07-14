@@ -1,0 +1,857 @@
+{
+  ".vscode/launch.json": {
+    "mtime": 1783666724.34,
+    "ast_hash": "bdf50074332ad24a8e61461273f69ec2",
+    "semantic_hash": ""
+  },
+  ".vscode/settings.json": {
+    "mtime": 1783666724.34,
+    "ast_hash": "7b232b4b483f3f3d01b97023d57b9f52",
+    "semantic_hash": ""
+  },
+  "android/app/build.gradle.kts": {
+    "mtime": 1783666724.34,
+    "ast_hash": "366f44aae9bad4b50b9304ab84af4804",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/kotlin/com/majestic_rooms/app/majestic_rooms/MainActivity.kt": {
+    "mtime": 1783666724.34,
+    "ast_hash": "5920810a9c085618d50448fc16a891ed",
+    "semantic_hash": ""
+  },
+  "android/build.gradle.kts": {
+    "mtime": 1783666724.34,
+    "ast_hash": "f11f360aed44d4f6871b398346af14f0",
+    "semantic_hash": ""
+  },
+  "android/settings.gradle.kts": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4440672748462857e9bdbbf5fd06fe1a",
+    "semantic_hash": ""
+  },
+  "docs/database/tables/types.ts": {
+    "mtime": 1783666724.35,
+    "ast_hash": "6227f6e3c157f35709069a40baac802f",
+    "semantic_hash": ""
+  },
+  "lib/core/base/app_binding.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "7bf91b018ffc643fe769e65f7d8aee97",
+    "semantic_hash": ""
+  },
+  "lib/core/base/common_controller.dart": {
+    "mtime": 1783936589.5881286,
+    "ast_hash": "a88104dca61d0db7e708903613cf43b3",
+    "semantic_hash": ""
+  },
+  "lib/core/data/dummy_hotels.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "31141645e8af55df328f3beba6360141",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/booking.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "1abcf265935e1df3d363fc7532dbc9b4",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/facility.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "05fec67638684fc229147a500bcfef14",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/hotel.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "6ba694019f231156c4df2c4adb5b298c",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/hotel_image.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "67e2528a7b91f5c0cdd24f110a9e80cc",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/hotel_room.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "259d690dc122a35bfc91ce9ae78eaa02",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/promotion.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "60cab35a2d684ed4a8f27241351b405e",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/review.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "7266828ea1195c65fd1fcb546f5cffa0",
+    "semantic_hash": ""
+  },
+  "lib/core/data/models/room_image.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "01c992d4e0c14ab962063a61e4ba41c2",
+    "semantic_hash": ""
+  },
+  "lib/core/extensions/context_extensions.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "571d800cad23fbc6b6cafd0567d31af3",
+    "semantic_hash": ""
+  },
+  "lib/core/extensions/text_formatters.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "45cc13b5e1b1dc71223581b7e1b0d9f1",
+    "semantic_hash": ""
+  },
+  "lib/core/extensions/widget_extensions.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "0f072017d67da1918032a380598583f1",
+    "semantic_hash": ""
+  },
+  "lib/core/localization/app_translations.dart": {
+    "mtime": 1783936722.5559065,
+    "ast_hash": "38dd83dd12a1a5d72ea002cf3ac77c1d",
+    "semantic_hash": ""
+  },
+  "lib/core/localization/ar_sa.dart": {
+    "mtime": 1783945000.6420326,
+    "ast_hash": "633cc5b3911cd1e7c687edaa3811ba8a",
+    "semantic_hash": ""
+  },
+  "lib/core/localization/en_us.dart": {
+    "mtime": 1783944987.311917,
+    "ast_hash": "040b06e6e5ab1e6d857647becb7bb0f1",
+    "semantic_hash": ""
+  },
+  "lib/core/routes/app_pages.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "a93207deca860fb66ee99932e3132f88",
+    "semantic_hash": ""
+  },
+  "lib/core/routes/app_routes.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "25dca43ff404acb66581c58c14a5a4ef",
+    "semantic_hash": ""
+  },
+  "lib/core/supabase/supabase_utils.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "ad9b90d1abd535f3f22b1c0b2d067abf",
+    "semantic_hash": ""
+  },
+  "lib/core/theme/app_theme.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "54016bbafd6601e36717851a124867ad",
+    "semantic_hash": ""
+  },
+  "lib/core/theme/custom_colors.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "110ecacd81ada5e6c18687a5d764155d",
+    "semantic_hash": ""
+  },
+  "lib/core/theme/image_assets.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "00a7b1b750add4c80170064aba84df7c",
+    "semantic_hash": ""
+  },
+  "lib/core/theme/vector_strings.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "4318eed1be1e45ff81cb33ea98bf1544",
+    "semantic_hash": ""
+  },
+  "lib/core/utils/constants.dart": {
+    "mtime": 1783951557.5408952,
+    "ast_hash": "d4781fc8445252d412f95a033ea582aa",
+    "semantic_hash": ""
+  },
+  "lib/core/utils/currency_format.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "950459be22d1cacd7c362af49b1f96c7",
+    "semantic_hash": ""
+  },
+  "lib/core/utils/helper.dart": {
+    "mtime": 1783938486.9834123,
+    "ast_hash": "ec0b66d86e2cf48704217735d1e0366a",
+    "semantic_hash": ""
+  },
+  "lib/main.dart": {
+    "mtime": 1783943542.252479,
+    "ast_hash": "2ca7f1a50f0bbcd001f78f6b4268a9f7",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/auth/login_binding.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "9d6f3d6adaade0ac5bff6e2f46573c8d",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/auth/login_controller.dart": {
+    "mtime": 1783939376.2286603,
+    "ast_hash": "467e8c7d17192ec52c2cb163b1e74532",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/auth/login_screen.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "09f3a13d484d8865d3d914744ed08841",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/auth/signup_screen.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "3236bdae62321a75d981f69f389b58f8",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/booking_controller.dart": {
+    "mtime": 1783944044.6026363,
+    "ast_hash": "17ec6e93394a9a639bc6ccaf33f92721",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/screens/booking_success_screen.dart": {
+    "mtime": 1783948579.5127614,
+    "ast_hash": "fe764313360c7dbf47f865d2dc36b0cc",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/screens/booking_summary_screen.dart": {
+    "mtime": 1783948556.5292606,
+    "ast_hash": "717690c23c4dfcc147dd8619acc95f23",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/screens/rooms_screen.dart": {
+    "mtime": 1783942064.9811556,
+    "ast_hash": "907df2b0b13d19ef622edf97685a3440",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/date_range/custom_calender.dart": {
+    "mtime": 1783943325.538143,
+    "ast_hash": "2223f0ec5927bd5bad34362b51a5edb2",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/date_range/custom_date_range_picker.dart": {
+    "mtime": 1783944886.657682,
+    "ast_hash": "31806633a0e69afb1e0f4fd7fca89c99",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/date_range/date_range_selection_card.dart": {
+    "mtime": 1783943280.8979185,
+    "ast_hash": "3fb18d56e0a5dba0d1510e4da1188a3e",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/room_card.dart": {
+    "mtime": 1783942091.8084452,
+    "ast_hash": "5c3fcbf93961997e4c291a36187b0894",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/room_widgets/book_now_button.dart": {
+    "mtime": 1783942344.2931395,
+    "ast_hash": "cf8f037946ebe2e64bf3a5a5c26993ce",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/summary_widgets/booking_screenshot_widget.dart": {
+    "mtime": 1783947524.2348988,
+    "ast_hash": "c0fe058940e1f746adab05c05aff672a",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/summary_widgets/price_breakdown.dart": {
+    "mtime": 1783943268.8078563,
+    "ast_hash": "69c29b93389fee4e3b2c4e7e62ffbfc7",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/summary_widgets/selected_rooms_list.dart": {
+    "mtime": 1783943256.737794,
+    "ast_hash": "c496191328863ac7a1b92aa828adc411",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/booking/widgets/summary_widgets/summary_card.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "96f88af143227056806a9fa4b91a527e",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/home_binding.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "675742e27c613d3574489cc7194d23da",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/home_controller.dart": {
+    "mtime": 1783939400.9120064,
+    "ast_hash": "24ff6987f9c590b45b52edd76a2395ca",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/home_screen.dart": {
+    "mtime": 1783940039.9006104,
+    "ast_hash": "44b828df6a4f3adea3e3fbac1798282b",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/notifications_screen.dart": {
+    "mtime": 1783940435.197479,
+    "ast_hash": "8bba2124f77807b736a907c2be10717a",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/widgets/glass_bottom_nav.dart": {
+    "mtime": 1783940030.2104793,
+    "ast_hash": "94e1ed57d084b5fa50f8120677ad7280",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/home/widgets/glass_nav_item.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "1d29c79bda3279097b94c29cf18fe5b8",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/hotel_screen.dart": {
+    "mtime": 1783945321.2479348,
+    "ast_hash": "f2d2582195f1d1bb398a047908d63270",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/hotel_screen_controller.dart": {
+    "mtime": 1783939419.7253416,
+    "ast_hash": "360a7d4ee21f5261fa9e18fb569b0ba9",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/screens/image_viewer_screen.dart": {
+    "mtime": 1783666724.35,
+    "ast_hash": "9bc9a7944e62135a18cf56fe857bb17b",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/check_availability_bar.dart": {
+    "mtime": 1783940541.3446584,
+    "ast_hash": "959a749525ef3079b7715f026a3c569b",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/hotel_stars.dart": {
+    "mtime": 1783941192.1425087,
+    "ast_hash": "388f5e9a74fe66614de4a8227be8c6b1",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/image_carousel.dart": {
+    "mtime": 1783945379.8117034,
+    "ast_hash": "b56de775069eb7f07dd881dcf0d83311",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/licence_banner.dart": {
+    "mtime": 1783940550.268029,
+    "ast_hash": "2229f6f5418aa61705c1fff1d5524988",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/maps_preview.dart": {
+    "mtime": 1783940680.4051492,
+    "ast_hash": "85699f0c3cc3465f18ecf0cacae39001",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/hotel/widgets/promotional_banner.dart": {
+    "mtime": 1783940712.2452374,
+    "ast_hash": "874fd54c083c27299c91fc4e7dc961f9",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/settings/about/about_screen.dart": {
+    "mtime": 1783951602.314188,
+    "ast_hash": "cd21893fedf73b4cb6d0ba4050af1946",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/settings/settings_screen.dart": {
+    "mtime": 1783938005.20862,
+    "ast_hash": "5ce0bdfab29634ccbc31e4485a2fe8a6",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/settings/update_password_screen.dart": {
+    "mtime": 1783938824.2238894,
+    "ast_hash": "87fb2c900c443d1f1e484ff3215326d9",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/settings/user_controller.dart": {
+    "mtime": 1783939391.192003,
+    "ast_hash": "4cea2bf8f66019fc6a40b6342e345825",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/settings/user_settings_screen.dart": {
+    "mtime": 1783938805.4068875,
+    "ast_hash": "52d34926c449d3c8316c7b5f81733710",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/bookings/booking_card.dart": {
+    "mtime": 1783943886.3954103,
+    "ast_hash": "82e17d459087ef26398817846f670fef",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/bookings/bookings_screen.dart": {
+    "mtime": 1783943821.9136212,
+    "ast_hash": "c3b8af673bbb533494417bdf1dfb91cc",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/explore_controller.dart": {
+    "mtime": 1783939410.0620081,
+    "ast_hash": "25e2092cd943c8937201d3cabc13e832",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/explore_screen.dart": {
+    "mtime": 1783940174.6688442,
+    "ast_hash": "579adc85958f0c5cb5bc20476bf148f2",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/city_avatar.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "88385c06e586f6fba9f9344d78035d41",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/city_chips.dart": {
+    "mtime": 1783940220.5759475,
+    "ast_hash": "1e3533f11194d13c75e4f1b543847ed3",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/explore_search_bar.dart": {
+    "mtime": 1783940282.1798003,
+    "ast_hash": "62ffeb722567f77e8933bd59235b2b7c",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/favorite_button.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "2f9d26b57b547f2d8a4ebcf4b40d8848",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/hotel_card.dart": {
+    "mtime": 1783952025.8830245,
+    "ast_hash": "dd302353afe63d54e82fc97c71c602a2",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/explore/widgets/profile_bar.dart": {
+    "mtime": 1783940250.6328766,
+    "ast_hash": "390ac273b95eb1d38eda89f59f458313",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/profile/profile_avatar_flight_controller.dart": {
+    "mtime": 1783944633.1084468,
+    "ast_hash": "3d119754466f16ed5b57861277641677",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/profile/profile_screen.dart": {
+    "mtime": 1783945013.7454786,
+    "ast_hash": "3ce5099e6532ff94e9f7667f28a1708e",
+    "semantic_hash": ""
+  },
+  "lib/root/modules/tabs/saved/saved_screen.dart": {
+    "mtime": 1783939993.086617,
+    "ast_hash": "1f0ff44b92032dcd3766039d9b101b1a",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/confirm_logout_dialog.dart": {
+    "mtime": 1783941677.2590277,
+    "ast_hash": "8a44875ef30ab3ea0dbe8fd74e951691",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/custom_button.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "7a85113351609593fa162ec659e4f2b2",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/entry_field.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "d22064d64b6a94628a3841077fbd4aef",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/field_clear_button.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "33824fa03d93ce1af2ac08f745a3b313",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/no_results_widget.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "1014c7fc9ac315a8184076aa4f346080",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/round_icon_button.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "cf5f0e86bb870c1d8de58ba2f4b2f9f8",
+    "semantic_hash": ""
+  },
+  "lib/root/widgets/user_avatar.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "e8718b6af3582ba73633477893feec09",
+    "semantic_hash": ""
+  },
+  "scratch.py": {
+    "mtime": 1783666724.36,
+    "ast_hash": "c4c173df49cc14dfa312f279520767e8",
+    "semantic_hash": ""
+  },
+  "scratch_generate_seed.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "d41d8cd98f00b204e9800998ecf8427e",
+    "semantic_hash": ""
+  },
+  "scripts/bump_version.dart": {
+    "mtime": 1783681950.4711368,
+    "ast_hash": "e1d9a24b5731c42973934c8591124325",
+    "semantic_hash": ""
+  },
+  "supabase/.temp/linked-project.json": {
+    "mtime": 1783666724.36,
+    "ast_hash": "337e76f4d6cb7c4d9df13430f9bb5a24",
+    "semantic_hash": ""
+  },
+  "test/widget_test.dart": {
+    "mtime": 1783666724.36,
+    "ast_hash": "80387dd0d499a81b61903d9a289fa109",
+    "semantic_hash": ""
+  },
+  "windows/flutter/generated_plugin_registrant.cc": {
+    "mtime": 1783666724.36,
+    "ast_hash": "e2d617a0f17d017ace661c9ff3e772f9",
+    "semantic_hash": ""
+  },
+  "windows/flutter/generated_plugin_registrant.h": {
+    "mtime": 1783666724.36,
+    "ast_hash": "0ea33875f9f8e118f9c2ded03e2e2835",
+    "semantic_hash": ""
+  },
+  "windows/runner/flutter_window.cpp": {
+    "mtime": 1783666724.36,
+    "ast_hash": "9b92b95a9eecce25e3e9d356688d0cb6",
+    "semantic_hash": ""
+  },
+  "windows/runner/flutter_window.h": {
+    "mtime": 1783666724.36,
+    "ast_hash": "79bea736711adda00c49419a39a4a0b4",
+    "semantic_hash": ""
+  },
+  "windows/runner/main.cpp": {
+    "mtime": 1783666724.36,
+    "ast_hash": "27a6ba23ee62ebaf6a51071ce27e7537",
+    "semantic_hash": ""
+  },
+  "windows/runner/resource.h": {
+    "mtime": 1783666724.36,
+    "ast_hash": "c8f809a4f8d3f2f625e358fd90f72fee",
+    "semantic_hash": ""
+  },
+  "windows/runner/utils.cpp": {
+    "mtime": 1783666724.36,
+    "ast_hash": "e56aa0d1b2e1b995000d67e8e069b83f",
+    "semantic_hash": ""
+  },
+  "windows/runner/utils.h": {
+    "mtime": 1783666724.36,
+    "ast_hash": "c741fb9cddbf3a62f4688b6cca39ddcc",
+    "semantic_hash": ""
+  },
+  "windows/runner/win32_window.cpp": {
+    "mtime": 1783666724.36,
+    "ast_hash": "928e86a2be27eca688669dce6c9177d9",
+    "semantic_hash": ""
+  },
+  "windows/runner/win32_window.h": {
+    "mtime": 1783666724.36,
+    "ast_hash": "5a4cf051798d7e6931ee0405a4523c8f",
+    "semantic_hash": ""
+  },
+  "README.md": {
+    "mtime": 1783666724.34,
+    "ast_hash": "dca1e8ab58cee0f9817b6e6b7548d8d9",
+    "semantic_hash": ""
+  },
+  "analysis_options.yaml": {
+    "mtime": 1783666724.34,
+    "ast_hash": "66d03d7647c8e438164feaf5b922d44a",
+    "semantic_hash": ""
+  },
+  "devtools_options.yaml": {
+    "mtime": 1783666724.35,
+    "ast_hash": "d1ff5187b1b67653e7357395895e8449",
+    "semantic_hash": ""
+  },
+  "docs/database/backend_documentation.md": {
+    "mtime": 1783666724.35,
+    "ast_hash": "53ff5858e8b17f4458333a13d2c6646c",
+    "semantic_hash": ""
+  },
+  "docs/workflows/Hardcut.md": {
+    "mtime": 1783666724.35,
+    "ast_hash": "c41bd83dd689e1adfbd88b2b94746e28",
+    "semantic_hash": ""
+  },
+  "docs/workflows/class_refactor.md": {
+    "mtime": 1783666724.35,
+    "ast_hash": "c94ba9c8e7136f51d290a34247da97de",
+    "semantic_hash": ""
+  },
+  "docs/workflows/claude.md": {
+    "mtime": 1783666724.35,
+    "ast_hash": "12639dc6466d300941923c62ec1aa7ca",
+    "semantic_hash": ""
+  },
+  "docs/workflows/clean_monolith.md": {
+    "mtime": 1783666724.35,
+    "ast_hash": "483e4c70d1d0ae3c1d6da37566ca5e43",
+    "semantic_hash": ""
+  },
+  "pubspec.yaml": {
+    "mtime": 1783951569.2230747,
+    "ast_hash": "327898ca83702d923408ca416bca0787",
+    "semantic_hash": ""
+  },
+  "task.md": {
+    "mtime": 1783666724.36,
+    "ast_hash": "a792df17dfeb315fe3a45e916a89fc8f",
+    "semantic_hash": ""
+  },
+  "windows/CMakeLists.txt": {
+    "mtime": 1783666724.36,
+    "ast_hash": "95d3aa5b87a53b43d9e9246a37863959",
+    "semantic_hash": ""
+  },
+  "windows/flutter/CMakeLists.txt": {
+    "mtime": 1783666724.36,
+    "ast_hash": "0c500410e3259a9a053797dc1c28070e",
+    "semantic_hash": ""
+  },
+  "windows/runner/CMakeLists.txt": {
+    "mtime": 1783666724.36,
+    "ast_hash": "e99a99b5cc82a168fc557eb23b8d5a96",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-hdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4229cdd1aacf0c310c74efeb18bad343",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-hdpi/ic_launcher_foreground.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "a28de9598ae7f3516b0906e23e941399",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-hdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4229cdd1aacf0c310c74efeb18bad343",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-mdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "c99b1b8474656feeca74720a87a62193",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-mdpi/ic_launcher_foreground.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "817a63faa50b7dbf3ead12da9babc975",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-mdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "c99b1b8474656feeca74720a87a62193",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-hdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4d0cde107a0adc880783016deef5354f",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-hdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4d0cde107a0adc880783016deef5354f",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-mdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "1fcb8b38361d7eec51706b6c3f79d9a3",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-mdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "1fcb8b38361d7eec51706b6c3f79d9a3",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-v21/background.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "cf8cb751a573b98de916ba1fc4c7d62b",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "b196041146bedee77378bee8fecb4537",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "b196041146bedee77378bee8fecb4537",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xxhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "f1a41a3187aa6943fbfef71d023b717e",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xxhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "f1a41a3187aa6943fbfef71d023b717e",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xxxhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "179d62573880248a9181724d71c20b30",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night-xxxhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "179d62573880248a9181724d71c20b30",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-night/background.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "cf8cb751a573b98de916ba1fc4c7d62b",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-v21/background.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "a981e7ab7386d43b4f6b1a423712c480",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "b681a4c715f8d63e89bca701ef3c137d",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xhdpi/ic_launcher_foreground.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "7de814c1572c27f0638df7f3a4fc5595",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "b681a4c715f8d63e89bca701ef3c137d",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4f6df289d267d68a1ad5fbe9c9c99f6b",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxhdpi/ic_launcher_foreground.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "a692d0fe0bcf3706fb3ca7b1b58f2fc8",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "4f6df289d267d68a1ad5fbe9c9c99f6b",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxxhdpi/android12splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "3df9da3f10e58050f14bd14c33baaf31",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxxhdpi/ic_launcher_foreground.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "bf9a5c3e7895a3e6fb7f52a9b89bf10d",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable-xxxhdpi/splash.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "3df9da3f10e58050f14bd14c33baaf31",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/drawable/background.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "a981e7ab7386d43b4f6b1a423712c480",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-hdpi/ic_launcher.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "13e9c72ec37fac220397aa819fa1ef2d",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-hdpi/launcher_icon.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "5e137723da1af5ffa305a73941f93122",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-mdpi/ic_launcher.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "6270344430679711b81476e29878caa7",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-mdpi/launcher_icon.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "022226d6c11bbe0584a856cba5640b06",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xhdpi/ic_launcher.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "a0a8db5985280b3679d99a820ae2db79",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xhdpi/launcher_icon.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "92c936b8a9e87a06ec4209edf36d1555",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "afe1b655b9f32da22f9a4301bb8e6ba8",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xxhdpi/launcher_icon.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "5116fff88fba72d371bf6b9299462b10",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "57838d52c318faff743130c3fcfae0c6",
+    "semantic_hash": ""
+  },
+  "android/app/src/main/res/mipmap-xxxhdpi/launcher_icon.png": {
+    "mtime": 1783666724.34,
+    "ast_hash": "d8d8563f1f3da52fa1ec9268cae158fe",
+    "semantic_hash": ""
+  },
+  "assets/images/T3UOgT3l.jpg": {
+    "mtime": 1783666724.35,
+    "ast_hash": "c4db9b95e00fe80ab91c6a79c210f7bf",
+    "semantic_hash": ""
+  },
+  "assets/images/google.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "a9987235f00debc84f4e1ed81e9988ec",
+    "semantic_hash": ""
+  },
+  "assets/images/logo_black.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "ef263b2c8158823dc2ebeed4ea67cd7c",
+    "semantic_hash": ""
+  },
+  "assets/images/logo_white_full.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "2d5f1ed862058a7162112fc795a62cc1",
+    "semantic_hash": ""
+  },
+  "assets/images/logo_white_symbol.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "140e48cd5122f3eef3159b9175b753d3",
+    "semantic_hash": ""
+  },
+  "assets/images/pattern-image.svg": {
+    "mtime": 1783666724.35,
+    "ast_hash": "9a4f0f6779c5b055725025841860cfd4",
+    "semantic_hash": ""
+  },
+  "assets/launcher/icon.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "431c3aec490bec6b5287f6be1c79de59",
+    "semantic_hash": ""
+  },
+  "assets/launcher/icon_adaptive.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "3d38583bbabb5b0e1be948cb04d465b7",
+    "semantic_hash": ""
+  },
+  "assets/launcher/splash.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "45dae3bd746db60ffc22c8db677313a1",
+    "semantic_hash": ""
+  },
+  "assets/launcher/splash_dark.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "5c210a44fabefe0168b73fbf9305c7c5",
+    "semantic_hash": ""
+  },
+  "inspiration/Screenshot 2026-06-16 174133.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "69cea180fca558c7c39cc725b8cf0342",
+    "semantic_hash": ""
+  },
+  "inspiration/Screenshot 2026-06-16 174209.png": {
+    "mtime": 1783666724.35,
+    "ast_hash": "272edad05aa3a7b2bce8dd4ccd8d86ed",
+    "semantic_hash": ""
+  }
+}

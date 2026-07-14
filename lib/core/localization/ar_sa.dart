@@ -3,8 +3,10 @@ const Map<String, String> arSA = {
   'After 02:00 PM': 'بعد 02:00 مساءً',
   'Already have an account? ': 'هل لديك حساب بالفعل؟ ',
   'Apply': 'تطبيق',
-  'Are you sure you want to go back? Your room selections and dates will be reset.': 'هل أنت متأكد من رغبتك في العودة؟ ستتم إعادة تعيين اختيارات غرفتك والتواريخ.',
-  'Are you sure you want to remove this hotel from your saved list?': 'هل أنت متأكد أنك تريد إزالة هذا الفندق من قائمتك المحفوظة؟',
+  'Are you sure you want to go back? Your room selections and dates will be reset.':
+      'هل أنت متأكد من رغبتك في العودة؟ ستتم إعادة تعيين اختيارات غرفتك والتواريخ.',
+  'Are you sure you want to remove this hotel from your saved list?':
+      'هل أنت متأكد أنك تريد إزالة هذا الفندق من قائمتك المحفوظة؟',
   'Before 11:00 AM': 'قبل 11:00 صباحاً',
   'Cancel': 'إلغاء',
   'Cancel Booking': 'إلغاء الحجز',
@@ -64,24 +66,33 @@ const Map<String, String> arSA = {
   'Clear All Bookings (Debug)': 'مسح جميع الحجوزات',
   'Version: @version': 'الإصدار: @version',
   'Update @title': 'تحديث @title',
-  'about_description': 'نجعل العثور على الفنادق في المملكة العربية السعودية أمرًا سهلاً. تساعد منصتنا المسافرين على حجز إقامات رائعة، من الغرف المريحة إلى الفنادق الفاخرة، في جميع أنحاء المملكة.',
+  'about_description':
+      'نجعل العثور على الفنادق في المملكة العربية السعودية أمرًا سهلاً. تساعد منصتنا المسافرين على حجز إقامات رائعة، من الغرف المريحة إلى الفنادق الفاخرة، في جميع أنحاء المملكة.',
   'our_story_title': 'قصتنا',
-  'our_story_content': 'بدأت MajesticRooms في عام 2023 من قبل مجموعة من محبي السفر السعوديين، بهدف جعل حجز الفنادق بسيطًا. رأينا الكثير من المواقع القديمة وأردنا إنشاء مكان واحد حيث يمكن للناس العثور على فنادق موثوقة في المملكة العربية السعودية، من شوارع الرياض المزدحمة إلى شواطئ جدة الهادئة. الآن، نساعد آلاف المسافرين في العثور على إقامتهم المثالية.',
+  'our_story_content':
+      'بدأت MajesticRooms في عام 2023 من قبل مجموعة من محبي السفر السعوديين، بهدف جعل حجز الفنادق بسيطًا. رأينا الكثير من المواقع القديمة وأردنا إنشاء مكان واحد حيث يمكن للناس العثور على فنادق موثوقة في المملكة العربية السعودية، من شوارع الرياض المزدحمة إلى شواطئ جدة الهادئة. الآن، نساعد آلاف المسافرين في العثور على إقامتهم المثالية.',
   'our_mission_title': 'مهمتنا',
-  'our_mission_content': 'هدفنا هو جعل حجز الفنادق في المملكة العربية السعودية سلسًا وموثوقًا. نريد أن يتمكن المسافرون من العثور بسهولة على الفنادق التي تناسب احتياجاتهم، سواء كانوا يزورون مكة المكرمة، أو يستكشفون العلا، أو يعملون في الدمام. نحن نركز على المعلومات الواضحة، وسهولة التصفح، ودعم الفنادق المحلية لمشاركة أجوائها الفريدة.',
+  'our_mission_content':
+      'هدفنا هو جعل حجز الفنادق في المملكة العربية السعودية سلسًا وموثوقًا. نريد أن يتمكن المسافرون من العثور بسهولة على الفنادق التي تناسب احتياجاتهم، سواء كانوا يزورون مكة المكرمة، أو يستكشفون العلا، أو يعملون في الدمام. نحن نركز على المعلومات الواضحة، وسهولة التصفح، ودعم الفنادق المحلية لمشاركة أجوائها الفريدة.',
   'our_values_title': 'قيمنا',
   'value_trust_title': 'الثقة والشفافية',
-  'value_trust_content': 'أسعار صادقة، معلومات واضحة، وعلاقات دائمة مع الضيوف وشركاء الفنادق.',
+  'value_trust_content':
+      'أسعار صادقة، معلومات واضحة، وعلاقات دائمة مع الضيوف وشركاء الفنادق.',
   'value_customer_title': 'العميل أولاً',
-  'value_customer_content': 'رضاك هو أولويتنا. الدعم متاح على مدار الساعة طوال أيام الأسبوع لأي استفسارات.',
+  'value_customer_content':
+      'رضاك هو أولويتنا. الدعم متاح على مدار الساعة طوال أيام الأسبوع لأي استفسارات.',
   'value_passion_title': 'شغف السفر',
-  'value_passion_content': 'نحن نتفهم متعة السفر ونعمل بلا كلل لجعل كل رحلة لا تُنسى.',
+  'value_passion_content':
+      'نحن نتفهم متعة السفر ونعمل بلا كلل لجعل كل رحلة لا تُنسى.',
   'value_simplicity_title': 'البساطة',
-  'value_simplicity_content': 'منصتنا بديهية وسهلة الاستخدام، مما يجعل حجز الفنادق أمرًا في غاية السهولة.',
+  'value_simplicity_content':
+      'منصتنا بديهية وسهلة الاستخدام، مما يجعل حجز الفنادق أمرًا في غاية السهولة.',
   'value_security_title': 'الأمان والخصوصية',
-  'value_security_content': 'تتم حماية بياناتك ومعلومات الدفع الخاصة بك من خلال إجراءات أمنية رائدة في الصناعة.',
+  'value_security_content':
+      'تتم حماية بياناتك ومعلومات الدفع الخاصة بك من خلال إجراءات أمنية رائدة في الصناعة.',
   'value_expertise_title': 'الخبرة المحلية',
-  'value_expertise_content': 'تساعدنا معرفتنا العميقة بالمملكة العربية السعودية في التوصية بأفضل الفنادق للحجاج والمسافرين على حد سواء.',
+  'value_expertise_content':
+      'تساعدنا معرفتنا العميقة بالمملكة العربية السعودية في التوصية بأفضل الفنادق للحجاج والمسافرين على حد سواء.',
   'licensed_company': 'شركة مرخصة',
   'license_number': 'وزارة السياحة — رقم 73105591',
   'terms_of_service': 'شروط الخدمة',
@@ -115,7 +126,8 @@ const Map<String, String> arSA = {
   'Name': 'الاسم',
   'Phone': 'الهاتف',
   'Choose a strong password': 'اختر كلمة مرور قوية',
-  'password_desc': 'استخدم كلمة مرور طويلة وعشوائية لا تستخدمها في أي مكان آخر للحفاظ على أمان حسابك.',
+  'password_desc':
+      'استخدم كلمة مرور طويلة وعشوائية لا تستخدمها في أي مكان آخر للحفاظ على أمان حسابك.',
   'Current Password': 'كلمة المرور الحالية',
   'Enter current password': 'أدخل كلمة المرور الحالية',
   'Current password is required': 'كلمة المرور الحالية مطلوبة',
@@ -130,7 +142,8 @@ const Map<String, String> arSA = {
   'Medium': 'متوسطة',
   'Strong': 'قوية',
   'Password updated': 'تم تحديث كلمة المرور',
-  'Your password has been changed successfully.': 'تم تغيير كلمة المرور الخاصة بك بنجاح.',
+  'Your password has been changed successfully.':
+      'تم تغيير كلمة المرور الخاصة بك بنجاح.',
   'Sign In Failed': 'فشل تسجيل الدخول',
   'Success': 'نجاح',
   'Update Failed': 'فشل التحديث',
@@ -144,9 +157,11 @@ const Map<String, String> arSA = {
   'Could not update profile photo.': 'تعذر تحديث صورة الملف الشخصي.',
   'Name updated successfully.': 'تم تحديث الاسم بنجاح.',
   'Could not update name.': 'تعذر تحديث الاسم.',
-  'Email updated successfully. Please verify your new email.': 'تم تحديث البريد الإلكتروني بنجاح. يرجى التحقق من بريدك الجديد.',
+  'Email updated successfully. Please verify your new email.':
+      'تم تحديث البريد الإلكتروني بنجاح. يرجى التحقق من بريدك الجديد.',
   'Could not update email.': 'تعذر تحديث البريد الإلكتروني.',
-  'Password must be at least 6 characters.': 'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.',
+  'Password must be at least 6 characters.':
+      'يجب أن تتكون كلمة المرور من 6 أحرف على الأقل.',
   'Password updated successfully.': 'تم تحديث كلمة المرور بنجاح.',
   'Could not update password.': 'تعذر تحديث كلمة المرور.',
   'Phone number updated successfully.': 'تم تحديث رقم الهاتف بنجاح.',
@@ -216,7 +231,8 @@ const Map<String, String> arSA = {
   'Book Now': 'احجز الآن',
   'Error: @error': 'خطأ: @error',
   'Booking Confirmed!': 'تم تأكيد الحجز!',
-  'reservation_confirmed': 'تم تأكيد حجزك في @hotel.\\nتحقق من علامة تبويب حجوزاتك للحصول على التفاصيل الكاملة.',
+  'reservation_confirmed':
+      'تم تأكيد حجزك في @hotel.\\nتحقق من علامة تبويب حجوزاتك للحصول على التفاصيل الكاملة.',
   'night_count': '@count ليلة',
   'nights_count': '@count ليالي',
   'TOTAL PAID': 'إجمالي المدفوع',
@@ -232,12 +248,14 @@ const Map<String, String> arSA = {
   'Booking...': 'جاري الحجز...',
   'Confirm Booking': 'تأكيد الحجز',
   'Total price': 'السعر الإجمالي',
-  'cancel_booking_desc': 'هل أنت متأكد أنك تريد إلغاء هذا الحجز؟ قد يؤدي إلغاء الحجز إلى فرض رسوم إضافية وفقًا لسياسة الفندق.',
+  'cancel_booking_desc':
+      'هل أنت متأكد أنك تريد إلغاء هذا الحجز؟ قد يؤدي إلغاء الحجز إلى فرض رسوم إضافية وفقًا لسياسة الفندق.',
   'No rooms available': 'لا توجد غرف متاحة',
   'with_breakfast': 'مع الإفطار: @price / ليلة',
   'No information given': 'لم يتم تقديم معلومات',
   'Are you sure you want to logout?': 'هل أنت متأكد أنك تريد تسجيل الخروج؟',
-  'You will be taken back to the login screen.': 'سيتم نقلك مرة أخرى إلى شاشة تسجيل الدخول.',
+  'You will be taken back to the login screen.':
+      'سيتم نقلك مرة أخرى إلى شاشة تسجيل الدخول.',
   'Press back again to exit': 'اضغط للرجوع مرة أخرى للخروج',
   'Search your saved hotels': 'البحث في فنادقك المحفوظة',
   'Search query cannot be empty': 'لا يمكن أن يكون استعلام البحث فارغًا',
@@ -245,13 +263,18 @@ const Map<String, String> arSA = {
   'error_with_message': 'خطأ: @message',
   'Could not fetch reviews': 'تعذر جلب التقييمات',
   'Failed to confirm booking.': 'فشل تأكيد الحجز.',
-  'Local bookings cleared (No user logged in).': 'تم مسح الحجوزات المحلية (لم يتم تسجيل دخول أي مستخدم).',
-  'All bookings completely deleted from backend and app.': 'تم حذف جميع الحجوزات تمامًا من الخادم والتطبيق.',
+  'Local bookings cleared (No user logged in).':
+      'تم مسح الحجوزات المحلية (لم يتم تسجيل دخول أي مستخدم).',
+  'All bookings completely deleted from backend and app.':
+      'تم حذف جميع الحجوزات تمامًا من الخادم والتطبيق.',
   'failed_to_delete_bookings_error': 'فشل حذف الحجوزات: @error',
-  'Hotel does not exist on the server. Proceeding in local mode.': 'الفندق غير موجود على الخادم. المتابعة في الوضع المحلي.',
-  'Hotel does not exist on the server. Booking cancelled locally.': 'الفندق غير موجود على الخادم. تم إلغاء الحجز محليًا.',
+  'Hotel does not exist on the server. Proceeding in local mode.':
+      'الفندق غير موجود على الخادم. المتابعة في الوضع المحلي.',
+  'Hotel does not exist on the server. Booking cancelled locally.':
+      'الفندق غير موجود على الخادم. تم إلغاء الحجز محليًا.',
   'Your booking has been successfully cancelled.': 'تم إلغاء حجزك بنجاح.',
-  'Failed to cancel booking. Please try again.': 'فشل إلغاء الحجز. يرجى المحاولة مرة أخرى.',
+  'Failed to cancel booking. Please try again.':
+      'فشل إلغاء الحجز. يرجى المحاولة مرة أخرى.',
   'Selected Rooms': 'الغرف المحددة',
   'Room @number': 'غرفة @number',
   'Service fee': 'رسوم الخدمة',
@@ -262,7 +285,8 @@ const Map<String, String> arSA = {
   'From': 'من',
   'To': 'إلى',
   'Not selected': 'غير محدد',
-  'free_cancellation_fallback': 'إلغاء مجاني قبل تاريخ تسجيل الدخول. راجع الشروط الكاملة قبل التأكيد.',
+  'free_cancellation_fallback':
+      'إلغاء مجاني قبل تاريخ تسجيل الدخول. راجع الشروط الكاملة قبل التأكيد.',
   'nights_rooms_dot': '@nights ليلة/ليالي · @rooms غرفة/غرف',
   'Pending': 'قيد الانتظار',
   'Confirmed': 'مؤكد',
@@ -270,5 +294,6 @@ const Map<String, String> arSA = {
   'Completed': 'مكتمل',
   'No bookings yet': 'لا توجد حجوزات بعد',
   'Your confirmed reservations will appear here.': 'ستظهر حجوزاتك المؤكدة هنا.',
-  'No reservations match this filter.': 'لا توجد حجوزات تطابق عامل التصفية هذا.',
+  'No reservations match this filter.':
+      'لا توجد حجوزات تطابق عامل التصفية هذا.',
 };

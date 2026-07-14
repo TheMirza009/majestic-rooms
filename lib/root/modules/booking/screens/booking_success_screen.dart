@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/core/extensions/context_extensions.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'dart:io';
 import 'package:flutter/services.dart';
@@ -18,16 +18,16 @@ import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/home/home_screen.dart';
 
 // ── Shared style constants ─────────────────────────────────────────────────────
-const _snapshotLabelStyle = TextStyle(
+TextStyle _snapshotLabelStyle(BuildContext context) => TextStyle(
   fontSize: 11,
   fontWeight: FontWeight.w600,
   letterSpacing: 0.8,
-  color: CustomColors.textMuted,
+  color: context.textMutedColor,
 );
-const _snapshotValueStyle = TextStyle(
+TextStyle _snapshotValueStyle(BuildContext context) => TextStyle(
   fontSize: 14,
   fontWeight: FontWeight.w700,
-  color: CustomColors.textMain,
+  color: context.textMainColor,
 );
 
 class BookingSuccessScreen extends StatefulWidget {
@@ -114,7 +114,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                 'Saved to gallery!'.tr,
                 style: const TextStyle(color: Colors.white),
               ),
-              backgroundColor: CustomColors.brandRed,
+              backgroundColor: context.primaryColor,
             ),
           );
         }
@@ -154,7 +154,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
       ),
       style: TextButton.styleFrom(
         backgroundColor: const Color(0xFFEEEEEE),
-        foregroundColor: CustomColors.textMuted,
+        foregroundColor: context.textMutedColor,
         elevation: 0,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
@@ -224,12 +224,12 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                       child: Container(
                         width: 100,
                         height: 100,
-                        decoration: const BoxDecoration(
+                        decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            colors: [Color(0xFF9B2728), CustomColors.brandRed],
+                            colors: [Color(0xFF9B2728), context.primaryColor],
                           ),
                           boxShadow: [
                             BoxShadow(
@@ -254,7 +254,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w800,
-                        color: CustomColors.textMain,
+                        color: context.textMainColor,
                         height: 1.2,
                       ),
                       textAlign: TextAlign.center,
@@ -266,9 +266,9 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                       'reservation_confirmed'.trParams({
                         'hotel': booking.hotelName,
                       }),
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
-                        color: CustomColors.textMuted,
+                        color: context.textMutedColor,
                         height: 1.6,
                       ),
                       textAlign: TextAlign.center,
@@ -280,7 +280,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                       width: double.infinity,
                       padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: CustomColors.surfaceWhite,
+                        color: context.surfaceColor,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: const [
                           BoxShadow(
@@ -299,15 +299,13 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: CustomColors.brandRed.withOpacity(
-                                    0.08,
-                                  ),
+                                  color: context.primaryColor.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.hotel_rounded,
                                   size: 18,
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -317,12 +315,12 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                   children: [
                                     Text(
                                       'HOTEL'.tr,
-                                      style: _snapshotLabelStyle,
+                                      style: _snapshotLabelStyle(context),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       booking.hotelName,
-                                      style: _snapshotValueStyle,
+                                      style: _snapshotValueStyle(context),
                                     ),
                                   ],
                                 ),
@@ -342,10 +340,10 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                   children: [
                                     Text(
                                       'CHECK-IN'.tr,
-                                      style: _snapshotLabelStyle,
+                                      style: _snapshotLabelStyle(context),
                                     ),
                                     const SizedBox(height: 4),
-                                    Text(checkIn, style: _snapshotValueStyle),
+                                    Text(checkIn, style: _snapshotValueStyle(context)),
                                   ],
                                 ),
                               ),
@@ -355,15 +353,13 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: CustomColors.brandRed.withOpacity(
-                                    0.07,
-                                  ),
+                                  color: context.primaryColor.withOpacity(0.07),
                                   borderRadius: BorderRadius.circular(20),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.arrow_forward_rounded,
                                   size: 14,
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                 ),
                               ),
                               Expanded(
@@ -372,10 +368,10 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                   children: [
                                     Text(
                                       'CHECK-OUT'.tr,
-                                      style: _snapshotLabelStyle,
+                                      style: _snapshotLabelStyle(context),
                                     ),
                                     const SizedBox(height: 4),
-                                    Text(checkOut, style: _snapshotValueStyle),
+                                    Text(checkOut, style: _snapshotValueStyle(context)),
                                   ],
                                 ),
                               ),
@@ -394,7 +390,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                 children: [
                                   Text(
                                     'DURATION'.tr,
-                                    style: _snapshotLabelStyle,
+                                    style: _snapshotLabelStyle(context),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
@@ -405,7 +401,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                         : 'nights_count'.trParams({
                                             'count': booking.nights.toString(),
                                           }),
-                                    style: _snapshotValueStyle,
+                                    style: _snapshotValueStyle(context),
                                   ),
                                 ],
                               ),
@@ -414,15 +410,15 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                 children: [
                                   Text(
                                     'TOTAL PAID'.tr,
-                                    style: _snapshotLabelStyle,
+                                    style: _snapshotLabelStyle(context),
                                   ),
                                   const SizedBox(height: 4),
                                   Text(
                                     formatPrice(booking.netTotal),
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w900,
-                                      color: CustomColors.brandRed,
+                                      color: context.primaryColor,
                                     ),
                                   ),
                                 ],
@@ -444,11 +440,11 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                             onTap: _goToBookings,
                             child: Container(
                               decoration: BoxDecoration(
-                                color: CustomColors.brandRed,
+                                color: context.primaryColor,
                                 borderRadius: BorderRadius.circular(100),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: CustomColors.brandRed.withOpacity(
+                                    color: context.primaryColor.withOpacity(
                                       0.30,
                                     ),
                                     blurRadius: 16,
@@ -491,7 +487,7 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                                 color: Colors.transparent,
                                 borderRadius: BorderRadius.circular(100),
                                 border: Border.all(
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                   width: 1.5,
                                 ),
                               ),
@@ -499,18 +495,18 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.explore_rounded,
                                     size: 18,
-                                    color: CustomColors.brandRed,
+                                    color: context.primaryColor,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(
                                     'Back to Exploring'.tr,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
-                                      color: CustomColors.brandRed,
+                                      color: context.primaryColor,
                                       letterSpacing: 0.3,
                                     ),
                                   ),

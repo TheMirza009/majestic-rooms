@@ -52,10 +52,13 @@ class ExploreController extends GetxController {
   final selectedCategories = <int>{}.obs; // empty = no filter, show all hotels
   final cities = <City>[].obs;
   final isLoadingImages = false.obs;
+
   /// True only while an explicit user search is in flight. Drives the searchbar spinner.
   final isSearching = false.obs;
+
   /// True only during the very first page load. Drives shimmer skeletons in the list.
   final isInitialLoading = true.obs;
+
   /// True when the search text field is non-empty. Used by back-press handling.
   final hasActiveSearch = false.obs;
   final isFilterOn = true.obs;
@@ -71,8 +74,10 @@ class ExploreController extends GetxController {
   /// Master in-memory store of all hotels fetched from Supabase (all pages,
   /// all searches). Never cleared after the initial load completes.
   final List<Hotel> _masterCache = [];
+
   /// True when the server has no more pages to offer for the no-filter query.
   bool _allPagesLoaded = false;
+
   /// Maps a trimmed search query → the hotels returned for that query.
   /// Prevents re-fetching the same search.
   final Map<String, List<Hotel>> _searchCache = {};
@@ -155,7 +160,6 @@ class ExploreController extends GetxController {
     await fetchHotels();
   }
 
-
   // ── Fetch ──────────────────────────────────────────────────────────────────
 
   Future<void> fetchHotels({bool isLoadMore = false}) async {
@@ -189,7 +193,9 @@ class ExploreController extends GetxController {
       _applyFilters();
     } catch (e) {
       debugPrint("Fetch hotels error: $e");
-      if (e is PostgrestException && (e.code == 'PGRST303' || e.message.toLowerCase().contains('jwt expired'))) {
+      if (e is PostgrestException &&
+          (e.code == 'PGRST303' ||
+              e.message.toLowerCase().contains('jwt expired'))) {
         controller.showSessionExpiredDialog();
       }
     } finally {
@@ -213,7 +219,9 @@ class ExploreController extends GetxController {
       if (parsedHotels.length < _pageSize) _allPagesLoaded = true;
     } catch (e) {
       debugPrint("Load next page error: $e");
-      if (e is PostgrestException && (e.code == 'PGRST303' || e.message.toLowerCase().contains('jwt expired'))) {
+      if (e is PostgrestException &&
+          (e.code == 'PGRST303' ||
+              e.message.toLowerCase().contains('jwt expired'))) {
         controller.showSessionExpiredDialog();
       }
     }
@@ -227,7 +235,9 @@ class ExploreController extends GetxController {
       final response = await Supabase.instance.client
           .from('hotel')
           .select(_dbSelect)
-          .or('name.ilike.%$query%,location_slug.ilike.%$query%,address.ilike.%$query%');
+          .or(
+            'name.ilike.%$query%,location_slug.ilike.%$query%,address.ilike.%$query%',
+          );
 
       final parsedHotels = await compute(_parseHotelsWithDebugLog, response);
       _searchCache[query] = parsedHotels;
@@ -237,7 +247,9 @@ class ExploreController extends GetxController {
       if (hotels.isEmpty) Utils.showToast('No hotels found'.tr);
     } catch (e) {
       debugPrint("Search hotels error: $e");
-      if (e is PostgrestException && (e.code == 'PGRST303' || e.message.toLowerCase().contains('jwt expired'))) {
+      if (e is PostgrestException &&
+          (e.code == 'PGRST303' ||
+              e.message.toLowerCase().contains('jwt expired'))) {
         controller.showSessionExpiredDialog();
       }
     } finally {

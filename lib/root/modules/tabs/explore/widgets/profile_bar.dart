@@ -1,7 +1,8 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/profile/profile_avatar_flight_controller.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
@@ -40,12 +41,12 @@ class _ProfileBarState extends State<ProfileBar> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-
         // PROFILE
         Obx(() {
-          final User? user        = commonController.currentUser.value;
-          final String? avatarUrl = user?.userMetadata?['avatar_url'] as String?;
-          final bool isFlying     = flight.isFlying.value;
+          final User? user = commonController.currentUser.value;
+          final String? avatarUrl =
+              user?.userMetadata?['avatar_url'] as String?;
+          final bool isFlying = flight.isFlying.value;
 
           return Material(
             color: Colors.transparent,
@@ -60,13 +61,32 @@ class _ProfileBarState extends State<ProfileBar> {
                   children: [
                     Opacity(
                       opacity: isFlying ? 0 : 1,
-                      child: UserAvatar(key: _avatarKey, imageUrl: avatarUrl, size: _size),
+                      child: UserAvatar(
+                        key: _avatarKey,
+                        imageUrl: avatarUrl,
+                        size: _size,
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Welcome back  '.tr, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: CustomColors.textMuted, height: 1.2)),
-                        Text('John Doe', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: CustomColors.brandBlack, fontWeight: FontWeight.w700, height: 1.2)),
+                        Text(
+                          'Welcome back  '.tr,
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: context.textMutedColor,
+                                height: 1.2,
+                              ),
+                        ),
+                        Text(
+                          'John Doe',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: CustomColors.brandBlack,
+                                fontWeight: FontWeight.w700,
+                                height: 1.2,
+                              ),
+                        ),
                       ],
                     ),
                   ],
@@ -78,17 +98,17 @@ class _ProfileBarState extends State<ProfileBar> {
 
         IconButton(
           style: IconButton.styleFrom(
-            backgroundColor: CustomColors.surfaceWhite,
+            backgroundColor: context.surfaceColor,
             padding: EdgeInsets.zero,
             iconSize: 25,
           ),
           onPressed: widget.onNotificationsTap,
           icon: Icon(
             Icons.notifications_outlined,
-            color: CustomColors.textMuted,
+            color: context.textMutedColor,
             size: 22,
           ),
-        )
+        ),
       ],
     );
   }

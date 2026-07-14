@@ -51,7 +51,8 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
           // IMAGE GALLERY
           GestureDetector(
             onVerticalDragEnd: (details) {
-              if (details.primaryVelocity != null && details.primaryVelocity!.abs() > 200) {
+              if (details.primaryVelocity != null &&
+                  details.primaryVelocity!.abs() > 200) {
                 Navigator.of(context).pop();
               }
             },
@@ -71,13 +72,9 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
               },
               itemCount: widget.imageUrls.length,
               loadingBuilder: (context, event) => const Center(
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                ),
+                child: CircularProgressIndicator(color: Colors.white),
               ),
-              backgroundDecoration: const BoxDecoration(
-                color: Colors.black,
-              ),
+              backgroundDecoration: const BoxDecoration(color: Colors.black),
               pageController: _pageController,
               onPageChanged: _onPageChanged,
             ),
@@ -86,7 +83,10 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
           // TOP APP BAR ACTIONS
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 8.0,
+              ),
               child: Row(
                 children: [
                   // Back button
@@ -99,7 +99,11 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
                         color: Colors.black.withOpacity(0.5),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 20),
+                      child: const Icon(
+                        Icons.arrow_back_ios_new_rounded,
+                        color: Colors.white,
+                        size: 20,
+                      ),
                     ),
                   ),
                 ],
@@ -122,7 +126,9 @@ class _ImageViewerScreenState extends State<ImageViewerScreen> {
                     height: 8,
                     width: _currentIndex == index ? 24 : 8,
                     decoration: BoxDecoration(
-                      color: _currentIndex == index ? Colors.white : Colors.white54,
+                      color: _currentIndex == index
+                          ? Colors.white
+                          : Colors.white54,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   );

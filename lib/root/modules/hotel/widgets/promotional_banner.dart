@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/data/models/promotion.dart';
 import 'package:get/get.dart';
 
@@ -19,10 +19,10 @@ class PromotionalBanner extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 24.0),
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
-        color: CustomColors.brandRed.withOpacity(0.08),
+        color: context.primaryColor.withOpacity(0.08),
         borderRadius: BorderRadius.circular(16.0),
         border: Border.all(
-          color: CustomColors.brandRed.withOpacity(0.2),
+          color: context.primaryColor.withOpacity(0.2),
           width: 1,
         ),
       ),
@@ -31,12 +31,12 @@ class PromotionalBanner extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: CustomColors.brandRed.withOpacity(0.15),
+              color: context.primaryColor.withOpacity(0.15),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.local_offer_rounded,
-              color: CustomColors.brandRed,
+              color: context.primaryColor,
               size: 24,
             ),
           ),
@@ -47,18 +47,18 @@ class PromotionalBanner extends StatelessWidget {
               children: [
                 Text(
                   '${'Special Offer!'.tr} ${promotion.discountPercent != null ? 'discount_off'.trParams({'discount': promotion.discountPercent.toString()}) : ''}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
-                    color: CustomColors.brandRed,
+                    color: context.primaryColor,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   'use_code'.trParams({'code': promotion.code}),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
-                    color: CustomColors.textMain,
+                    color: context.textMainColor,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -66,9 +66,9 @@ class PromotionalBanner extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     'valid_until'.trParams({'date': promotion.validTo!}),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 12,
-                      color: CustomColors.textMuted,
+                      color: context.textMutedColor,
                     ),
                   ),
                 ],

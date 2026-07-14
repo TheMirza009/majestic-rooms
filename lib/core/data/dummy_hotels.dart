@@ -7,7 +7,12 @@ import 'package:majestic_rooms/core/data/models/promotion.dart';
 const _dummyFacilities = [
   Facility(id: 1, name: 'Free WiFi', slug: 'wifi', icon: 'wifi'),
   Facility(id: 2, name: 'Swimming Pool', slug: 'pool', icon: 'pool'),
-  Facility( id: 3, name: 'Room Service', slug: 'room-service', icon: 'room_service', ),
+  Facility(
+    id: 3,
+    name: 'Room Service',
+    slug: 'room-service',
+    icon: 'room_service',
+  ),
   Facility(id: 4, name: 'Parking', slug: 'parking', icon: 'parking'),
 ];
 
@@ -23,7 +28,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 1, url: 'https://picsum.photos/seed/mecca1/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Deluxe King', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Spacious room with panoramic Haram view and premium amenities.', cityView: true, pricePerNightWithBreakfast: 480, pricePerNight: 420)],
+    rooms: [
+      HotelRoom(
+        name: 'Deluxe King',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description:
+            'Spacious room with panoramic Haram view and premium amenities.',
+        cityView: true,
+        pricePerNightWithBreakfast: 480,
+        pricePerNight: 420,
+      ),
+    ],
     hotelClass: 4.8,
     slug: 'makkah-clock-royal-tower',
     distanceFromHaram: 0.1,
@@ -47,7 +62,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 2, url: 'https://picsum.photos/seed/mecca2/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Junior Suite', category: const RoomCategory(id: 2, name: 'Suite'), description: 'Elegant suite with a separate sitting area and city outlook.', cityView: false, pricePerNightWithBreakfast: null, pricePerNight: 310)],
+    rooms: [
+      HotelRoom(
+        name: 'Junior Suite',
+        category: const RoomCategory(id: 2, name: 'Suite'),
+        description:
+            'Elegant suite with a separate sitting area and city outlook.',
+        cityView: false,
+        pricePerNightWithBreakfast: null,
+        pricePerNight: 310,
+      ),
+    ],
     hotelClass: 4.6,
     slug: 'hilton-suites-makkah',
     distanceFromHaram: 0.2,
@@ -71,7 +96,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 3, url: 'https://picsum.photos/seed/mecca3/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Superior Twin', category: const RoomCategory(id: 3, name: 'Standard'), description: 'Comfortable twin room with modern décor and blackout curtains.', cityView: false, pricePerNightWithBreakfast: 410, pricePerNight: 360)],
+    rooms: [
+      HotelRoom(
+        name: 'Superior Twin',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description:
+            'Comfortable twin room with modern décor and blackout curtains.',
+        cityView: false,
+        pricePerNightWithBreakfast: 410,
+        pricePerNight: 360,
+      ),
+    ],
     hotelClass: 4.7,
     slug: 'conrad-makkah',
     distanceFromHaram: 0.3,
@@ -95,7 +130,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 4, url: 'https://picsum.photos/seed/mecca4/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Grand Deluxe', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Direct-access room steps from the Holy Mosque entrance.', cityView: true, pricePerNightWithBreakfast: 340, pricePerNight: 290)],
+    rooms: [
+      HotelRoom(
+        name: 'Grand Deluxe',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description: 'Direct-access room steps from the Holy Mosque entrance.',
+        cityView: true,
+        pricePerNightWithBreakfast: 340,
+        pricePerNight: 290,
+      ),
+    ],
     hotelClass: 4.5,
     slug: 'swissotel-al-maqam',
     distanceFromHaram: 0.15,
@@ -119,7 +163,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 5, url: 'https://picsum.photos/seed/mecca5/600/400'),
     ],
-    rooms: [HotelRoom(name: 'ZamZam View', category: const RoomCategory(id: 2, name: 'Suite'), description: 'Exclusive suite overlooking the ZamZam well.', cityView: true, pricePerNightWithBreakfast: 395, pricePerNight: 340)],
+    rooms: [
+      HotelRoom(
+        name: 'ZamZam View',
+        category: const RoomCategory(id: 2, name: 'Suite'),
+        description: 'Exclusive suite overlooking the ZamZam well.',
+        cityView: true,
+        pricePerNightWithBreakfast: 395,
+        pricePerNight: 340,
+      ),
+    ],
     hotelClass: 4.6,
     slug: 'pullman-zamzam-makkah',
     distanceFromHaram: 0.12,
@@ -145,7 +198,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 6, url: 'https://picsum.photos/seed/medina1/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Classic King', category: const RoomCategory(id: 3, name: 'Standard'), description: 'Warm, traditionally decorated room near the Prophet\'s Mosque.', cityView: true, pricePerNightWithBreakfast: 330, pricePerNight: 280)],
+    rooms: [
+      HotelRoom(
+        name: 'Classic King',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description:
+            'Warm, traditionally decorated room near the Prophet\'s Mosque.',
+        cityView: true,
+        pricePerNightWithBreakfast: 330,
+        pricePerNight: 280,
+      ),
+    ],
     hotelClass: 4.7,
     slug: 'anwar-al-madinah',
     distanceFromHaram: 0.1,
@@ -169,7 +232,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 7, url: 'https://picsum.photos/seed/medina2/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Luxury Room', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Refined interiors with curated amenities and Qibla compass.', cityView: false, pricePerNightWithBreakfast: null, pricePerNight: 350)],
+    rooms: [
+      HotelRoom(
+        name: 'Luxury Room',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description:
+            'Refined interiors with curated amenities and Qibla compass.',
+        cityView: false,
+        pricePerNightWithBreakfast: null,
+        pricePerNight: 350,
+      ),
+    ],
     hotelClass: 4.9,
     slug: 'oberoi-madina',
     distanceFromHaram: 0.05,
@@ -193,7 +266,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 8, url: 'https://picsum.photos/seed/medina3/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Standard Room', category: const RoomCategory(id: 3, name: 'Standard'), description: 'Clean and well-appointed room ideal for pilgrimage stays.', cityView: false, pricePerNightWithBreakfast: 350, pricePerNight: 300)],
+    rooms: [
+      HotelRoom(
+        name: 'Standard Room',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description:
+            'Clean and well-appointed room ideal for pilgrimage stays.',
+        cityView: false,
+        pricePerNightWithBreakfast: 350,
+        pricePerNight: 300,
+      ),
+    ],
     hotelClass: 4.6,
     slug: 'dar-al-taqwa',
     distanceFromHaram: 0.08,
@@ -217,7 +300,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 9, url: 'https://picsum.photos/seed/medina4/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Deluxe Double', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Spacious room with a partial Rawdah view.', cityView: true, pricePerNightWithBreakfast: 320, pricePerNight: 270)],
+    rooms: [
+      HotelRoom(
+        name: 'Deluxe Double',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description: 'Spacious room with a partial Rawdah view.',
+        cityView: true,
+        pricePerNightWithBreakfast: 320,
+        pricePerNight: 270,
+      ),
+    ],
     hotelClass: 4.5,
     slug: 'pullman-zamzam-madina',
     distanceFromHaram: 0.2,
@@ -241,7 +333,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 10, url: 'https://picsum.photos/seed/medina5/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Superior Room', category: const RoomCategory(id: 3, name: 'Standard'), description: 'Light-filled room with easy Haram access.', cityView: false, pricePerNightWithBreakfast: 370, pricePerNight: 320)],
+    rooms: [
+      HotelRoom(
+        name: 'Superior Room',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description: 'Light-filled room with easy Haram access.',
+        cityView: false,
+        pricePerNightWithBreakfast: 370,
+        pricePerNight: 320,
+      ),
+    ],
     hotelClass: 4.7,
     slug: 'crowne-plaza-madinah',
     distanceFromHaram: 0.3,
@@ -267,7 +368,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 11, url: 'https://picsum.photos/seed/jeddah1/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Jeddah Standard', category: const RoomCategory(id: 3, name: 'Standard'), description: null, cityView: false, pricePerNightWithBreakfast: 290, pricePerNight: 240)],
+    rooms: [
+      HotelRoom(
+        name: 'Jeddah Standard',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description: null,
+        cityView: false,
+        pricePerNightWithBreakfast: 290,
+        pricePerNight: 240,
+      ),
+    ],
     hotelClass: 4.5,
     slug: 'jeddah-hilton',
     distanceFromHaram: null,
@@ -291,7 +401,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 12, url: 'https://picsum.photos/seed/jeddah2/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Corniche Suite', category: const RoomCategory(id: 2, name: 'Suite'), description: 'Luxury suite with floor-to-ceiling Corniche sea views.', cityView: true, pricePerNightWithBreakfast: null, pricePerNight: 390)],
+    rooms: [
+      HotelRoom(
+        name: 'Corniche Suite',
+        category: const RoomCategory(id: 2, name: 'Suite'),
+        description: 'Luxury suite with floor-to-ceiling Corniche sea views.',
+        cityView: true,
+        pricePerNightWithBreakfast: null,
+        pricePerNight: 390,
+      ),
+    ],
     hotelClass: 4.8,
     slug: 'rosewood-jeddah',
     distanceFromHaram: null,
@@ -315,7 +434,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 13, url: 'https://picsum.photos/seed/jeddah3/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Marina Room', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Stylish room overlooking the private marina.', cityView: true, pricePerNightWithBreakfast: 465, pricePerNight: 410)],
+    rooms: [
+      HotelRoom(
+        name: 'Marina Room',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description: 'Stylish room overlooking the private marina.',
+        cityView: true,
+        pricePerNightWithBreakfast: 465,
+        pricePerNight: 410,
+      ),
+    ],
     hotelClass: 4.9,
     slug: 'park-hyatt-jeddah',
     distanceFromHaram: null,
@@ -339,7 +467,16 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 14, url: 'https://picsum.photos/seed/jeddah4/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Heritage Room', category: const RoomCategory(id: 2, name: 'Suite'), description: 'Historic palace setting with Waldorf bespoke service.', cityView: false, pricePerNightWithBreakfast: 430, pricePerNight: 370)],
+    rooms: [
+      HotelRoom(
+        name: 'Heritage Room',
+        category: const RoomCategory(id: 2, name: 'Suite'),
+        description: 'Historic palace setting with Waldorf bespoke service.',
+        cityView: false,
+        pricePerNightWithBreakfast: 430,
+        pricePerNight: 370,
+      ),
+    ],
     hotelClass: 4.7,
     slug: 'waldorf-astoria-jeddah',
     distanceFromHaram: null,
@@ -363,7 +500,17 @@ const List<Hotel> kDummyHotels = [
     images: [
       HotelImage(id: 15, url: 'https://picsum.photos/seed/jeddah5/600/400'),
     ],
-    rooms: [HotelRoom(name: 'Horizon Deluxe', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Modern room with sweeping views of the Red Sea shoreline.', cityView: true, pricePerNightWithBreakfast: 380, pricePerNight: 330)],
+    rooms: [
+      HotelRoom(
+        name: 'Horizon Deluxe',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description:
+            'Modern room with sweeping views of the Red Sea shoreline.',
+        cityView: true,
+        pricePerNightWithBreakfast: 380,
+        pricePerNight: 330,
+      ),
+    ],
     hotelClass: 4.6,
     slug: 'shangri-la-jeddah',
     distanceFromHaram: null,
@@ -392,9 +539,31 @@ const List<Hotel> kDummyHotels = [
       HotelImage(id: 18, url: 'https://picsum.photos/seed/riyadh4/600/400'),
     ],
     rooms: [
-      HotelRoom(name: 'Classic Room', category: const RoomCategory(id: 3, name: 'Standard'), description: 'Understated elegance in the heart of the Kingdom Centre.', cityView: false, pricePerNightWithBreakfast: 465, pricePerNight: 410),
-      HotelRoom(name: 'Deluxe Room', category: const RoomCategory(id: 1, name: 'Deluxe'), description: 'Upgraded amenities with panoramic city skyline views.', cityView: true, pricePerNightWithBreakfast: 610, pricePerNight: 550),
-      HotelRoom(name: 'Royal Suite', category: const RoomCategory(id: 2, name: 'Suite'), description: 'Pinnacle of luxury — expansive suite with Riyadh skyline.', cityView: true, pricePerNightWithBreakfast: 720, pricePerNight: 650),
+      HotelRoom(
+        name: 'Classic Room',
+        category: const RoomCategory(id: 3, name: 'Standard'),
+        description: 'Understated elegance in the heart of the Kingdom Centre.',
+        cityView: false,
+        pricePerNightWithBreakfast: 465,
+        pricePerNight: 410,
+      ),
+      HotelRoom(
+        name: 'Deluxe Room',
+        category: const RoomCategory(id: 1, name: 'Deluxe'),
+        description: 'Upgraded amenities with panoramic city skyline views.',
+        cityView: true,
+        pricePerNightWithBreakfast: 610,
+        pricePerNight: 550,
+      ),
+      HotelRoom(
+        name: 'Royal Suite',
+        category: const RoomCategory(id: 2, name: 'Suite'),
+        description:
+            'Pinnacle of luxury — expansive suite with Riyadh skyline.',
+        cityView: true,
+        pricePerNightWithBreakfast: 720,
+        pricePerNight: 650,
+      ),
     ],
     hotelClass: 4.9,
     slug: 'four-seasons-riyadh',

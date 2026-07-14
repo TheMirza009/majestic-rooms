@@ -1,4 +1,3 @@
-
 import 'package:majestic_rooms/core/data/models/room_image.dart';
 
 class RoomCategory {

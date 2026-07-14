@@ -39,15 +39,15 @@ extension ResponsiveGrid on BuildContext {
 
   double get responsiveFontSize {
     final width = this.screenWidth;
-    
+
     if (width < 600) {
-      return 10;      // Mobile
+      return 10; // Mobile
     } else if (width < 1000) {
-      return 12;      // Tablet
+      return 12; // Tablet
     } else if (width < 1200) {
-      return 13;      // Small desktop
+      return 13; // Small desktop
     } else {
-      return 14;      // Large desktop (default)
+      return 14; // Large desktop (default)
     }
   }
 }
@@ -77,10 +77,7 @@ extension EscapePopExtension on BuildContext {
             },
           ),
         },
-        child: Focus(
-          autofocus: true,
-          child: child,
-        ),
+        child: Focus(autofocus: true, child: child),
       ),
     );
   }

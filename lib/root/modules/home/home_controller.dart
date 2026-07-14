@@ -18,7 +18,7 @@ class HomeController extends GetxController {
   void onClose() {
     pageController.dispose();
     super.onClose();
-  } 
+  }
 
   // ── Navigation ───────────────────────────────────────────────────────────
   void navigateTo(int index) {
@@ -60,8 +60,9 @@ class HomeController extends GetxController {
 
     // 3. On Explore with no active search — check time since last back press
     final now = DateTime.now();
-    final isWarningActive = _lastBackPressTime != null &&
-                            now.difference(_lastBackPressTime!) < const Duration(seconds: 3);
+    final isWarningActive =
+        _lastBackPressTime != null &&
+        now.difference(_lastBackPressTime!) < const Duration(seconds: 3);
 
     if (isWarningActive) {
       // 4. Exiting app

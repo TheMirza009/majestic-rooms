@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 
@@ -55,17 +55,14 @@ class AboutScreen extends StatelessWidget {
   static String get _licenseLabel => 'licensed_company'.tr;
   static String get _licenseNumber => 'license_number'.tr;
 
-  // ── Styles ─────────────────────────────────────────────────────────────────
-  static const _tileTitleStyle = TextStyle(
+  static TextStyle _tileTitleStyle(BuildContext context) => TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    color: CustomColors.textMain,
+    color: context.textMainColor,
   );
 
-  static const _tileBodyStyle = TextStyle(
-    fontSize: 14,
-    color: CustomColors.textMuted,
-  );
+  static TextStyle _tileBodyStyle(BuildContext context) =>
+      TextStyle(fontSize: 14, color: context.textMutedColor);
 
   // ── Handlers ───────────────────────────────────────────────────────────────
   void _onValuesTap(BuildContext context) {
@@ -83,14 +80,14 @@ class AboutScreen extends StatelessWidget {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(icon, color: CustomColors.brandRed, size: 20),
+                    Icon(icon, color: context.primaryColor, size: 20),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: CustomColors.textMain,
+                          color: context.textMainColor,
                           fontSize: 16,
                         ),
                       ),
@@ -120,35 +117,37 @@ class AboutScreen extends StatelessWidget {
   // ── Widget helpers ─────────────────────────────────────────────────────────
 
   /// Thin divider used between every info tile row.
-  static Widget tileDivider() =>
-      const Divider(height: 1, indent: 56, color: CustomColors.borderColor);
+  static Widget tileDivider(BuildContext context) =>
+      Divider(height: 1, indent: 56, color: context.borderColor);
 
   /// Expansion tile styled consistently for Story / Mission / License rows.
-  static Widget infoExpansionTile({
+  static Widget infoExpansionTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required Widget child,
   }) => ExpansionTile(
-    leading: Icon(icon, color: CustomColors.textMain),
-    title: Text(title, style: _tileTitleStyle),
-    iconColor: CustomColors.textMuted,
-    collapsedIconColor: CustomColors.textMuted,
-    textColor: CustomColors.textMain,
-    collapsedTextColor: CustomColors.textMain,
+    leading: Icon(icon, color: context.textMainColor),
+    title: Text(title, style: _tileTitleStyle(context)),
+    iconColor: context.textMutedColor,
+    collapsedIconColor: context.textMutedColor,
+    textColor: context.textMainColor,
+    collapsedTextColor: context.textMainColor,
     childrenPadding: const EdgeInsets.fromLTRB(24, 0, 16, 16),
     expandedAlignment: Alignment.centerLeft,
     children: [child],
   );
 
   /// Navigation list tile used for Values / Terms / Privacy / Contact / Call.
-  static Widget infoListTile({
+  static Widget infoListTile(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required VoidCallback onTap,
   }) => ListTile(
-    leading: Icon(icon, color: CustomColors.textMain),
-    title: Text(title, style: _tileTitleStyle),
-    trailing: const Icon(Icons.chevron_right, color: CustomColors.textMuted),
+    leading: Icon(icon, color: context.textMainColor),
+    title: Text(title, style: _tileTitleStyle(context)),
+    trailing: Icon(Icons.chevron_right, color: context.textMutedColor),
     onTap: onTap,
   );
 
@@ -183,20 +182,20 @@ class AboutScreen extends StatelessWidget {
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 Constants.appName,
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: CustomColors.textMain,
+                  color: context.textMainColor,
                 ),
               ),
               const SizedBox(height: 4),
               // Text(
               //   'Version: @version'.trParams({'version': Constants.appVersion}),
-              //   style: const TextStyle(
+              //   style: TextStyle(
               //     fontSize: 14,
-              //     color: CustomColors.textMuted,
+              //     color: context.textMutedColor,
               //     fontWeight: FontWeight.w500,
               //   ),
               // ),
@@ -207,9 +206,9 @@ class AboutScreen extends StatelessWidget {
           // DESCRIPTION
           Text(
             description,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 15,
-              color: CustomColors.textMuted,
+              color: context.textMutedColor,
               height: 1.6,
             ),
             textAlign: TextAlign.center,
@@ -218,10 +217,10 @@ class AboutScreen extends StatelessWidget {
 
           // INFO TILES
           Material(
-            color: CustomColors.surfaceWhite,
-            shape: const RoundedRectangleBorder(
+            color: context.surfaceColor,
+            shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.0)),
-              side: BorderSide(color: CustomColors.borderColor),
+              side: BorderSide(color: context.borderColor),
             ),
             clipBehavior: Clip.antiAlias,
             child: Theme(
@@ -231,68 +230,76 @@ class AboutScreen extends StatelessWidget {
               child: Column(
                 children: [
                   infoExpansionTile(
+                    context,
                     icon: Icons.auto_stories_outlined,
                     title: storyTitle,
-                    child: Text(storyContent, style: _tileBodyStyle),
+                    child: Text(storyContent, style: _tileBodyStyle(context)),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoExpansionTile(
+                    context,
                     icon: Icons.flag_outlined,
                     title: missionTitle,
-                    child: Text(missionContent, style: _tileBodyStyle),
+                    child: Text(missionContent, style: _tileBodyStyle(context)),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoListTile(
+                    context,
                     icon: Icons.stars_outlined,
                     title: 'our_values_title'.tr,
                     onTap: () => _onValuesTap(context),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoExpansionTile(
+                    context,
                     icon: Icons.verified_outlined,
                     title: _licenseLabel,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.verified,
-                          color: CustomColors.luxuryGold,
+                          color: context.secondaryColor,
                           size: 18,
                         ),
                         const SizedBox(width: 6),
                         Expanded(
                           child: Text(
                             _licenseNumber,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13,
-                              color: CustomColors.textMuted,
+                              color: context.textMutedColor,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoListTile(
+                    context,
                     icon: Icons.description_outlined,
                     title: 'terms_of_service'.tr,
                     onTap: () =>
                         Utils.launchWebUrl(Constants.termsAndConditions),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoListTile(
+                    context,
                     icon: Icons.privacy_tip_outlined,
                     title: 'privacy_policy'.tr,
                     onTap: () => Utils.launchWebUrl(Constants.privacyPolicy),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoListTile(
+                    context,
                     icon: Icons.email_outlined,
                     title: 'contact_us'.tr,
                     onTap: () => Utils.launchEmail(Constants.email),
                   ),
-                  tileDivider(),
+                  tileDivider(context),
                   infoListTile(
+                    context,
                     icon: Icons.phone_outlined,
                     title: 'call_us'.tr,
                     onTap: () => Utils.launchPhone(Constants.phone),
@@ -307,10 +314,7 @@ class AboutScreen extends StatelessWidget {
           Center(
             child: Text(
               'copyright_text'.tr,
-              style: const TextStyle(
-                fontSize: 12,
-                color: CustomColors.textMuted,
-              ),
+              style: TextStyle(fontSize: 12, color: context.textMutedColor),
             ),
           ),
           const SizedBox(height: 50),

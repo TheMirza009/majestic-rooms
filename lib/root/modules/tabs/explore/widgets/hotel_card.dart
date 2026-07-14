@@ -1,7 +1,8 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/favorite_button.dart';
 import 'package:shimmer/shimmer.dart';
@@ -40,12 +41,9 @@ class _HotelCardState extends State<HotelCard> {
   static const Duration _shimmerPeriod = Duration(milliseconds: 1200);
 
   static const Color _detailBg = Color(0xB3000000); // translucent dark panel
-  static const Color _placeholderBg =
-      CustomColors.cardSubtleBg; // shown until/if image fails
-  static const Color _starColor = CustomColors.luxuryGold;
 
-  static const TextStyle _nameStyle = TextStyle(
-    color: CustomColors.textLight,
+  TextStyle _nameStyle(BuildContext context) => TextStyle(
+    color: context.textLightColor,
     fontWeight: FontWeight.w700,
     fontSize: 15,
     fontFamily: 'Fustat',
@@ -55,8 +53,8 @@ class _HotelCardState extends State<HotelCard> {
     fontSize: 12,
     fontFamily: 'Fustat',
   );
-  static const TextStyle _rateStyle = TextStyle(
-    color: CustomColors.textLight,
+  TextStyle _rateStyle(BuildContext context) => TextStyle(
+    color: context.textLightColor,
     fontWeight: FontWeight.w700,
     fontSize: 16,
     fontFamily: 'Fustat',
@@ -142,7 +140,7 @@ class _HotelCardState extends State<HotelCard> {
                       child: Container(color: _shimmerBase),
                     ),
                     errorWidget: (context, url, error) =>
-                        Container(color: _placeholderBg),
+                        Container(color: CustomColors.cardSubtleBg),
                   ),
 
                   // 2. PROMOTION BADGE
@@ -227,7 +225,7 @@ class _HotelCardState extends State<HotelCard> {
                                           widget.hotel.name,
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
-                                          style: _nameStyle,
+                                          style: _nameStyle(context),
                                         ),
                                         const SizedBox(height: 2),
 
@@ -244,10 +242,10 @@ class _HotelCardState extends State<HotelCard> {
                                         // STAR + RATING · CITY
                                         Row(
                                           children: [
-                                            const Icon(
+                                            Icon(
                                               Icons.star_rounded,
                                               size: 13,
-                                              color: _starColor,
+                                              color: context.secondaryColor,
                                             ),
                                             const SizedBox(width: 2),
                                             Expanded(
@@ -290,7 +288,7 @@ class _HotelCardState extends State<HotelCard> {
                                         ),
                                       Text(
                                         '\$${widget.hotel.activePromotion != null && widget.hotel.activePromotion?.isActive == true && widget.hotel.activePromotion?.discountPercent != null ? (widget.hotel.rates.first * (1 - widget.hotel.activePromotion!.discountPercent! / 100)).round() : widget.hotel.rates.first}',
-                                        style: _rateStyle,
+                                        style: _rateStyle(context),
                                       ),
                                       Text('/night'.tr, style: _unitStyle),
                                     ],

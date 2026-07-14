@@ -17,7 +17,7 @@ class RoomImage {
 
   factory RoomImage.fromJson(Map<String, dynamic> json) {
     final rawUrl = json['image_url'] ?? json['url'] as String?;
-    
+
     return RoomImage(
       id: json['id'] ?? 0, // Using 0 as fallback if id is not fetched
       roomId: json['room_id']?.toString(),
@@ -28,10 +28,11 @@ class RoomImage {
   }
 
   static String _parseUrl(String? rawUrl) {
-    if (rawUrl == null || rawUrl.isEmpty) return 'https://picsum.photos/600/400';
+    if (rawUrl == null || rawUrl.isEmpty)
+      return 'https://picsum.photos/600/400';
     if (rawUrl.startsWith('http')) return rawUrl;
-    
-    // NOTE: We cannot use Supabase.instance.client.storage.url here because this method 
+
+    // NOTE: We cannot use Supabase.instance.client.storage.url here because this method
     // is called from a compute isolate where Supabase is not initialized.
     final storageUrl = '${Environment.supabaseUrl}/storage/v1';
     final normalizedPath = rawUrl.startsWith('/') ? rawUrl : '/$rawUrl';

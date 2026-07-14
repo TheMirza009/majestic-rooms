@@ -1,6 +1,7 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/widgets/round_icon_button.dart';
 
 class ImageCarousel extends StatefulWidget {
@@ -59,11 +60,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
       return Container(
         height: 300,
         color: CustomColors.cardSubtleBg,
-        child: const Icon(
-          Icons.broken_image,
-          size: 50,
-          color: CustomColors.hintColor,
-        ),
+        child: Icon(Icons.broken_image, size: 50, color: context.hintColor),
       );
     }
 
@@ -77,11 +74,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
           height: 300,
           width: double.infinity,
           color: CustomColors.cardSubtleBg,
-          child: const Icon(
-            Icons.broken_image,
-            size: 50,
-            color: CustomColors.hintColor,
-          ),
+          child: Icon(Icons.broken_image, size: 50, color: context.hintColor),
         ),
       );
 
@@ -118,10 +111,10 @@ class _ImageCarouselState extends State<ImageCarousel> {
                 fit: BoxFit.cover,
                 errorWidget: (context, url, error) => Container(
                   color: CustomColors.cardSubtleBg,
-                  child: const Icon(
+                  child: Icon(
                     Icons.broken_image,
                     size: 50,
-                    color: CustomColors.hintColor,
+                    color: context.hintColor,
                   ),
                 ),
               );
@@ -134,7 +127,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
               }
 
               return GestureDetector(
-                onTap: widget.onImageTap != null ? () => widget.onImageTap!(index) : null,
+                onTap: widget.onImageTap != null
+                    ? () => widget.onImageTap!(index)
+                    : null,
                 child: image,
               );
             },
@@ -145,9 +140,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
               child: RoundIconButton(
                 size: 40,
                 backgroundColor: const Color.fromARGB(40, 0, 0, 0),
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_back_ios_new_rounded,
-                  color: CustomColors.textLight,
+                  color: context.textLightColor,
                   size: 18,
                 ),
                 onTap: _prevPage,
@@ -159,9 +154,9 @@ class _ImageCarouselState extends State<ImageCarousel> {
               child: RoundIconButton(
                 size: 40,
                 backgroundColor: const Color.fromARGB(40, 0, 0, 0),
-                icon: const Icon(
+                icon: Icon(
                   Icons.arrow_forward_ios_rounded,
-                  color: CustomColors.textLight,
+                  color: context.textLightColor,
                   size: 18,
                 ),
                 onTap: _nextPage,
@@ -187,7 +182,7 @@ class _ImageCarouselState extends State<ImageCarousel> {
                       height: 6.0,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(3.0),
-                        color: CustomColors.surfaceWhite.withOpacity(
+                        color: context.surfaceColor.withOpacity(
                           1.0 - (progress * 0.5),
                         ),
                       ),

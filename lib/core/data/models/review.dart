@@ -45,12 +45,16 @@ class Review {
           .map((i) => ReviewDetailRating.fromJson(i))
           .toList();
     }
-    
+
     return Review(
       id: json['id'],
-      hotelId: json['hotel_id'] ?? '', // hotel_id might be absent if we didn't select it, but we can default to empty string if missing since we query by hotel_id
+      hotelId:
+          json['hotel_id'] ??
+          '', // hotel_id might be absent if we didn't select it, but we can default to empty string if missing since we query by hotel_id
       reviewerName: json['reviewer_name'] ?? 'Anonymous',
-      overallRating: json['overall_rating'] != null ? (json['overall_rating'] as num).toDouble() : null,
+      overallRating: json['overall_rating'] != null
+          ? (json['overall_rating'] as num).toDouble()
+          : null,
       feedback: json['feedback'],
       detailRatings: detailRatingsList,
     );

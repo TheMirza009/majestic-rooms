@@ -1,11 +1,13 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/data/models/hotel_room.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/hotel/screens/image_viewer_screen.dart';
 import 'package:majestic_rooms/root/modules/hotel/widgets/image_carousel.dart';
 import 'package:get/get.dart';
+
 class RoomCard extends StatelessWidget {
   final HotelRoom room;
   final String? hotelImageUrl;
@@ -35,13 +37,13 @@ class RoomCard extends StatelessWidget {
           color: CustomColors.cardSubtleBg,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: isSelected ? CustomColors.brandRed : Colors.transparent,
+            color: isSelected ? context.primaryColor : Colors.transparent,
             width: 2,
           ),
           boxShadow: [
             if (isSelected)
               BoxShadow(
-                color: CustomColors.brandRed.withOpacity(0.15),
+                color: context.primaryColor.withOpacity(0.15),
                 blurRadius: 16,
                 offset: const Offset(0, 8),
               ),
@@ -66,15 +68,16 @@ class RoomCard extends StatelessWidget {
                       ? room.images!.map((e) => e.url).toList()
                       : [
                           hotelImageUrl ??
-                              'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
+                              'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop',
                         ],
                   heroTagPrefix: 'room_${room.id ?? room.hashCode}',
                   onImageTap: (index) {
-                    final urls = (room.images != null && room.images!.isNotEmpty)
+                    final urls =
+                        (room.images != null && room.images!.isNotEmpty)
                         ? room.images!.map((e) => e.url).toList()
                         : [
                             hotelImageUrl ??
-                                'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop'
+                                'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=600&auto=format&fit=crop',
                           ];
                     Navigator.push(
                       context,
@@ -86,15 +89,19 @@ class RoomCard extends StatelessWidget {
                             heroTagPrefix: 'room_${room.id ?? room.hashCode}',
                           );
                         },
-                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-                          return FadeTransition(opacity: animation, child: child);
-                        },
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
                       ),
                     );
                   },
                 ),
               ),
-                
+
               // DETAILS
               Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -107,56 +114,62 @@ class RoomCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            room.name?.tr ?? room.category?.name.tr ?? "Standard Room".tr,
-                            style: const TextStyle(
+                            room.name?.tr ??
+                                room.category?.name.tr ??
+                                "Standard Room".tr,
+                            style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: CustomColors.textMain,
+                              color: context.textMainColor,
                               height: 1.2,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          
+
                           Row(
                             children: [
                               if (room.beds != null) ...[
-                                const Icon(
+                                Icon(
                                   Icons.king_bed_outlined,
                                   size: 18,
-                                  // color: CustomColors.textLight,
+                                  // color: context.textLightColor,
                                 ),
                                 const SizedBox(width: 6),
                                 Text(
                                   room.beds == 1
-                                      ? 'bed_count'.trParams({'count': room.beds.toString()})
-                                      : 'beds_count'.trParams({'count': room.beds.toString()}),
-                                  style: const TextStyle(
+                                      ? 'bed_count'.trParams({
+                                          'count': room.beds.toString(),
+                                        })
+                                      : 'beds_count'.trParams({
+                                          'count': room.beds.toString(),
+                                        }),
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    // color: CustomColors.textLight,
+                                    // color: context.textLightColor,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                                 const SizedBox(width: 16),
                               ],
                               if (room.roomNumber != null) ...[
-                                const Icon(
+                                Icon(
                                   Icons.tag_rounded,
                                   size: 16,
-                                  // color: CustomColors.textLight,
+                                  // color: context.textLightColor,
                                 ),
                                 const SizedBox(width: 4),
                                 Text(
                                   room.roomNumber!,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 14,
-                                    // color: CustomColors.textLight,
+                                    // color: context.textLightColor,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ],
                             ],
                           ),
-                          
+
                           // CHIPS
                           if (room.category != null || room.cityView == true)
                             Padding(
@@ -167,43 +180,62 @@ class RoomCard extends StatelessWidget {
                                   if (room.category != null)
                                     Builder(
                                       builder: (context) {
-                                        final bool isStandard = room.category?.isStandard ?? true;
+                                        final bool isStandard =
+                                            room.category?.isStandard ?? true;
                                         return Chip(
                                           label: Text(
                                             room.category!.name.tr,
                                             style: TextStyle(
                                               fontSize: 11,
-                                              color: isStandard 
-                                                  ? CustomColors.primaryDark 
-                                                  : CustomColors.premiumAmber,
+                                              color: isStandard
+                                                  ? CustomColors.primaryDark
+                                                  : context.tertiaryColor,
                                             ),
                                           ),
-                                          backgroundColor: isStandard 
-                                              ? CustomColors.borderColor.withOpacity(0.85)
-                                              : CustomColors.premiumAmber.withOpacity(0.15),
+                                          backgroundColor: isStandard
+                                              ? context.borderColor.withOpacity(
+                                                  0.85,
+                                                )
+                                              : context.tertiaryColor
+                                                    .withOpacity(0.15),
                                           side: BorderSide(
-                                            color: isStandard 
-                                                ? CustomColors.textMuted.withOpacity(0.5)  
-                                                : CustomColors.premiumAmber,
+                                            color: isStandard
+                                                ? context.textMutedColor
+                                                      .withOpacity(0.5)
+                                                : context.tertiaryColor,
                                             width: 0.8,
                                           ),
-                                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 4,
+                                          ),
                                           visualDensity: VisualDensity.compact,
                                         );
-                                      }
+                                      },
                                     ),
-                                  if (room.cityView == true) 
+                                  if (room.cityView == true)
                                     Chip(
-                                      label: Text('City View'.tr, style: const TextStyle(fontSize: 11, color: CustomColors.premiumAmber)),
-                                      backgroundColor: CustomColors.premiumAmber.withOpacity(0.15),
-                                      side: const BorderSide(color: CustomColors.premiumAmber, width: 0.8),
-                                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                                      label: Text(
+                                        'City View'.tr,
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: context.tertiaryColor,
+                                        ),
+                                      ),
+                                      backgroundColor: context.tertiaryColor
+                                          .withOpacity(0.15),
+                                      side: BorderSide(
+                                        color: context.tertiaryColor,
+                                        width: 0.8,
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 4,
+                                      ),
                                       visualDensity: VisualDensity.compact,
                                     ),
                                 ],
                               ),
                             ),
-                            
+
                           // DESCRIPTION
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0, right: 10),
@@ -213,8 +245,9 @@ class RoomCard extends StatelessWidget {
                                   : 'No information given'.tr,
                               style: TextStyle(
                                 fontSize: 13,
-                                color: CustomColors.textMuted,
-                                fontStyle: room.description?.trim().isNotEmpty == true
+                                color: context.textMutedColor,
+                                fontStyle:
+                                    room.description?.trim().isNotEmpty == true
                                     ? FontStyle.normal
                                     : FontStyle.italic,
                               ),
@@ -222,9 +255,9 @@ class RoomCard extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                          
+
                           const SizedBox(height: 16),
-                          
+
                           // PRICE
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.baseline,
@@ -232,17 +265,17 @@ class RoomCard extends StatelessWidget {
                             children: [
                               Text(
                                 formatPrice(room.pricePerNight),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 22,
                                   fontWeight: FontWeight.w900,
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                 ),
                               ),
                               Text(
                                 " / night".tr,
                                 style: TextStyle(
                                   fontSize: 13,
-                                  color: CustomColors.textMuted,
+                                  color: context.textMutedColor,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -253,25 +286,39 @@ class RoomCard extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 4.0),
                               child: Text(
-                                'with_breakfast'.trParams({'price': formatPrice(room.pricePerNightWithBreakfast!)}),
-                                style: TextStyle(fontSize: 12, color: CustomColors.textMuted.withOpacity(0.8)),
+                                'with_breakfast'.trParams({
+                                  'price': formatPrice(
+                                    room.pricePerNightWithBreakfast!,
+                                  ),
+                                }),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: context.textMutedColor.withOpacity(
+                                    0.8,
+                                  ),
+                                ),
                               ),
                             ),
                         ],
                       ),
                     ),
-                    
+
                     // SELECTION STEPPER
                     Container(
                       decoration: BoxDecoration(
-                        color: CustomColors.surfaceWhite,
+                        color: context.surfaceColor,
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
-                          color: isSelected ? CustomColors.brandRed : CustomColors.borderColor.withOpacity(0.5),
+                          color: isSelected
+                              ? context.primaryColor
+                              : context.borderColor.withOpacity(0.5),
                           width: 1.5,
                         ),
                       ),
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 4,
+                        vertical: 4,
+                      ),
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -282,12 +329,18 @@ class RoomCard extends StatelessWidget {
                               height: 32,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: isSelected ? CustomColors.brandRed.withOpacity(0.1) : CustomColors.surfaceWhite,
+                                color: isSelected
+                                    ? context.primaryColor.withOpacity(0.1)
+                                    : context.surfaceColor,
                               ),
                               child: Icon(
-                                isSelected && quantity == 1 ? Icons.delete_outline : Icons.remove,
+                                isSelected && quantity == 1
+                                    ? Icons.delete_outline
+                                    : Icons.remove,
                                 size: 18,
-                                color: isSelected ? CustomColors.brandRed : CustomColors.hintColor,
+                                color: isSelected
+                                    ? context.primaryColor
+                                    : context.hintColor,
                               ),
                             ),
                           ),
@@ -299,7 +352,9 @@ class RoomCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: isSelected ? CustomColors.textMain : CustomColors.hintColor,
+                                color: isSelected
+                                    ? context.textMainColor
+                                    : context.hintColor,
                               ),
                             ),
                           ),
@@ -310,7 +365,7 @@ class RoomCard extends StatelessWidget {
                               height: 32,
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: CustomColors.brandRed,
+                                color: context.primaryColor,
                               ),
                               child: const Icon(
                                 Icons.add,

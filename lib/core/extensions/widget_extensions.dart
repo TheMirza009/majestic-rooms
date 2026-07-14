@@ -26,7 +26,7 @@ extension KeyboardShortcutsX on Widget {
     bool autofocus = true,
   }) {
     final shortcuts = <LogicalKeySet, VoidCallback>{};
-    
+
     // Add pre-defined shortcuts
     if (onEscape != null) {
       shortcuts[LogicalKeySet(LogicalKeyboardKey.escape)] = onEscape;
@@ -38,21 +38,37 @@ extension KeyboardShortcutsX on Widget {
       shortcuts[LogicalKeySet(LogicalKeyboardKey.space)] = onSpace;
     }
     if (onSave != null) {
-      shortcuts[LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyS)] = onSave;
+      shortcuts[LogicalKeySet(
+            LogicalKeyboardKey.control,
+            LogicalKeyboardKey.keyS,
+          )] =
+          onSave;
     }
     if (onNew != null) {
-      shortcuts[LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyN)] = onNew;
+      shortcuts[LogicalKeySet(
+            LogicalKeyboardKey.control,
+            LogicalKeyboardKey.keyN,
+          )] =
+          onNew;
     }
     if (onPrint != null) {
-      shortcuts[LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyP)] = onPrint;
+      shortcuts[LogicalKeySet(
+            LogicalKeyboardKey.control,
+            LogicalKeyboardKey.keyP,
+          )] =
+          onPrint;
     }
     if (onRefresh != null) {
       shortcuts[LogicalKeySet(LogicalKeyboardKey.f5)] = onRefresh;
     }
     if (onQuestionMark != null) {
-      shortcuts[LogicalKeySet(LogicalKeyboardKey.shift, LogicalKeyboardKey.slash)] = onQuestionMark;
+      shortcuts[LogicalKeySet(
+            LogicalKeyboardKey.shift,
+            LogicalKeyboardKey.slash,
+          )] =
+          onQuestionMark;
     }
-    
+
     // Add custom shortcuts
     custom?.forEach((key, callback) {
       shortcuts[key] = callback;
@@ -81,8 +97,8 @@ class _KeyboardShortcutWrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     if (shortcuts.isEmpty) return child;
 
-    final shortcutMap = shortcuts.map((key, callback) => 
-      MapEntry(key, _CallbackIntent(callback))
+    final shortcutMap = shortcuts.map(
+      (key, callback) => MapEntry(key, _CallbackIntent(callback)),
     );
 
     return Shortcuts(
@@ -96,10 +112,7 @@ class _KeyboardShortcutWrapper extends StatelessWidget {
             },
           ),
         },
-        child: Focus(
-          autofocus: autofocus,
-          child: child,
-        ),
+        child: Focus(autofocus: autofocus, child: child),
       ),
     );
   }

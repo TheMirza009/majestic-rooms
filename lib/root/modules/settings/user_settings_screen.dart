@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/settings/user_controller.dart';
 import 'package:majestic_rooms/root/widgets/user_avatar.dart';
 import 'package:majestic_rooms/root/modules/settings/update_password_screen.dart';
@@ -19,35 +19,58 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   final UserController _userController = Get.put(UserController());
   final CommonController _commonController = Get.find<CommonController>();
 
-  void _showEditDialog(String title, String initialValue, Function(String) onSave, {bool isPassword = false}) {
-    final TextEditingController textController = TextEditingController(text: isPassword ? '' : initialValue);
+  void _showEditDialog(
+    String title,
+    String initialValue,
+    Function(String) onSave, {
+    bool isPassword = false,
+  }) {
+    final TextEditingController textController = TextEditingController(
+      text: isPassword ? '' : initialValue,
+    );
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: CustomColors.surfaceWhite,
+          backgroundColor: context.surfaceColor,
           surfaceTintColor: Colors.transparent,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          title: Text('Update @title'.trParams({'title': title.tr}), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Text(
+            'Update @title'.trParams({'title': title.tr}),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
           content: TextField(
             controller: textController,
             obscureText: isPassword,
             decoration: InputDecoration(
               hintText: 'Enter new @title'.trParams({'title': title.tr}),
-              focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color: CustomColors.brandRed)),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: context.primaryColor),
+              ),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'.tr, style: const TextStyle(color: CustomColors.textMuted)),
+              child: Text(
+                'Cancel'.tr,
+                style: TextStyle(color: context.textMutedColor),
+              ),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 onSave(textController.text);
               },
-              child: Text('Save'.tr, style: const TextStyle(color: CustomColors.brandRed, fontWeight: FontWeight.bold)),
+              child: Text(
+                'Save'.tr,
+                style: TextStyle(
+                  color: context.primaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         );
@@ -76,11 +99,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       body: Obx(() {
         final User? user = _commonController.currentUser.value;
         final String? avatarUrl = user?.userMetadata?['avatar_url'] as String?;
-        final String fullName = user?.userMetadata?['full_name'] as String? ?? '';
+        final String fullName =
+            user?.userMetadata?['full_name'] as String? ?? '';
         final String email = user?.email ?? '';
         // In real app, we'd fetch public_data here. Since currentUser is auth.User, we don't have public_data sync.
         // We will just show "Update phone" placeholder.
-        
+
         return Stack(
           children: [
             ListView(
@@ -100,11 +124,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: CustomColors.brandRed,
+                            color: context.primaryColor,
                             shape: BoxShape.circle,
-                            border: Border.all(color: CustomColors.surfaceWhite, width: 3),
+                            border: Border.all(
+                              color: context.surfaceColor,
+                              width: 3,
+                            ),
                           ),
-                          child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 20),
+                          child: const Icon(
+                            Icons.camera_alt_rounded,
+                            color: Colors.white,
+                            size: 20,
+                          ),
                         ),
                       ),
                     ],
@@ -113,18 +144,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                 const SizedBox(height: 32),
                 Text(
                   'Personal Information'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: CustomColors.textMain,
+                    color: context.textMainColor,
                   ),
                 ),
                 const SizedBox(height: 16),
                 Material(
-                  color: CustomColors.surfaceWhite,
-                  shape: const RoundedRectangleBorder(
+                  color: context.surfaceColor,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    side: BorderSide(color: CustomColors.borderColor),
+                    side: BorderSide(color: context.borderColor),
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: Column(
@@ -133,48 +164,80 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
                         icon: Icons.person_outline,
                         title: 'Full Name'.tr,
                         value: fullName.isEmpty ? 'Set name'.tr : fullName,
-                        onTap: () => _showEditDialog('Name', fullName, (val) => _userController.updateName(val)),
+                        onTap: () => _showEditDialog(
+                          'Name',
+                          fullName,
+                          (val) => _userController.updateName(val),
+                        ),
                       ),
-                      const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
+                      Divider(
+                        height: 1,
+                        indent: 56,
+                        color: context.borderColor,
+                      ),
                       _SettingsTile(
                         icon: Icons.email_outlined,
                         title: 'Email'.tr,
                         value: email.isEmpty ? 'Set email'.tr : email,
-                        onTap: () => _showEditDialog('Email', email, (val) => _userController.updateEmail(val)),
+                        onTap: () => _showEditDialog(
+                          'Email',
+                          email,
+                          (val) => _userController.updateEmail(val),
+                        ),
                       ),
-                      const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
+                      Divider(
+                        height: 1,
+                        indent: 56,
+                        color: context.borderColor,
+                      ),
                       _SettingsTile(
                         icon: Icons.phone_outlined,
                         title: 'Phone Number'.tr,
                         value: 'Update phone'.tr,
-                        onTap: () => _showEditDialog('Phone', '', (val) => _userController.updatePhone(val)),
+                        onTap: () => _showEditDialog(
+                          'Phone',
+                          '',
+                          (val) => _userController.updatePhone(val),
+                        ),
                       ),
-                      const Divider(height: 1, indent: 56, color: CustomColors.borderColor),
+                      Divider(
+                        height: 1,
+                        indent: 56,
+                        color: context.borderColor,
+                      ),
                       _SettingsTile(
                         icon: Icons.lock_outline,
                         title: 'Password'.tr,
                         value: '••••••••',
-                        onTap: () => Navigator.push(context, CupertinoPageRoute(builder: (_) => const UpdatePasswordScreen())),
+                        onTap: () => Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                            builder: (_) => const UpdatePasswordScreen(),
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
                 const SizedBox(height: 32),
                 Material(
-                  color: CustomColors.surfaceWhite,
-                  shape: const RoundedRectangleBorder(
+                  color: context.surfaceColor,
+                  shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(16.0)),
-                    side: BorderSide(color: CustomColors.borderColor),
+                    side: BorderSide(color: context.borderColor),
                   ),
                   clipBehavior: Clip.antiAlias,
                   child: ListTile(
-                    leading: const Icon(Icons.delete_outline, color: CustomColors.brandRed),
+                    leading: Icon(
+                      Icons.delete_outline,
+                      color: context.primaryColor,
+                    ),
                     title: Text(
                       'Delete Account'.tr,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
-                        color: CustomColors.brandRed,
+                        color: context.primaryColor,
                       ),
                     ),
                     onTap: _userController.deleteAccount,
@@ -186,8 +249,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
             if (_userController.isLoading.value)
               Container(
                 color: Colors.black.withValues(alpha: 0.3),
-                child: const Center(
-                  child: CircularProgressIndicator(color: CustomColors.brandRed),
+                child: Center(
+                  child: CircularProgressIndicator(color: context.primaryColor),
                 ),
               ),
           ],
@@ -213,13 +276,13 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(icon, color: CustomColors.textMain),
+      leading: Icon(icon, color: context.textMainColor),
       title: Text(
         title,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: CustomColors.textMain,
+          color: context.textMainColor,
         ),
       ),
       trailing: Row(
@@ -227,10 +290,10 @@ class _SettingsTile extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(fontSize: 14, color: CustomColors.textMuted),
+            style: TextStyle(fontSize: 14, color: context.textMutedColor),
           ),
           const SizedBox(width: 8),
-          const Icon(Icons.chevron_right, color: CustomColors.textMuted),
+          Icon(Icons.chevron_right, color: context.textMutedColor),
         ],
       ),
       onTap: onTap,

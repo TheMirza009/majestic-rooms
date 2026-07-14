@@ -1,9 +1,10 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:majestic_rooms/core/data/models/booking.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/price_breakdown.dart';
@@ -11,26 +12,26 @@ import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/sele
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
 
 // ── Shared style constants ────────────────────────────────────────────────────
-const _labelStyle = TextStyle(
+TextStyle _labelStyle(BuildContext context) => TextStyle(
   fontSize: 11,
   fontWeight: FontWeight.w600,
   letterSpacing: 0.8,
-  color: CustomColors.textMuted,
+  color: context.textMutedColor,
 );
-const _valueStyle = TextStyle(
+TextStyle _valueStyle(BuildContext context) => TextStyle(
   fontSize: 15,
   fontWeight: FontWeight.w700,
-  color: CustomColors.textMain,
+  color: context.textMainColor,
 );
-const _subValueStyle = TextStyle(
+TextStyle _subValueStyle(BuildContext context) => TextStyle(
   fontSize: 12,
   fontWeight: FontWeight.w400,
-  color: CustomColors.textMuted,
+  color: context.textMutedColor,
 );
-const _sectionTitleStyle = TextStyle(
+TextStyle _sectionTitleStyle(BuildContext context) => TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w700,
-  color: CustomColors.textMain,
+  color: context.textMainColor,
 );
 
 class BookingScreenshotWidget extends StatelessWidget {
@@ -47,7 +48,9 @@ class BookingScreenshotWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = isPaid ? null : Get.find<BookingController>();
     final effectiveHotel = isPaid ? booking!.hotel : controller!.hotel;
-    final heroImage = effectiveHotel.images.isNotEmpty ? effectiveHotel.images.first.url : null;
+    final heroImage = effectiveHotel.images.isNotEmpty
+        ? effectiveHotel.images.first.url
+        : null;
 
     return Container(
       color: const Color(0xFFF7F7F9),
@@ -60,10 +63,10 @@ class BookingScreenshotWidget extends StatelessWidget {
             color: const Color(0xFFF7F7F9),
             child: Text(
               'Booking Summary'.tr,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: CustomColors.textMain,
+                color: context.textMainColor,
               ),
             ),
           ),
@@ -86,28 +89,24 @@ class BookingScreenshotWidget extends StatelessWidget {
                           imageUrl: heroImage,
                           fit: BoxFit.cover,
                           placeholder: (context, url) =>
-                              const ColoredBox(color: CustomColors.cardSubtleBg),
-                          errorWidget: (context, url, error) =>
-                              const ColoredBox(
+                              ColoredBox(color: CustomColors.cardSubtleBg),
+                          errorWidget: (context, url, error) => ColoredBox(
                             color: CustomColors.cardSubtleBg,
                             child: Icon(
                               Icons.broken_image_outlined,
-                              color: CustomColors.hintColor,
+                              color: context.hintColor,
                               size: 48,
                             ),
                           ),
                         )
-                      : const ColoredBox(color: CustomColors.cardSubtleBg),
+                      : ColoredBox(color: CustomColors.cardSubtleBg),
                   // GRADIENT OVERLAY
                   const DecoratedBox(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0x00000000),
-                          Color(0x99000000),
-                        ],
+                        colors: [Color(0x00000000), Color(0x99000000)],
                         stops: [0.4, 1.0],
                       ),
                     ),
@@ -170,7 +169,7 @@ class BookingScreenshotWidget extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 // STAY DETAILS TITLE
-                Text('Stay Details'.tr, style: _sectionTitleStyle),
+                Text('Stay Details'.tr, style: _sectionTitleStyle(context)),
                 const SizedBox(height: 10),
 
                 // STAY DETAILS GRID
@@ -182,14 +181,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('CHECK-IN'.tr, style: _labelStyle),
+                              Text('CHECK-IN'.tr, style: _labelStyle(context)),
                               const SizedBox(height: 6),
                               Text(
-                                DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(booking!.checkInDate),
-                                style: _valueStyle,
+                                DateFormat(
+                                  'MMM dd, yyyy',
+                                  Get.locale?.languageCode,
+                                ).format(booking!.checkInDate),
+                                style: _valueStyle(context),
                               ),
                               const SizedBox(height: 2),
-                              Text('After 02:00 PM'.tr, style: _subValueStyle),
+                              Text(
+                                'After 02:00 PM'.tr,
+                                style: _subValueStyle(context),
+                              ),
                             ],
                           ),
                         ),
@@ -200,14 +205,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('CHECK-OUT'.tr, style: _labelStyle),
+                              Text('CHECK-OUT'.tr, style: _labelStyle(context)),
                               const SizedBox(height: 6),
                               Text(
-                                DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(booking!.checkOutDate),
-                                style: _valueStyle,
+                                DateFormat(
+                                  'MMM dd, yyyy',
+                                  Get.locale?.languageCode,
+                                ).format(booking!.checkOutDate),
+                                style: _valueStyle(context),
                               ),
                               const SizedBox(height: 2),
-                              Text('Before 11:00 AM'.tr, style: _subValueStyle),
+                              Text(
+                                'Before 11:00 AM'.tr,
+                                style: _subValueStyle(context),
+                              ),
                             ],
                           ),
                         ),
@@ -224,26 +235,33 @@ class BookingScreenshotWidget extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: CustomColors.brandRed.withOpacity(0.08),
+                                  color: context.primaryColor.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.nightlight_round,
                                   size: 18,
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('DURATION'.tr, style: _labelStyle),
+                                  Text(
+                                    'DURATION'.tr,
+                                    style: _labelStyle(context),
+                                  ),
                                   const SizedBox(height: 2),
                                   Text(
                                     booking!.nights == 1
-                                        ? 'night_count'.trParams({'count': booking!.nights.toString()})
-                                        : 'nights_count'.trParams({'count': booking!.nights.toString()}),
-                                    style: _valueStyle,
+                                        ? 'night_count'.trParams({
+                                            'count': booking!.nights.toString(),
+                                          })
+                                        : 'nights_count'.trParams({
+                                            'count': booking!.nights.toString(),
+                                          }),
+                                    style: _valueStyle(context),
                                   ),
                                 ],
                               ),
@@ -259,26 +277,32 @@ class BookingScreenshotWidget extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: CustomColors.brandRed.withOpacity(0.08),
+                                  color: context.primaryColor.withOpacity(0.08),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.person_outline_rounded,
                                   size: 18,
-                                  color: CustomColors.brandRed,
+                                  color: context.primaryColor,
                                 ),
                               ),
                               const SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('ROOMS'.tr, style: _labelStyle),
+                                  Text('ROOMS'.tr, style: _labelStyle(context)),
                                   const SizedBox(height: 2),
                                   Text(
                                     booking!.numberOfRooms == 1
-                                        ? 'room_count'.trParams({'count': booking!.numberOfRooms.toString()})
-                                        : 'rooms_count'.trParams({'count': booking!.numberOfRooms.toString()}),
-                                    style: _valueStyle,
+                                        ? 'room_count'.trParams({
+                                            'count': booking!.numberOfRooms
+                                                .toString(),
+                                          })
+                                        : 'rooms_count'.trParams({
+                                            'count': booking!.numberOfRooms
+                                                .toString(),
+                                          }),
+                                    style: _valueStyle(context),
                                   ),
                                 ],
                               ),
@@ -291,8 +315,18 @@ class BookingScreenshotWidget extends StatelessWidget {
                 ] else ...[
                   Obx(() {
                     final dateRange = controller!.dateRange.value;
-                    final checkInStr = dateRange != null ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(dateRange.start) : 'Not selected'.tr;
-                    final checkOutStr = dateRange != null ? DateFormat('MMM dd, yyyy', Get.locale?.languageCode).format(dateRange.end) : 'Not selected'.tr;
+                    final checkInStr = dateRange != null
+                        ? DateFormat(
+                            'MMM dd, yyyy',
+                            Get.locale?.languageCode,
+                          ).format(dateRange.start)
+                        : 'Not selected'.tr;
+                    final checkOutStr = dateRange != null
+                        ? DateFormat(
+                            'MMM dd, yyyy',
+                            Get.locale?.languageCode,
+                          ).format(dateRange.end)
+                        : 'Not selected'.tr;
                     final nights = controller.nights;
                     return Column(
                       children: [
@@ -303,11 +337,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('CHECK-IN'.tr, style: _labelStyle),
+                                    Text(
+                                      'CHECK-IN'.tr,
+                                      style: _labelStyle(context),
+                                    ),
                                     const SizedBox(height: 6),
-                                    Text(checkInStr, style: _valueStyle),
+                                    Text(
+                                      checkInStr,
+                                      style: _valueStyle(context),
+                                    ),
                                     const SizedBox(height: 2),
-                                    Text('After 02:00 PM'.tr, style: _subValueStyle),
+                                    Text(
+                                      'After 02:00 PM'.tr,
+                                      style: _subValueStyle(context),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -318,11 +361,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('CHECK-OUT'.tr, style: _labelStyle),
+                                    Text(
+                                      'CHECK-OUT'.tr,
+                                      style: _labelStyle(context),
+                                    ),
                                     const SizedBox(height: 6),
-                                    Text(checkOutStr, style: _valueStyle),
+                                    Text(
+                                      checkOutStr,
+                                      style: _valueStyle(context),
+                                    ),
                                     const SizedBox(height: 2),
-                                    Text('Before 11:00 AM'.tr, style: _subValueStyle),
+                                    Text(
+                                      'Before 11:00 AM'.tr,
+                                      style: _subValueStyle(context),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -339,26 +391,36 @@ class BookingScreenshotWidget extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: CustomColors.brandRed.withOpacity(0.08),
+                                        color: context.primaryColor.withOpacity(
+                                          0.08,
+                                        ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.nightlight_round,
                                         size: 18,
-                                        color: CustomColors.brandRed,
+                                        color: context.primaryColor,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('DURATION'.tr, style: _labelStyle),
+                                        Text(
+                                          'DURATION'.tr,
+                                          style: _labelStyle(context),
+                                        ),
                                         const SizedBox(height: 2),
                                         Text(
                                           nights == 1
-                                              ? 'night_count'.trParams({'count': nights.toString()})
-                                              : 'nights_count'.trParams({'count': nights.toString()}),
-                                          style: _valueStyle,
+                                              ? 'night_count'.trParams({
+                                                  'count': nights.toString(),
+                                                })
+                                              : 'nights_count'.trParams({
+                                                  'count': nights.toString(),
+                                                }),
+                                          style: _valueStyle(context),
                                         ),
                                       ],
                                     ),
@@ -374,26 +436,40 @@ class BookingScreenshotWidget extends StatelessWidget {
                                     Container(
                                       padding: const EdgeInsets.all(8),
                                       decoration: BoxDecoration(
-                                        color: CustomColors.brandRed.withOpacity(0.08),
+                                        color: context.primaryColor.withOpacity(
+                                          0.08,
+                                        ),
                                         borderRadius: BorderRadius.circular(10),
                                       ),
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.person_outline_rounded,
                                         size: 18,
-                                        color: CustomColors.brandRed,
+                                        color: context.primaryColor,
                                       ),
                                     ),
                                     const SizedBox(width: 10),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text('ROOMS'.tr, style: _labelStyle),
+                                        Text(
+                                          'ROOMS'.tr,
+                                          style: _labelStyle(context),
+                                        ),
                                         const SizedBox(height: 2),
                                         Text(
                                           controller.totalQuantity == 1
-                                              ? 'room_count'.trParams({'count': controller.totalQuantity.toString()})
-                                              : 'rooms_count'.trParams({'count': controller.totalQuantity.toString()}),
-                                          style: _valueStyle,
+                                              ? 'room_count'.trParams({
+                                                  'count': controller
+                                                      .totalQuantity
+                                                      .toString(),
+                                                })
+                                              : 'rooms_count'.trParams({
+                                                  'count': controller
+                                                      .totalQuantity
+                                                      .toString(),
+                                                }),
+                                          style: _valueStyle(context),
                                         ),
                                       ],
                                     ),
@@ -414,12 +490,12 @@ class BookingScreenshotWidget extends StatelessWidget {
 
                 // PRICE BREAKDOWN
                 if (isPaid && booking != null) ...[
-                  Text('Price Details'.tr, style: _sectionTitleStyle),
+                  Text('Price Details'.tr, style: _sectionTitleStyle(context)),
                   const SizedBox(height: 10),
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: CustomColors.surfaceWhite,
+                      color: context.surfaceColor,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: const [
                         BoxShadow(
@@ -434,8 +510,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Subtotal'.tr, style: const TextStyle(fontSize: 13, color: CustomColors.textMuted)),
-                            Text(formatPrice(booking!.grossTotal), style: const TextStyle(fontSize: 13, color: CustomColors.textMain)),
+                            Text(
+                              'Subtotal'.tr,
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: context.textMutedColor,
+                              ),
+                            ),
+                            Text(
+                              formatPrice(booking!.grossTotal),
+                              style: TextStyle(
+                                fontSize: 13,
+                                color: context.textMainColor,
+                              ),
+                            ),
                           ],
                         ),
                         if (booking!.discount > 0) ...[
@@ -443,8 +531,20 @@ class BookingScreenshotWidget extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text('Discount'.tr, style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
-                              Text('- ${formatPrice(booking!.discount)}', style: const TextStyle(fontSize: 13, color: Color(0xFF2E7D32))),
+                              Text(
+                                'Discount'.tr,
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Color(0xFF2E7D32),
+                                ),
+                              ),
+                              Text(
+                                '- ${formatPrice(booking!.discount)}',
+                                style: const TextStyle(
+                                  fontSize: 13,
+                                  color: Color(0xFF2E7D32),
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -455,8 +555,22 @@ class BookingScreenshotWidget extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('Total Paid'.tr, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: CustomColors.textMain)),
-                            Text(formatPrice(booking!.netTotal), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: CustomColors.brandRed)),
+                            Text(
+                              'Total Paid'.tr,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w800,
+                                color: context.textMainColor,
+                              ),
+                            ),
+                            Text(
+                              formatPrice(booking!.netTotal),
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w900,
+                                color: context.primaryColor,
+                              ),
+                            ),
                           ],
                         ),
                       ],
@@ -464,7 +578,7 @@ class BookingScreenshotWidget extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                 ] else ...[
-                  Text('Price Details'.tr, style: _sectionTitleStyle),
+                  Text('Price Details'.tr, style: _sectionTitleStyle(context)),
                   const SizedBox(height: 10),
                   const PriceBreakdown(),
                   const SizedBox(height: 20),
@@ -474,21 +588,21 @@ class BookingScreenshotWidget extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: CustomColors.brandRed.withOpacity(0.04),
+                    color: context.primaryColor.withOpacity(0.04),
                     borderRadius: const BorderRadius.all(Radius.circular(20)),
                     border: Border.all(
-                      color: CustomColors.brandRed.withOpacity(0.15),
+                      color: context.primaryColor.withOpacity(0.15),
                     ),
                   ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(top: 1),
                         child: Icon(
                           Icons.info_outline_rounded,
                           size: 20,
-                          color: CustomColors.brandRed,
+                          color: context.primaryColor,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -498,19 +612,19 @@ class BookingScreenshotWidget extends StatelessWidget {
                           children: [
                             Text(
                               'Cancellation Policy'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
-                                color: CustomColors.textMain,
+                                color: context.textMainColor,
                               ),
                             ),
                             const SizedBox(height: 4),
                             Text(
                               effectiveHotel.terms ??
                                   'free_cancellation_fallback'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: CustomColors.textMuted,
+                                color: context.textMutedColor,
                                 height: 1.5,
                               ),
                               maxLines: 3,
@@ -522,7 +636,7 @@ class BookingScreenshotWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 // STATUS BANNER (if paid)
                 if (isPaid && booking != null) ...[
                   const SizedBox(height: 20),
@@ -530,21 +644,25 @@ class BookingScreenshotWidget extends StatelessWidget {
                     Container(
                       height: 54,
                       decoration: BoxDecoration(
-                        color: CustomColors.brandRed.withOpacity(0.1),
+                        color: context.primaryColor.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(100),
                       ),
                       alignment: Alignment.center,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.cancel_rounded, size: 20, color: CustomColors.brandRed),
+                          Icon(
+                            Icons.cancel_rounded,
+                            size: 20,
+                            color: context.primaryColor,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Cancelled'.tr,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
-                              color: CustomColors.brandRed,
+                              color: context.primaryColor,
                               letterSpacing: 0.3,
                             ),
                           ),
@@ -571,8 +689,11 @@ class BookingScreenshotWidget extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(Icons.check_circle_rounded,
-                              size: 20, color: Colors.white),
+                          const Icon(
+                            Icons.check_circle_rounded,
+                            size: 20,
+                            color: Colors.white,
+                          ),
                           const SizedBox(width: 8),
                           Text(
                             'Paid'.tr,

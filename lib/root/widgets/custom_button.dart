@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 
 class CustomButton extends StatefulWidget {
@@ -58,7 +58,8 @@ class _CustomButtonState extends State<CustomButton> {
     final label = Text(
       widget.toUpperCaseText ? widget.text.toUpperCase() : widget.text,
       textAlign: widget.textAlign ?? TextAlign.center,
-      style: widget.textStyle?.copyWith(
+      style:
+          widget.textStyle?.copyWith(
             color: isDisabled ? Colors.grey[600] : widget.textStyle?.color,
           ) ??
           TextStyle(
@@ -88,16 +89,21 @@ class _CustomButtonState extends State<CustomButton> {
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
-      cursor: isDisabled ? SystemMouseCursors.forbidden : SystemMouseCursors.click,
+      cursor: isDisabled
+          ? SystemMouseCursors.forbidden
+          : SystemMouseCursors.click,
       child: GestureDetector(
         onTap: isDisabled ? null : widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          padding: widget.padding ?? const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+          duration: context.dimens.durationFast,
+          padding: widget.padding ?? context.dimens.paddingMedium,
           width: widget.width ?? double.infinity,
-          decoration: widget.decoration ??
+          decoration:
+              widget.decoration ??
               BoxDecoration(
-                color: effectiveColor ?? (isDisabled ? Colors.grey[400] : CustomColors.brandRed),
+                color:
+                    effectiveColor ??
+                    (isDisabled ? Colors.grey[400] : context.primaryColor),
                 borderRadius: BorderRadius.circular(widget.borderRadius),
               ),
           child: content,
@@ -106,7 +112,6 @@ class _CustomButtonState extends State<CustomButton> {
     );
   }
 }
-
 
 class CustomButtonOutlined extends StatelessWidget {
   final String text;
@@ -141,30 +146,28 @@ class CustomButtonOutlined extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 12, bottom: 12),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    border: Border.all(
-                        color: borderColor ?? CustomColors.borderColor)),
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  border: Border.all(color: borderColor ?? context.borderColor),
+                ),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     prefix ?? const SizedBox.shrink(),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     Text(
                       text,
                       textAlign: TextAlign.center,
-                      style: textStyle ??
+                      style:
+                          textStyle ??
                           const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    const SizedBox(width: 10),
                     suffix ?? const SizedBox.shrink(),
                   ],
                 ),
@@ -177,31 +180,29 @@ class CustomButtonOutlined extends StatelessWidget {
               padding: const EdgeInsets.only(top: 12, bottom: 12),
               width: double.infinity,
               decoration: BoxDecoration(
-                  color: color,
-                  shape: BoxShape.rectangle,
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  border: Border.all(
-                      color: borderColor ?? CustomColors.borderColor)),
+                color: color,
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.circular(borderRadius),
+                border: Border.all(color: borderColor ?? context.borderColor),
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   prefix ?? const SizedBox.shrink(),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   Text(
                     text,
                     textAlign: TextAlign.center,
-                    style: textStyle ??
+                    style:
+                        textStyle ??
                         const TextStyle(
-                            color: Colors.black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-                  const SizedBox(
-                    width: 10,
-                  ),
+                  const SizedBox(width: 10),
                   suffix ?? const SizedBox.shrink(),
                 ],
               ),

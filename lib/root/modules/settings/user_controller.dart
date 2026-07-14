@@ -18,45 +18,61 @@ class UserController extends GetxController {
 
   Future<void> updateProfilePhoto() async {
     try {
-      final XFile? image = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 70);
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 70,
+      );
       if (image == null) return;
 
       isLoading.value = true;
       final File file = File(image.path);
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated. Cannot update profile photo in local mode.');
+        throw Exception(
+          'User not authenticated. Cannot update profile photo in local mode.',
+        );
       }
 
       final fileExt = image.path.split('.').last;
       final path = '$userId.$fileExt';
 
       // 1. Upload to Supabase Storage (account_image bucket)
-      await _supabase.storage.from('account_image').upload(
-        path,
-        file,
-        fileOptions: const FileOptions(upsert: true),
-      );
+      await _supabase.storage
+          .from('account_image')
+          .upload(path, file, fileOptions: const FileOptions(upsert: true));
 
       // 2. Get public URL
-      final String publicUrl = _supabase.storage.from('account_image').getPublicUrl(path);
+      final String publicUrl = _supabase.storage
+          .from('account_image')
+          .getPublicUrl(path);
 
       // 3. Update auth user metadata
-      await _supabase.auth.updateUser(UserAttributes(
-        data: {'avatar_url': publicUrl},
-      ));
+      await _supabase.auth.updateUser(
+        UserAttributes(data: {'avatar_url': publicUrl}),
+      );
 
       // 4. Update accounts table
-      await _supabase.from('accounts').update({'picture_url': publicUrl}).eq('id', userId);
+      await _supabase
+          .from('accounts')
+          .update({'picture_url': publicUrl})
+          .eq('id', userId);
 
       // Force refresh of current user in CommonController
       _commonController.currentUser.value = _supabase.auth.currentUser;
 
-      debugPrint('✅ [UserController] Profile photo updated successfully for user: $userId');
-      Utils.showBottomSnackBar('Success'.tr, 'Profile photo updated successfully.'.tr);
+      debugPrint(
+        '✅ [UserController] Profile photo updated successfully for user: $userId',
+      );
+      Utils.showBottomSnackBar(
+        'Success'.tr,
+        'Profile photo updated successfully.'.tr,
+      );
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update profile photo: $e');
-      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update profile photo.'.tr);
+      Utils.showBottomSnackBarError(
+        'Update Failed'.tr,
+        'Could not update profile photo.'.tr,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -70,24 +86,34 @@ class UserController extends GetxController {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated. Cannot update name in local mode.');
+        throw Exception(
+          'User not authenticated. Cannot update name in local mode.',
+        );
       }
 
       // Update auth metadata
-      await _supabase.auth.updateUser(UserAttributes(
-        data: {'full_name': newName.trim()},
-      ));
+      await _supabase.auth.updateUser(
+        UserAttributes(data: {'full_name': newName.trim()}),
+      );
 
       // Update accounts table
-      await _supabase.from('accounts').update({'name': newName.trim()}).eq('id', userId);
+      await _supabase
+          .from('accounts')
+          .update({'name': newName.trim()})
+          .eq('id', userId);
 
       _commonController.currentUser.value = _supabase.auth.currentUser;
-      
-      debugPrint('✅ [UserController] Name updated successfully to: ${newName.trim()}');
+
+      debugPrint(
+        '✅ [UserController] Name updated successfully to: ${newName.trim()}',
+      );
       Utils.showBottomSnackBar('Success'.tr, 'Name updated successfully.'.tr);
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update name: $e');
-      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update name.'.tr);
+      Utils.showBottomSnackBarError(
+        'Update Failed'.tr,
+        'Could not update name.'.tr,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -99,22 +125,35 @@ class UserController extends GetxController {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated. Cannot update email in local mode.');
+        throw Exception(
+          'User not authenticated. Cannot update email in local mode.',
+        );
       }
 
       // Update auth email
       await _supabase.auth.updateUser(UserAttributes(email: newEmail.trim()));
 
       // Update accounts table email
-      await _supabase.from('accounts').update({'email': newEmail.trim()}).eq('id', userId);
+      await _supabase
+          .from('accounts')
+          .update({'email': newEmail.trim()})
+          .eq('id', userId);
 
       _commonController.currentUser.value = _supabase.auth.currentUser;
-      
-      debugPrint('✅ [UserController] Email updated successfully to: ${newEmail.trim()}');
-      Utils.showBottomSnackBar('Success'.tr, 'Email updated successfully. Please verify your new email.'.tr);
+
+      debugPrint(
+        '✅ [UserController] Email updated successfully to: ${newEmail.trim()}',
+      );
+      Utils.showBottomSnackBar(
+        'Success'.tr,
+        'Email updated successfully. Please verify your new email.'.tr,
+      );
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update email: $e');
-      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update email.'.tr);
+      Utils.showBottomSnackBarError(
+        'Update Failed'.tr,
+        'Could not update email.'.tr,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -122,24 +161,37 @@ class UserController extends GetxController {
 
   Future<bool> updatePassword(String newPassword) async {
     if (newPassword.trim().length < 6) {
-      Utils.showBottomSnackBarError('Invalid Password'.tr, 'Password must be at least 6 characters.'.tr);
+      Utils.showBottomSnackBarError(
+        'Invalid Password'.tr,
+        'Password must be at least 6 characters.'.tr,
+      );
       return false;
     }
     try {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated. Cannot update password in local mode.');
+        throw Exception(
+          'User not authenticated. Cannot update password in local mode.',
+        );
       }
-      
-      await _supabase.auth.updateUser(UserAttributes(password: newPassword.trim()));
+
+      await _supabase.auth.updateUser(
+        UserAttributes(password: newPassword.trim()),
+      );
 
       debugPrint('✅ [UserController] Password updated successfully.');
-      Utils.showBottomSnackBar('Success'.tr, 'Password updated successfully.'.tr);
+      Utils.showBottomSnackBar(
+        'Success'.tr,
+        'Password updated successfully.'.tr,
+      );
       return true;
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update password: $e');
-      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update password.'.tr);
+      Utils.showBottomSnackBarError(
+        'Update Failed'.tr,
+        'Could not update password.'.tr,
+      );
       return false;
     } finally {
       isLoading.value = false;
@@ -152,27 +204,47 @@ class UserController extends GetxController {
       isLoading.value = true;
       final userId = _supabase.auth.currentUser?.id;
       if (userId == null) {
-        throw Exception('User not authenticated. Cannot update phone in local mode.');
+        throw Exception(
+          'User not authenticated. Cannot update phone in local mode.',
+        );
       }
 
       // Update public_data jsonb in accounts table
       // Fetch existing public_data first
-      final accountData = await _supabase.from('accounts').select('public_data').eq('id', userId).single();
-      
+      final accountData = await _supabase
+          .from('accounts')
+          .select('public_data')
+          .eq('id', userId)
+          .single();
+
       Map<String, dynamic> publicData = {};
-      if (accountData['public_data'] != null && accountData['public_data'] is Map) {
-        publicData = Map<String, dynamic>.from(accountData['public_data'] as Map);
+      if (accountData['public_data'] != null &&
+          accountData['public_data'] is Map) {
+        publicData = Map<String, dynamic>.from(
+          accountData['public_data'] as Map,
+        );
       }
-      
+
       publicData['phone'] = newPhone.trim();
 
-      await _supabase.from('accounts').update({'public_data': publicData}).eq('id', userId);
+      await _supabase
+          .from('accounts')
+          .update({'public_data': publicData})
+          .eq('id', userId);
 
-      debugPrint('✅ [UserController] Phone number updated successfully to: ${newPhone.trim()}');
-      Utils.showBottomSnackBar('Success'.tr, 'Phone number updated successfully.'.tr);
+      debugPrint(
+        '✅ [UserController] Phone number updated successfully to: ${newPhone.trim()}',
+      );
+      Utils.showBottomSnackBar(
+        'Success'.tr,
+        'Phone number updated successfully.'.tr,
+      );
     } catch (e) {
       debugPrint('❌ [UserController] Failed to update phone: $e');
-      Utils.showBottomSnackBarError('Update Failed'.tr, 'Could not update phone number.'.tr);
+      Utils.showBottomSnackBarError(
+        'Update Failed'.tr,
+        'Could not update phone number.'.tr,
+      );
     } finally {
       isLoading.value = false;
     }
@@ -182,6 +254,9 @@ class UserController extends GetxController {
 
   void deleteAccount() {
     // Stub implementation as requested
-    Utils.showBottomSnackBarError('Action Denied'.tr, 'Cannot delete this account.'.tr);
+    Utils.showBottomSnackBarError(
+      'Action Denied'.tr,
+      'Cannot delete this account.'.tr,
+    );
   }
 }

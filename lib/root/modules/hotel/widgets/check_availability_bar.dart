@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 
 class CheckAvailabilityBar extends StatelessWidget {
   final List<num> rates;
   final void Function() onTap;
-  const CheckAvailabilityBar({super.key, required this.rates, required this.onTap});
+  const CheckAvailabilityBar({
+    super.key,
+    required this.rates,
+    required this.onTap,
+  });
 
   num _getLowestPrice() {
     if (rates.isEmpty) return 0;
     return rates.reduce((curr, next) => curr < next ? curr : next);
   }
-  
+
   @override
   Widget build(BuildContext context) {
-    
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
         height: 70,
         decoration: BoxDecoration(
-          color: CustomColors.surfaceWhite,
+          color: context.surfaceColor,
           borderRadius: BorderRadius.circular(35),
           boxShadow: [
             BoxShadow(
@@ -38,8 +41,8 @@ class CheckAvailabilityBar extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onTap,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: CustomColors.brandRed,
-                  foregroundColor: CustomColors.textLight,
+                  backgroundColor: context.primaryColor,
+                  foregroundColor: context.textLightColor,
                   shape: const StadiumBorder(),
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   minimumSize: const Size(0, 54),
@@ -58,7 +61,7 @@ class CheckAvailabilityBar extends StatelessWidget {
                       'Starting from'.tr,
                       style: TextStyle(
                         fontSize: 10,
-                        color: CustomColors.textMuted,
+                        color: context.textMutedColor,
                         fontWeight: FontWeight.w500,
                         height: 1,
                       ),
@@ -70,20 +73,20 @@ class CheckAvailabilityBar extends StatelessWidget {
                     children: [
                       Text(
                         '\$${_getLowestPrice()}',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: CustomColors.textMain,
+                          color: context.textMainColor,
                         ),
                       ),
                       Text(
                         ' /night'.tr,
                         style: TextStyle(
                           fontSize: 11,
-                          color: CustomColors.textMuted,
+                          color: context.textMutedColor,
                         ),
                       ),
-                      SizedBox(width: 12)
+                      SizedBox(width: 12),
                     ],
                   ),
                 ],

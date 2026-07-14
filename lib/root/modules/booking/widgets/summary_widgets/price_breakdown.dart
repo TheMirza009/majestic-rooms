@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 import 'package:majestic_rooms/root/modules/booking/widgets/summary_widgets/summary_card.dart';
@@ -44,18 +44,18 @@ class PriceBreakdown extends StatelessWidget {
               children: [
                 Text(
                   'Total'.tr,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: CustomColors.textMain,
+                    color: context.textMainColor,
                   ),
                 ),
                 Text(
                   formatPrice(total),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
-                    color: CustomColors.brandRed,
+                    color: context.primaryColor,
                   ),
                 ),
               ],
@@ -80,15 +80,15 @@ class _PriceRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: const TextStyle(fontSize: 14, color: CustomColors.textMuted),
+          style: TextStyle(fontSize: 14, color: context.textMutedColor),
         ),
         if (amount != null)
           Text(
             amount!,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w600,
-              color: CustomColors.textMain,
+              color: context.textMainColor,
             ),
           ),
       ],

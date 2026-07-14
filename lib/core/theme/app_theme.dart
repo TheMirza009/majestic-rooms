@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'app_dimens_extension.dart';
 
 class AppTheme {
   static ThemeData get lightTheme {
@@ -7,17 +8,19 @@ class AppTheme {
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: 'Fustat',
-      primaryColor: CustomColors.brandRed,
-      scaffoldBackgroundColor: CustomColors.bgLight,
+      primaryColor: CustomColors.brandRed, // CustomColors.brandGreen, // CustomColors.brandRed,
+      scaffoldBackgroundColor: CustomColors.cardSubtleBg, //  CustomColors.bgLightAlt, // CustomColors.bgLight,
 
       colorScheme: const ColorScheme.light(
-        primary: CustomColors.brandRed,
+        primary: CustomColors.brandRed, //  CustomColors.brandGreen, // CustomColors.brandRed,
         secondary: CustomColors.luxuryGold,
         tertiary: CustomColors.premiumAmber,
         surface: CustomColors.surfaceWhite,
         onPrimary: CustomColors.textLight,
         onSecondary: CustomColors.primaryDark,
         onSurface: CustomColors.textMain,
+        onSurfaceVariant: CustomColors.textMuted,
+        outline: CustomColors.borderColor,
       ),
 
       appBarTheme: const AppBarTheme(
@@ -40,11 +43,13 @@ class AppTheme {
         style: ElevatedButton.styleFrom(
           backgroundColor: CustomColors.luxuryGold,
           foregroundColor: CustomColors.primaryDark,
-          textStyle: const TextStyle(fontFamily: 'Fustat', fontWeight: FontWeight.w600, fontSize: 16),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+          textStyle: const TextStyle(
+            fontFamily: 'Fustat',
+            fontWeight: FontWeight.w600,
+            fontSize: 16,
           ),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       ),
 
@@ -54,11 +59,28 @@ class AppTheme {
       ),
 
       textTheme: const TextTheme(
-        displayLarge:   TextStyle(color: CustomColors.textMain,  fontWeight: FontWeight.bold, fontSize: 32),
-        headlineMedium: TextStyle(color: CustomColors.textMain,  fontWeight: FontWeight.w600, fontSize: 24),
-        bodyLarge:      TextStyle(color: CustomColors.textMain,  fontSize: 16, height: 1.5),
-        bodyMedium:     TextStyle(color: CustomColors.textMuted, fontSize: 14, height: 1.4),
+        displayLarge: TextStyle(
+          color: CustomColors.textMain,
+          fontWeight: FontWeight.bold,
+          fontSize: 32,
+        ),
+        headlineMedium: TextStyle(
+          color: CustomColors.textMain,
+          fontWeight: FontWeight.w600,
+          fontSize: 24,
+        ),
+        bodyLarge: TextStyle(
+          color: CustomColors.textMain,
+          fontSize: 16,
+          height: 1.5,
+        ),
+        bodyMedium: TextStyle(
+          color: CustomColors.textMuted,
+          fontSize: 14,
+          height: 1.4,
+        ),
       ),
+      extensions: [AppDimensExtension.light()],
     );
   }
 }

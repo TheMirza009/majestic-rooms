@@ -216,7 +216,8 @@ const Map<String, String> enUS = {
   'Wi-Fi Internet': 'Wi-Fi Internet',
   'Free WiFi': 'Free WiFi',
   'Concierge': 'Concierge',
-  'Standard terms and conditions apply.': 'Standard terms and conditions apply.',
+  'Standard terms and conditions apply.':
+      'Standard terms and conditions apply.',
   'Prayer Room': 'Prayer Room',
   'Business Center': 'Business Center',
   'Room Service': 'Room Service',
@@ -231,7 +232,8 @@ const Map<String, String> enUS = {
   'Book Now': 'Book Now',
   'Error: @error': 'Error: @error',
   'Booking Confirmed!': 'Booking Confirmed!',
-  'reservation_confirmed': 'Your reservation at @hotel is confirmed.\\nCheck your Bookings tab for full details.',
+  'reservation_confirmed':
+      'Your reservation at @hotel is confirmed.\\nCheck your Bookings tab for full details.',
   'night_count': '@count Night',
   'nights_count': '@count Nights',
   'TOTAL PAID': 'TOTAL PAID',
@@ -247,12 +249,14 @@ const Map<String, String> enUS = {
   'Booking...': 'Booking...',
   'Confirm Booking': 'Confirm Booking',
   'Total price': 'Total price',
-  'cancel_booking_desc': 'Are you sure you want to cancel this booking? Cancelling a booking may incur extra charges depending on the hotel policy.',
+  'cancel_booking_desc':
+      'Are you sure you want to cancel this booking? Cancelling a booking may incur extra charges depending on the hotel policy.',
   'No rooms available': 'No rooms available',
   'with_breakfast': 'With breakfast: @price / night',
   'No information given': 'No information given',
   'Are you sure you want to logout?': 'Are you sure you want to logout?',
-  'You will be taken back to the login screen.': 'You will be taken back to the login screen.',
+  'You will be taken back to the login screen.':
+      'You will be taken back to the login screen.',
   'Press back again to exit': 'Press back again to exit',
   'Search your saved hotels': 'Search your saved hotels',
   'Search query cannot be empty': 'Search query cannot be empty',
@@ -283,13 +287,15 @@ const Map<String, String> enUS = {
   'From': 'From',
   'To': 'To',
   'Not selected': 'Not selected',
-  'free_cancellation_fallback': 'Free cancellation before check-in date. Review our full terms before confirming.',
+  'free_cancellation_fallback':
+      'Free cancellation before check-in date. Review our full terms before confirming.',
   'nights_rooms_dot': '@nights Night(s) · @rooms Room(s)',
   'Pending': 'Pending',
   'Confirmed': 'Confirmed',
   'Checked In': 'Checked In',
   'Completed': 'Completed',
   'No bookings yet': 'No bookings yet',
-  'Your confirmed reservations will appear here.': 'Your confirmed reservations will appear here.',
+  'Your confirmed reservations will appear here.':
+      'Your confirmed reservations will appear here.',
   'No reservations match this filter.': 'No reservations match this filter.',
 };

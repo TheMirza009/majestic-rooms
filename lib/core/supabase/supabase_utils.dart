@@ -23,7 +23,10 @@ class SupabaseUtils {
   }
 
   /// Signs in with email and password. Throws [AuthException] on failure.
-  Future<AuthResponse> signInWithEmailPassword(String email, String password) async {
+  Future<AuthResponse> signInWithEmailPassword(
+    String email,
+    String password,
+  ) async {
     return await _client.auth.signInWithPassword(
       email: email,
       password: password,
@@ -57,12 +60,10 @@ class SupabaseUtils {
             )
           ''')
           .eq('is_active', true);
-      
+
       return List<Map<String, dynamic>>.from(response);
     } catch (e) {
       throw Exception('Error fetching hotels: $e');
     }
   }
 }
-
-

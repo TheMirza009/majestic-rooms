@@ -1,10 +1,11 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/data/models/booking.dart';
 import 'package:majestic_rooms/root/modules/tabs/bookings/booking_card.dart';
 
@@ -44,11 +45,16 @@ class _BookingsScreenState extends State<BookingsScreen> {
 
   String _statusLabel(BookingStatus status) {
     switch (status) {
-      case BookingStatus.pending: return 'Pending'.tr;
-      case BookingStatus.confirmed: return 'Confirmed'.tr;
-      case BookingStatus.cancelled: return 'Cancelled'.tr;
-      case BookingStatus.checkedIn: return 'Checked In'.tr;
-      case BookingStatus.completed: return 'Completed'.tr;
+      case BookingStatus.pending:
+        return 'Pending'.tr;
+      case BookingStatus.confirmed:
+        return 'Confirmed'.tr;
+      case BookingStatus.cancelled:
+        return 'Cancelled'.tr;
+      case BookingStatus.checkedIn:
+        return 'Checked In'.tr;
+      case BookingStatus.completed:
+        return 'Completed'.tr;
     }
   }
 
@@ -61,7 +67,9 @@ class _BookingsScreenState extends State<BookingsScreen> {
       appBar: AppBar(
         backgroundColor: _scaffoldBg,
         surfaceTintColor: _scaffoldBg,
-        systemOverlayStyle: const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+        ),
         centerTitle: true,
         title: Text(
           'My Bookings'.tr,
@@ -88,21 +96,30 @@ class _BookingsScreenState extends State<BookingsScreen> {
                           selected: isSelected,
                           onSelected: (_) => _onFilterSelected(status),
                           selectedColor: CustomColors.brandBlack,
-                          backgroundColor: CustomColors.surfaceWhite,
+                          backgroundColor: context.surfaceColor,
                           labelStyle: TextStyle(
-                            color: isSelected ? CustomColors.textLight : CustomColors.textMuted,
-                            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400,
+                            color: isSelected
+                                ? context.textLightColor
+                                : context.textMutedColor,
+                            fontWeight: isSelected
+                                ? FontWeight.w600
+                                : FontWeight.w400,
                             fontFamily: 'Fustat',
                             fontSize: 14,
                           ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50),
-                            side: const BorderSide(color: Color.fromRGBO(231, 231, 231, 1)),
+                            side: const BorderSide(
+                              color: Color.fromRGBO(231, 231, 231, 1),
+                            ),
                           ),
                           showCheckmark: false,
-                          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 4,
+                            vertical: 2,
+                          ),
                         );
-                      }
+                      },
                     ),
                   ),
               ],
@@ -115,38 +132,43 @@ class _BookingsScreenState extends State<BookingsScreen> {
               final allBookings = controller.bookings.reversed.toList();
               final bookings = _selectedStatus == null
                   ? allBookings
-                  : allBookings.where((b) => b.bookingStatus == _selectedStatus).toList();
+                  : allBookings
+                        .where((b) => b.bookingStatus == _selectedStatus)
+                        .toList();
 
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: bookings.isEmpty
                     ? Center(
-                        key: ValueKey('empty_${_selectedStatus?.name ?? 'all'}'),
+                        key: ValueKey(
+                          'empty_${_selectedStatus?.name ?? 'all'}',
+                        ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.bookmark_border_rounded,
                               size: 56,
-                              color: CustomColors.hintColor,
+                              color: context.hintColor,
                             ),
                             const SizedBox(height: 16),
                             Text(
                               'No bookings yet'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: CustomColors.textMain,
+                                color: context.textMainColor,
                               ),
                             ),
                             const SizedBox(height: 6),
                             Text(
                               _selectedStatus == null
-                                  ? 'Your confirmed reservations will appear here.'.tr
+                                  ? 'Your confirmed reservations will appear here.'
+                                        .tr
                                   : 'No reservations match this filter.'.tr,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 13,
-                                color: CustomColors.textMuted,
+                                color: context.textMutedColor,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -193,21 +215,39 @@ class _DebugClearBookingsButton extends StatelessWidget {
             final supabase = Supabase.instance.client;
             final user = supabase.auth.currentUser;
             if (user == null) {
-               Get.find<CommonController>().bookings.clear();
-               Get.snackbar('Debug'.tr, 'Local bookings cleared (No user logged in).'.tr, snackPosition: SnackPosition.BOTTOM);
-               return;
+              Get.find<CommonController>().bookings.clear();
+              Get.snackbar(
+                'Debug'.tr,
+                'Local bookings cleared (No user logged in).'.tr,
+                snackPosition: SnackPosition.BOTTOM,
+              );
+              return;
             }
             final userId = user.id;
-            
-            final userBookings = await supabase.from('booking').select('id').eq('account_id', userId);
-            final List<String> bookingIds = (userBookings as List).map((b) => b['id'].toString()).toList();
-            
+
+            final userBookings = await supabase
+                .from('booking')
+                .select('id')
+                .eq('account_id', userId);
+            final List<String> bookingIds = (userBookings as List)
+                .map((b) => b['id'].toString())
+                .toList();
+
             if (bookingIds.isNotEmpty) {
-              await supabase.from('booking_detail').delete().inFilter('booking_id', bookingIds);
-              await supabase.from('payment').delete().inFilter('booking_id', bookingIds);
-              await supabase.from('booking').delete().inFilter('id', bookingIds);
+              await supabase
+                  .from('booking_detail')
+                  .delete()
+                  .inFilter('booking_id', bookingIds);
+              await supabase
+                  .from('payment')
+                  .delete()
+                  .inFilter('booking_id', bookingIds);
+              await supabase
+                  .from('booking')
+                  .delete()
+                  .inFilter('id', bookingIds);
             }
-            
+
             Get.find<CommonController>().bookings.clear();
             if (context.mounted) {
               Get.snackbar(
@@ -222,7 +262,9 @@ class _DebugClearBookingsButton extends StatelessWidget {
             if (context.mounted) {
               Get.snackbar(
                 'Error'.tr,
-                'failed_to_delete_bookings_error'.trParams({'error': e.toString()}),
+                'failed_to_delete_bookings_error'.trParams({
+                  'error': e.toString(),
+                }),
                 snackPosition: SnackPosition.BOTTOM,
                 margin: EdgeInsets.all(16),
               );
@@ -232,7 +274,7 @@ class _DebugClearBookingsButton extends StatelessWidget {
         icon: const Icon(Icons.delete_forever),
         label: const Text('Clear All Bookings (Debug)'),
         style: ElevatedButton.styleFrom(
-          backgroundColor: CustomColors.brandRed,
+          backgroundColor: context.primaryColor,
           foregroundColor: Colors.white,
           minimumSize: const Size.fromHeight(50),
           elevation: 0,

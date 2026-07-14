@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/data/models/hotel.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
@@ -31,7 +31,10 @@ class RoomsScreen extends StatelessWidget {
           context: context,
           builder: (context) => AlertDialog(
             title: Text("Discard Selections?".tr),
-            content: Text("Are you sure you want to go back? Your room selections and dates will be reset.".tr),
+            content: Text(
+              "Are you sure you want to go back? Your room selections and dates will be reset."
+                  .tr,
+            ),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context, false),
@@ -39,7 +42,10 @@ class RoomsScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () => Navigator.pop(context, true),
-                child: Text("Discard".tr, style: const TextStyle(color: CustomColors.brandRed)),
+                child: Text(
+                  "Discard".tr,
+                  style: TextStyle(color: context.primaryColor),
+                ),
               ),
             ],
           ),
@@ -68,53 +74,60 @@ class RoomsScreen extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-            const DateRangeSelectionCard(),
-            SizedBox(height: 8),
-            Expanded(
-              child: hotel.rooms.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.meeting_room_outlined, size: 64, color: CustomColors.hintColor),
-                          const SizedBox(height: 16),
-                          Text(
-                            "No rooms available".tr,
-                            style: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: CustomColors.textLight,
+              const DateRangeSelectionCard(),
+              SizedBox(height: 8),
+              Expanded(
+                child: hotel.rooms.isEmpty
+                    ? Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.meeting_room_outlined,
+                              size: 64,
+                              color: context.hintColor,
                             ),
-                          ),
-                        ],
+                            const SizedBox(height: 16),
+                            Text(
+                              "No rooms available".tr,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: context.textLightColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.only(
+                          top: 0.0,
+                          bottom: 120.0,
+                        ), // padding for FAB
+                        itemCount: hotel.rooms.length,
+                        itemBuilder: (context, index) {
+                          final room = hotel.rooms[index];
+                          return Obx(() {
+                            return RoomCard(
+                              room: room,
+                              hotelImageUrl: hotel.imageUrl,
+                              quantity: controller.getRoomQuantity(room),
+                              onIncrement: () => controller.incrementRoom(room),
+                              onDecrement: () => controller.decrementRoom(room),
+                            );
+                          });
+                        },
                       ),
-                    )
-                  : ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.only(top: 0.0, bottom: 120.0), // padding for FAB
-                      itemCount: hotel.rooms.length,
-                      itemBuilder: (context, index) {
-                        final room = hotel.rooms[index];
-                        return Obx(() {
-                          return RoomCard(
-                            room: room,
-                            hotelImageUrl: hotel.imageUrl,
-                            quantity: controller.getRoomQuantity(room),
-                            onIncrement: () => controller.incrementRoom(room),
-                            onDecrement: () => controller.decrementRoom(room),
-                          );
-                        });
-                      },
-                    ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
+
+        // FLOATING ACTION BUTTON
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: BookNowButton(controller: controller),
       ),
-      
-      // FLOATING ACTION BUTTON
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: BookNowButton(controller: controller),
-    ),
-  );
+    );
   }
 }

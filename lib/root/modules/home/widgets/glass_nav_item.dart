@@ -1,14 +1,14 @@
-
 import 'package:flutter/material.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 
 class GlassNavItem extends StatelessWidget {
-  final IconData      icon;
-  final String        label;
-  final bool          isActive;
-  final VoidCallback  onTap;
+  final IconData icon;
+  final String label;
+  final bool isActive;
+  final VoidCallback onTap;
 
   const GlassNavItem({
-    super.key, 
+    super.key,
     required this.icon,
     required this.label,
     this.isActive = false,
@@ -16,22 +16,23 @@ class GlassNavItem extends StatelessWidget {
   });
 
   // ── Control Panel ──────────────────────────────────────────────────────
-  static const double    _height           = 48;
-  static const double    _radius           = 24;
-  static const double    _activePaddingH   = 16;
-  static const double    _inactivePaddingH = 12;
-  static const Color     _activeBg         = Color.fromARGB(255, 189, 58, 60);
-  static const Color     _inactiveBg       = Color.fromARGB(41, 255, 255, 255); // frosted glass circle
-  static const Color     _inactiveBorder   = Color(0x33FFFFFF);
-  static const Color     _activeIconColor  = Colors.white;
-  static const Color     _inactiveIconColor = Color(0xB3FFFFFF);
-  static const double    _activeIconSize   = 26;
-  static const double    _inactiveIconSize = 24;
-  static const Duration  _animDuration     = Duration(milliseconds: 300);
-  static const Curve     _animCurve        = Curves.easeInOut;
+  static const double _height = 48;
+  static const double _radius = 24;
+  static const double _activePaddingH = 16;
+  static const double _inactivePaddingH = 12;
+  static const double _activeIconSize = 26;
+  static const double _inactiveIconSize = 24;
+  static const Duration _animDuration = Duration(milliseconds: 300);
+  static const Curve _animCurve = Curves.easeInOut;
 
   @override
   Widget build(BuildContext context) {
+    final _activeBg = context.primaryColor;
+    final _inactiveBg = context.surfaceColor.withValues(alpha: 0.16);
+    final _inactiveBorder = context.surfaceColor.withValues(alpha: 0.2);
+    final _activeIconColor = context.surfaceColor;
+    final _inactiveIconColor = context.surfaceColor.withValues(alpha: 0.7);
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -67,7 +68,7 @@ class GlassNavItem extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 6),
                   child: Text(
                     label,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: _activeIconColor,
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

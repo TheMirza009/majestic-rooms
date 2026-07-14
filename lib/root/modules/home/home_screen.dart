@@ -1,9 +1,10 @@
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 import 'package:majestic_rooms/root/modules/home/widgets/glass_bottom_nav.dart';
@@ -17,47 +18,49 @@ class HomeScreen extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => AnnotatedRegion(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-      ),
-      child: PopScope(
-        canPop: false,
-        onPopInvokedWithResult: (didPop, result) async {
-          if (didPop) return;
-          final shouldPop = await controller.handleBackPress();
-          if (shouldPop) {
-            SystemNavigator.pop();
-          }
-        },
-        child: Scaffold(
-          extendBody: true,
-          backgroundColor: CustomColors.cardSubtleBg,
-          // appBar: buildAppBar(controller, context),
-          body: SafeArea(
-          bottom: false,
-            child: PageView(
-              controller: controller.pageController,
-              physics: const BouncingScrollPhysics(),
-              onPageChanged: controller.onPageChanged,
-              allowImplicitScrolling: true,
-              children: const [
-                ExploreScreen(),
-                SavedScreen(),
-                BookingsScreen(),
-                ProfileScreen(),
-              ],
+    return Obx(
+      () => AnnotatedRegion(
+        value: const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          statusBarBrightness: Brightness.light,
+        ),
+        child: PopScope(
+          canPop: false,
+          onPopInvokedWithResult: (didPop, result) async {
+            if (didPop) return;
+            final shouldPop = await controller.handleBackPress();
+            if (shouldPop) {
+              SystemNavigator.pop();
+            }
+          },
+          child: Scaffold(
+            extendBody: true,
+            // backgroundColor: CustomColors.cardSubtleBg,
+            // appBar: buildAppBar(controller, context),
+            body: SafeArea(
+              bottom: false,
+              child: PageView(
+                controller: controller.pageController,
+                physics: const BouncingScrollPhysics(),
+                onPageChanged: controller.onPageChanged,
+                allowImplicitScrolling: true,
+                children: const [
+                  ExploreScreen(),
+                  SavedScreen(),
+                  BookingsScreen(),
+                  ProfileScreen(),
+                ],
+              ),
             ),
-          ),
-          bottomNavigationBar: GlassBottomNavBar(
-            currentIndex: controller.currentIndex.value,
-            onTap: controller.navigateTo,
+            bottomNavigationBar: GlassBottomNavBar(
+              currentIndex: controller.currentIndex.value,
+              onTap: controller.navigateTo,
+            ),
           ),
         ),
       ),
-    ));
+    );
   }
 }
 
@@ -70,10 +73,7 @@ AppBar? buildAppBar(HomeController controller, BuildContext context) {
   return AppBar(
     title: Text(_titles[controller.currentIndex.value].tr),
     actions: [
-      IconButton(
-        onPressed: Utils.logoutDialog,
-        icon: const Icon(Icons.logout),
-      ),
+      IconButton(onPressed: Utils.logoutDialog, icon: const Icon(Icons.logout)),
     ],
   );
 }

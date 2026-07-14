@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:get/get.dart';
 
 class MapsPreview extends StatelessWidget {
@@ -33,7 +33,7 @@ class MapsPreview extends StatelessWidget {
       width: double.infinity,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: CustomColors.borderColor.withOpacity(0.2)),
+        border: Border.all(color: context.borderColor.withOpacity(0.2)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -76,7 +76,7 @@ class MapsPreview extends StatelessWidget {
                 ),
               ],
             ),
-            
+
             // "Open in Maps" Button
             Positioned(
               bottom: 12,
@@ -84,12 +84,12 @@ class MapsPreview extends StatelessWidget {
               child: FloatingActionButton.extended(
                 heroTag: 'maps_preview_btn_${hotelName.replaceAll(" ", "_")}',
                 onPressed: _openNativeMap,
-                backgroundColor: CustomColors.surfaceWhite,
-                icon: const Icon(Icons.map_outlined, color: CustomColors.brandRed),
+                backgroundColor: context.surfaceColor,
+                icon: Icon(Icons.map_outlined, color: context.primaryColor),
                 label: Text(
                   'Open in Maps'.tr,
                   style: TextStyle(
-                    color: CustomColors.textMain,
+                    color: context.textMainColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -6,22 +6,31 @@ class NotificationsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black, ), onPressed: () {
-          Navigator.pop(context);
-        },), 
-        title: Text('Notifications'.tr), 
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.black),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: Text('Notifications'.tr),
         centerTitle: true,
         surfaceTintColor: Colors.white,
-        ),  
-      body: Center(child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(Icons.notifications_outlined, size: 70, color: Colors.grey,), 
-          SizedBox(height: 8,),
-          Text('No Notifications'.tr, style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),),
-        ],
-      )));
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.notifications_outlined, size: 70, color: Colors.grey),
+            SizedBox(height: 8),
+            Text(
+              'No Notifications'.tr,
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

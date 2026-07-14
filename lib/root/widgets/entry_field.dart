@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:majestic_rooms/core/extensions/text_formatters.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
-
-// ── Entry Field — Control Panel ───────────────────────────────────────────────
-// Change colors here to update all entry field widgets at once.
-const _primaryColor   = CustomColors.brandRed;  // cursor, focused borders, active suffix icons
-const _secondaryColor = CustomColors.hintColor; // hint text across all entry field types
 
 class LabeledEntryField extends StatelessWidget {
   final TextEditingController? controller;
@@ -79,17 +74,18 @@ class LabeledEntryField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _primaryColor = context.primaryColor;
+    final _secondaryColor = context.hintColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           labelText,
-          style: labelStyle ??
+          style:
+              labelStyle ??
               const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
         ),
-        SizedBox(
-          height: gap ?? 6,
-        ),
+        SizedBox(height: gap ?? 6),
         // minHeight (not a tight height) so the field keeps its size and grows
         // downward to show validator errors instead of compressing the input.
         ConstrainedBox(
@@ -114,43 +110,49 @@ class LabeledEntryField extends StatelessWidget {
               filled: filled,
               fillColor: filledColor,
               counterText: '',
-              contentPadding: contentPadding ??
+              contentPadding:
+                  contentPadding ??
                   const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               // labelText: labelText,
               // labelStyle: TextStyle(color: _primaryColor),
               disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  borderSide: const BorderSide(width: 1.5, color: Colors.grey)),
+                borderRadius: BorderRadius.circular(borderRadius),
+                borderSide: const BorderSide(width: 1.5, color: Colors.grey),
+              ),
               suffixIcon: suffixIcon == null
                   ? iconAsSuffix
-                  : Icon(suffixIcon,
+                  : Icon(
+                      suffixIcon,
                       color: suffixIconColor ?? _primaryColor,
-                      size: 18),
+                      size: 18,
+                    ),
               enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: borderColor ?? Colors.grey),
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  gapPadding: 2),
+                borderSide: BorderSide(
+                  width: 1.5,
+                  color: borderColor ?? Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(borderRadius),
+                gapPadding: 2,
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: _primaryColor),
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  gapPadding: 2),
+                borderSide: BorderSide(width: 1.5, color: _primaryColor),
+                borderRadius: BorderRadius.circular(borderRadius),
+                gapPadding: 2,
+              ),
               border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: _primaryColor),
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  gapPadding: 2),
+                borderSide: BorderSide(width: 1.5, color: _primaryColor),
+                borderRadius: BorderRadius.circular(borderRadius),
+                gapPadding: 2,
+              ),
               hintText: hintText,
               errorText: errorText,
               suffix: suffix,
               enabled: enabled,
               errorStyle: const TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.bold),
-              hintStyle: TextStyle(
-                color: _secondaryColor,
-                fontSize: 14,
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
               ),
+              hintStyle: TextStyle(color: _secondaryColor, fontSize: 14),
             ),
           ),
         ),
@@ -222,10 +224,11 @@ class EntryField extends StatelessWidget {
     this.filled,
     this.filledColor,
     this.maxLines = 1,
-    this.maxLength, this.showSeparateLabel = false,
+    this.maxLength,
+    this.showSeparateLabel = false,
     this.contentPadding,
     this.height = 40,
-    this.onTap, 
+    this.onTap,
     this.formTextStyle,
     this.isDense,
     this.autofocus,
@@ -234,15 +237,20 @@ class EntryField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _primaryColor = context.primaryColor;
+    final _secondaryColor = context.hintColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        if(labelText != null && showSeparateLabel)
-        Padding(
-          padding: const EdgeInsets.only(left: 4,bottom: 2),
-          child: Text(labelText!,style: TextStyle(fontSize: 14,fontWeight: FontWeight.w500),),
-        ),
+        if (labelText != null && showSeparateLabel)
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 2),
+            child: Text(
+              labelText!,
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+            ),
+          ),
         SizedBox(
           height: height ?? 40,
           child: TextFormField(
@@ -259,46 +267,74 @@ class EntryField extends StatelessWidget {
             onChanged: onChanged,
             maxLines: maxLines,
             maxLength: maxLength,
-            onTapOutside: (event) => onTapOutside ?? FocusManager.instance.primaryFocus?.unfocus(),
+            onTapOutside: (event) =>
+                onTapOutside ?? FocusManager.instance.primaryFocus?.unfocus(),
             onFieldSubmitted: onSubmitted,
             focusNode: focusNode,
-            style: formTextStyle ?? TextStyle(fontSize: 14, color: textColor ?? Colors.black),
-            decoration: inputDecoration ?? InputDecoration(
-              prefixIcon: prefixIcon,
-              filled: filled,
-              fillColor: filledColor,
-              counterText: '',
-              contentPadding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-              labelText: !showSeparateLabel ? labelText : null,
-              // labelStyle: TextStyle(color: _primaryColor),
-              disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(width: 1.5, color: Colors.grey)),
-              suffixIcon: suffixIcon == null
-                  ? iconAsSuffix
-                  : Icon(suffixIcon,
-                      color: suffixIconColor ?? _primaryColor,
-                      size: 18),
-              enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.5, color: borderColor ?? Colors.grey),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
-              focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.5, color: focusedBorderColor ?? _primaryColor),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
-              border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 1.5, color: borderColor ?? _primaryColor),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
-              hintText: hintText,
-              errorText: errorText,
-              suffix: suffix,
-              enabled: enabled,
-              errorStyle: const TextStyle( color: Colors.red, fontWeight: FontWeight.bold),
-              hintStyle: TextStyle( color: _secondaryColor, fontSize: 14, ),
-              isDense: isDense,
-            ),
+            style:
+                formTextStyle ??
+                TextStyle(fontSize: 14, color: textColor ?? Colors.black),
+            decoration:
+                inputDecoration ??
+                InputDecoration(
+                  prefixIcon: prefixIcon,
+                  filled: filled,
+                  fillColor: filledColor,
+                  counterText: '',
+                  contentPadding:
+                      contentPadding ??
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  labelText: !showSeparateLabel ? labelText : null,
+                  // labelStyle: TextStyle(color: _primaryColor),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    borderSide: const BorderSide(
+                      width: 1.5,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  suffixIcon: suffixIcon == null
+                      ? iconAsSuffix
+                      : Icon(
+                          suffixIcon,
+                          color: suffixIconColor ?? _primaryColor,
+                          size: 18,
+                        ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.5,
+                      color: borderColor ?? Colors.grey,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    gapPadding: 2,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.5,
+                      color: focusedBorderColor ?? _primaryColor,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    gapPadding: 2,
+                  ),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.5,
+                      color: borderColor ?? _primaryColor,
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    gapPadding: 2,
+                  ),
+                  hintText: hintText,
+                  errorText: errorText,
+                  suffix: suffix,
+                  enabled: enabled,
+                  errorStyle: const TextStyle(
+                    color: Colors.red,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  hintStyle: TextStyle(color: _secondaryColor, fontSize: 14),
+                  isDense: isDense,
+                ),
           ),
         ),
       ],
@@ -352,14 +388,17 @@ class EntryFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _primaryColor = context.primaryColor;
+    final _secondaryColor = context.hintColor;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.only(left: 2, bottom: 6),
-          child: Text(labelText,
-              style:
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
+          child: Text(
+            labelText,
+            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          ),
         ),
         SizedBox(
           height: 40,
@@ -376,49 +415,58 @@ class EntryFormField extends StatelessWidget {
             inputFormatters: maxLength != null
                 ? [
                     DecimalTextInputFormatter(
-                        decimalRange: maxLength!,
-                        activatedNegativeValues: false)
+                      decimalRange: maxLength!,
+                      activatedNegativeValues: false,
+                    ),
                   ]
                 : null,
             style: TextStyle(fontSize: 14, color: textColor ?? Colors.black),
             decoration: InputDecoration(
               counterText: '',
-              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 12,
+              ),
               // labelText: labelText,
               // labelStyle: TextStyle(color: _primaryColor),
               disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(6),
-                  borderSide: const BorderSide(width: 1.5, color: Colors.grey)),
+                borderRadius: BorderRadius.circular(6),
+                borderSide: const BorderSide(width: 1.5, color: Colors.grey),
+              ),
               suffixIcon: suffixIcon == null
                   ? iconAsSuffix
-                  : Icon(suffixIcon,
+                  : Icon(
+                      suffixIcon,
                       color: suffixIconColor ?? _primaryColor,
-                      size: 18),
+                      size: 18,
+                    ),
               enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: borderColor ?? Colors.grey),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
+                borderSide: BorderSide(
+                  width: 1.5,
+                  color: borderColor ?? Colors.grey,
+                ),
+                borderRadius: BorderRadius.circular(6),
+                gapPadding: 2,
+              ),
               focusedBorder: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: _primaryColor),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
+                borderSide: BorderSide(width: 1.5, color: _primaryColor),
+                borderRadius: BorderRadius.circular(6),
+                gapPadding: 2,
+              ),
               border: OutlineInputBorder(
-                  borderSide:
-                      BorderSide(width: 1.5, color: _primaryColor),
-                  borderRadius: BorderRadius.circular(6),
-                  gapPadding: 2),
+                borderSide: BorderSide(width: 1.5, color: _primaryColor),
+                borderRadius: BorderRadius.circular(6),
+                gapPadding: 2,
+              ),
               hintText: hintText,
               errorText: errorText,
               suffix: suffix,
               enabled: enabled,
               errorStyle: const TextStyle(
-                  color: Colors.red, fontWeight: FontWeight.bold),
-              hintStyle: TextStyle(
-                color: _secondaryColor,
-                fontSize: 14,
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
               ),
+              hintStyle: TextStyle(color: _secondaryColor, fontSize: 14),
             ),
           ),
         ),
@@ -466,8 +514,8 @@ class WindowsEntryField extends StatefulWidget {
   final String hintText;
   final String? labelText;
   final Widget? prefixIcon;
-  final Widget? suffixIcon;         // accepts any Widget (SvgPicture, Icon, etc.)
-  final IconData? suffixIconData;   // convenience — used when suffixIcon is null
+  final Widget? suffixIcon; // accepts any Widget (SvgPicture, Icon, etc.)
+  final IconData? suffixIconData; // convenience — used when suffixIcon is null
   final Color? suffixIconColor;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -492,7 +540,7 @@ class WindowsEntryField extends StatefulWidget {
   final VoidCallback? onTap;
   final VoidCallback? onEditingComplete;
   final void Function(PointerDownEvent)? onTapOutside;
-  final TextAlign? textAlign; 
+  final TextAlign? textAlign;
 
   const WindowsEntryField({
     super.key,
@@ -578,7 +626,7 @@ class _WindowsEntryFieldState extends State<WindowsEntryField> {
   //   padding : symmetric(h:12, v:14)  — much taller than EntryField's only(l:8,t:4,b:4,r:8)
   //   border  : 1.5px, single declaration for all states (enabled / focused / error)
 
-  static const _radius  = 8.0;
+  static const _radius = 8.0;
   static const _padding = EdgeInsets.symmetric(horizontal: 12, vertical: 14);
   static const _borderWidth = 1.5;
 
@@ -589,14 +637,23 @@ class _WindowsEntryFieldState extends State<WindowsEntryField> {
 
   @override
   Widget build(BuildContext context) {
-    final enabledColor  = widget.borderColor        ?? Colors.grey;
-    final focusedColor  = widget.focusedBorderColor ?? _primaryColor;
-    final disabledColor = Colors.grey.withOpacity(0.4);
-    final errorColor    = Colors.red;
+    final _primaryColor = context.primaryColor;
+    final _secondaryColor = context.hintColor;
 
-    final resolvedSuffixIcon = widget.suffixIcon ?? (widget.suffixIconData != null 
-    ? Icon(widget.suffixIconData, color: widget.suffixIconColor ?? _primaryColor, size: 18) 
-    : null);
+    final enabledColor = widget.borderColor ?? Colors.grey;
+    final focusedColor = widget.focusedBorderColor ?? _primaryColor;
+    final disabledColor = Colors.grey.withOpacity(0.4);
+    final errorColor = context.errorColor;
+
+    final resolvedSuffixIcon =
+        widget.suffixIcon ??
+        (widget.suffixIconData != null
+            ? Icon(
+                widget.suffixIconData,
+                color: widget.suffixIconColor ?? _primaryColor,
+                size: 18,
+              )
+            : null);
 
     final textField = TextField(
       controller: widget.controller,
@@ -610,20 +667,26 @@ class _WindowsEntryFieldState extends State<WindowsEntryField> {
       maxLines: widget.maxLines,
       maxLength: widget.maxLength,
       textAlign: widget.textAlign ?? TextAlign.start,
-      textInputAction: widget.textInputAction ??
-        (widget.nextFocusNode != null
-        ? TextInputAction.next
-        : TextInputAction.done),
-      style: widget.textStyle ?? const TextStyle(fontSize: 14, color: Colors.black),
+      textInputAction:
+          widget.textInputAction ??
+          (widget.nextFocusNode != null
+              ? TextInputAction.next
+              : TextInputAction.done),
+      style:
+          widget.textStyle ??
+          const TextStyle(fontSize: 14, color: Colors.black),
       cursorColor: _primaryColor,
       // Full desktop text interaction — select, copy, cut, paste, undo, right-click menu.
       enableInteractiveSelection: true,
-      contextMenuBuilder: (_, state) => AdaptiveTextSelectionToolbar.editableText(editableTextState: state),
+      contextMenuBuilder: (_, state) =>
+          AdaptiveTextSelectionToolbar.editableText(editableTextState: state),
       onChanged: widget.onChanged,
       onSubmitted: _onSubmitted,
       onTap: widget.onTap,
       onEditingComplete: widget.onEditingComplete ?? _onEditingComplete,
-      onTapOutside: widget.onTapOutside ?? (_) => FocusManager.instance.primaryFocus?.unfocus(),
+      onTapOutside:
+          widget.onTapOutside ??
+          (_) => FocusManager.instance.primaryFocus?.unfocus(),
       decoration: InputDecoration(
         prefixIcon: widget.prefixIcon,
         suffixIcon: resolvedSuffixIcon,
@@ -632,17 +695,20 @@ class _WindowsEntryFieldState extends State<WindowsEntryField> {
         errorText: widget.errorText,
         filled: widget.filled,
         fillColor: widget.fillColor,
-        counterText: '',                          // hides maxLength counter
+        counterText: '', // hides maxLength counter
         contentPadding: widget.contentPadding ?? _padding,
-        hintStyle: const TextStyle(color: _secondaryColor, fontSize: 14),
-        errorStyle: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+        hintStyle: TextStyle(color: _secondaryColor, fontSize: 14),
+        errorStyle: const TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+        ),
         // ── Borders — one per state, all using the same radius ──────────────
-        border:               _border(enabledColor),
-        enabledBorder:        _border(enabledColor),
-        focusedBorder:        _border(focusedColor),
-        disabledBorder:       _border(disabledColor),
-        errorBorder:          _border(errorColor),
-        focusedErrorBorder:   _border(errorColor),
+        border: _border(enabledColor),
+        enabledBorder: _border(enabledColor),
+        focusedBorder: _border(focusedColor),
+        disabledBorder: _border(disabledColor),
+        errorBorder: _border(errorColor),
+        focusedErrorBorder: _border(errorColor),
       ),
     );
 

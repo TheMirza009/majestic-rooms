@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/root/modules/hotel/hotel_screen.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/explore_controller.dart';
 import 'package:majestic_rooms/root/modules/tabs/explore/widgets/city_chips.dart';
@@ -11,7 +11,7 @@ import 'package:majestic_rooms/root/widgets/no_results_widget.dart';
 import 'package:shimmer/shimmer.dart';
 
 // Shimmer colours — match HotelCard's own shimmer palette
-const Color _shimmerBase      = Color.fromARGB(255, 212, 212, 212);
+const Color _shimmerBase = Color.fromARGB(255, 212, 212, 212);
 const Color _shimmerHighlight = Color.fromARGB(255, 243, 243, 243);
 
 class ExploreScreen extends StatefulWidget {
@@ -45,7 +45,11 @@ class _ExploreScreenState extends State<ExploreScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // PROFILE
-          RepaintBoundary(child: ProfileBar(onNotificationsTap: _controller.openNotifications)),
+          RepaintBoundary(
+            child: ProfileBar(
+              onNotificationsTap: _controller.openNotifications,
+            ),
+          ),
 
           // SEARCH
           Obx(
@@ -53,7 +57,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
               controller: _controller.searchController,
               isSearching: _controller.isSearching.value,
               isFilterOn: _controller.isFilterOn.value,
-              onSearchTap: () => _controller.onSearchSubmit(_controller.searchController.text),
+              onSearchTap: () =>
+                  _controller.onSearchSubmit(_controller.searchController.text),
               onFilterTap: _controller.onFilter,
               onSubmitted: _controller.onSearchSubmit,
               onClear: _onClear,
@@ -70,10 +75,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 return SizeTransition(
                   sizeFactor: animation,
                   axisAlignment: -1.0,
-                  child: FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  ),
+                  child: FadeTransition(opacity: animation, child: child),
                 );
               },
               child: _controller.isFilterOn.value
@@ -96,7 +98,9 @@ class _ExploreScreenState extends State<ExploreScreen> {
               final isInitial = _controller.isInitialLoading.value;
               final hotels = _controller.hotels;
               final saved = _controller.controller.savedHotels.toList();
-              final hasSearchQuery = _controller.searchQuery.value.trim().isNotEmpty;
+              final hasSearchQuery = _controller.searchQuery.value
+                  .trim()
+                  .isNotEmpty;
 
               // SKELETON — shown during the very first load
               if (isInitial) {
@@ -133,14 +137,21 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                     borderRadius: BorderRadius.circular(16),
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 14,
+                                      vertical: 10,
+                                    ),
                                     child: Shimmer.fromColors(
                                       baseColor: const Color(0xFF555555),
                                       highlightColor: const Color(0xFF888888),
-                                      period: const Duration(milliseconds: 1200),
+                                      period: const Duration(
+                                        milliseconds: 1200,
+                                      ),
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           // NAME placeholder
                                           Container(
@@ -148,7 +159,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                             width: 240,
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                           ),
                                           const SizedBox(height: 6),
@@ -158,7 +170,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                             width: 100,
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                           ),
                                           const SizedBox(height: 6),
@@ -168,7 +181,8 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                             width: 80,
                                             decoration: BoxDecoration(
                                               color: Colors.white,
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
                                           ),
                                         ],
@@ -199,14 +213,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                       Icon(
                         Icons.hotel_outlined,
                         size: 64,
-                        color: CustomColors.textMuted.withValues(alpha: 0.35),
+                        color: context.textMutedColor.withValues(alpha: 0.35),
                       ),
                       const SizedBox(height: 12),
                       Text(
                         'No hotels to show'.tr,
                         style: TextStyle(
                           fontSize: 15,
-                          color: CustomColors.textMuted.withValues(alpha: 0.5),
+                          color: context.textMutedColor.withValues(alpha: 0.5),
                         ),
                       ),
                     ],
@@ -238,8 +252,17 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Text(
-                                  hotels.length == 1 ? 'result_found'.trParams({'count': hotels.length.toString()}) : 'results_found'.trParams({'count': hotels.length.toString()}),
-                                  style: const TextStyle(fontSize: 14, color: CustomColors.textMuted),
+                                  hotels.length == 1
+                                      ? 'result_found'.trParams({
+                                          'count': hotels.length.toString(),
+                                        })
+                                      : 'results_found'.trParams({
+                                          'count': hotels.length.toString(),
+                                        }),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: context.textMutedColor,
+                                  ),
                                 ),
                               ),
                             )
@@ -250,13 +273,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                     Expanded(
                       child: RefreshIndicator(
                         onRefresh: _controller.refreshHotels,
-                        color: CustomColors.brandRed,
+                        color: context.primaryColor,
                         child: ListView.separated(
                           controller: _controller.scrollController,
                           padding: const EdgeInsets.only(bottom: 16),
                           itemCount: hotels.length + 1,
                           physics: const BouncingScrollPhysics(),
-                          separatorBuilder: (_, _) => const SizedBox(height: 16),
+                          separatorBuilder: (_, _) =>
+                              const SizedBox(height: 16),
                           itemBuilder: (_, index) {
                             // Padding box / Loading Indicator
                             if (index == hotels.length) {
@@ -265,7 +289,10 @@ class _ExploreScreenState extends State<ExploreScreen> {
                                 width: double.infinity,
                                 child: Center(
                                   child: _controller.isLoadingMore.value
-                                      ? const CircularProgressIndicator(strokeWidth: 2, color: CustomColors.brandRed)
+                                      ? CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: context.primaryColor,
+                                        )
                                       : const SizedBox.shrink(),
                                 ),
                               );
@@ -279,11 +306,14 @@ class _ExploreScreenState extends State<ExploreScreen> {
                               hotel: hotel,
                               heroTag: '${hotel.id}_explore',
                               initialSaveValue: saved.contains(hotel),
-                              onSaveTap: (_) => _controller.controller.toggleHotelSave(hotel),
-                              onTap: () => Get.to(() => HotelScreen(
-                                hotel: hotel,
-                                heroTag: '${hotel.id}_explore',
-                              )),
+                              onSaveTap: (_) =>
+                                  _controller.controller.toggleHotelSave(hotel),
+                              onTap: () => Get.to(
+                                () => HotelScreen(
+                                  hotel: hotel,
+                                  heroTag: '${hotel.id}_explore',
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -301,15 +331,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   duration: const Duration(milliseconds: 350),
                   switchInCurve: Curves.easeOutCubic,
                   switchOutCurve: Curves.easeInCubic,
-                  layoutBuilder: (Widget? currentChild, List<Widget> previousChildren) {
-                    return Stack(
-                      alignment: Alignment.topCenter,
-                      children: <Widget>[
-                        ...previousChildren,
-                        if (currentChild != null) currentChild,
-                      ],
-                    );
-                  },
+                  layoutBuilder:
+                      (Widget? currentChild, List<Widget> previousChildren) {
+                        return Stack(
+                          alignment: Alignment.topCenter,
+                          children: <Widget>[
+                            ...previousChildren,
+                            if (currentChild != null) currentChild,
+                          ],
+                        );
+                      },
                   child: content,
                 ),
               );

@@ -1,15 +1,11 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/currency_format.dart';
 import 'package:majestic_rooms/root/modules/booking/booking_controller.dart';
 
 class BookNowButton extends StatelessWidget {
-  const BookNowButton({
-    super.key,
-    required this.controller,
-  });
+  const BookNowButton({super.key, required this.controller});
 
   final BookingController controller;
 
@@ -18,7 +14,7 @@ class BookNowButton extends StatelessWidget {
     return Obx(() {
       final hasSelection = controller.selectedRooms.isNotEmpty;
       final total = controller.totalPrice;
-      
+
       return AnimatedSlide(
         offset: hasSelection ? Offset.zero : const Offset(0, 2.0),
         duration: const Duration(milliseconds: 350),
@@ -31,7 +27,7 @@ class BookNowButton extends StatelessWidget {
             child: FloatingActionButton.extended(
               heroTag: 'book_now_fab',
               onPressed: controller.proceedToNextStep,
-              backgroundColor: CustomColors.brandRed,
+              backgroundColor: context.primaryColor,
               elevation: 6,
               shape: const StadiumBorder(),
               label: Padding(
@@ -51,7 +47,11 @@ class BookNowButton extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.white),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 14,
+                          color: Colors.white,
+                        ),
                       ],
                     ),
                     const SizedBox(width: 24), // Spacer

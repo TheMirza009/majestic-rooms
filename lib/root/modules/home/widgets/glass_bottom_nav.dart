@@ -15,9 +15,9 @@ class GlassBottomNavBar extends StatelessWidget {
 
   // ── Control Panel ────────────────────────────────────────────────────────
   static const double _trayBlurSigma = 20; // Cupertino frosted-glass depth
-  static const double _trayRadius    = 40;
-  static const Color  _trayBg        = Color.fromARGB(85, 0, 0, 0);
-  static const Color  _trayBorder    = Color(0x1AFFFFFF); // specular highlight rim
+  static const double _trayRadius = 40;
+  static const Color _trayBg = Color.fromARGB(85, 0, 0, 0);
+  static const Color _trayBorder = Color(0x1AFFFFFF); // specular highlight rim
 
   @override
   Widget build(BuildContext context) {
@@ -29,20 +29,26 @@ class GlassBottomNavBar extends StatelessWidget {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(_trayRadius)),
             child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: _trayBlurSigma, sigmaY: _trayBlurSigma),
+              filter: ImageFilter.blur(
+                sigmaX: _trayBlurSigma,
+                sigmaY: _trayBlurSigma,
+              ),
               child: DecoratedBox(
                 decoration: const BoxDecoration(
                   color: _trayBg,
                   borderRadius: BorderRadius.all(Radius.circular(_trayRadius)),
                   border: Border(
-                    top:    BorderSide(color: _trayBorder, width: 1),
-                    right:  BorderSide(color: _trayBorder, width: 1),
-                    bottom: BorderSide(color: _trayBorder, width: 1),
-                    left:   BorderSide(color: _trayBorder, width: 1),
+                    top: BorderSide(color: _trayBorder, width: 1.5),
+                    right: BorderSide(color: _trayBorder, width: 1.5),
+                    bottom: BorderSide(color: _trayBorder, width: 1.5),
+                    left: BorderSide(color: _trayBorder, width: 1.5),
                   ),
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 12,
+                  ),
                   child: Row(
                     spacing: 16,
                     mainAxisSize: MainAxisSize.min,

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
+import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:majestic_rooms/root/widgets/confirm_logout_dialog.dart';
@@ -26,10 +27,7 @@ class Utils {
   }
 
   static Future<void> launchEmail(String email) async {
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: email,
-    );
+    final Uri emailLaunchUri = Uri(scheme: 'mailto', path: email);
     try {
       if (await canLaunchUrl(emailLaunchUri)) {
         await launchUrl(emailLaunchUri, mode: LaunchMode.externalApplication);
@@ -43,10 +41,7 @@ class Utils {
 
   static Future<void> launchPhone(String phone) async {
     final String cleanPhone = phone.replaceAll(' ', '');
-    final Uri phoneLaunchUri = Uri(
-      scheme: 'tel',
-      path: cleanPhone,
-    );
+    final Uri phoneLaunchUri = Uri(scheme: 'tel', path: cleanPhone);
     try {
       if (await canLaunchUrl(phoneLaunchUri)) {
         await launchUrl(phoneLaunchUri, mode: LaunchMode.externalApplication);
@@ -62,11 +57,9 @@ class Utils {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: CustomColors.successColor,
+        backgroundColor: context.successColor,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
@@ -88,10 +81,7 @@ class Utils {
         ),
       );
     } else {
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-      );
+      Fluttertoast.showToast(msg: message, toastLength: Toast.LENGTH_SHORT);
     }
   }
 
@@ -165,7 +155,10 @@ class Utils {
     showBottomSnackBar(
       title,
       message,
-      icon: const Icon(Icons.error_outline, color: CustomColors.brandRed),
+      icon: Icon(
+        Icons.error_outline,
+        color: Get.context?.primaryColor ?? CustomColors.brandRed,
+      ),
       mainButtonText: mainButtonText ?? 'Close'.tr,
       onMainButtonTap: onMainButtonTap ?? () => Get.back(),
       animationDuration: animationDuration,
@@ -180,9 +173,8 @@ class Utils {
     await showDialog(
       context: Get.context!,
       barrierDismissible: true,
-      builder: (_) => ConfirmLogoutDialog(
-        controller: Get.find<CommonController>(),
-      ),
+      builder: (_) =>
+          ConfirmLogoutDialog(controller: Get.find<CommonController>()),
     );
   }
 
@@ -202,7 +194,9 @@ class Utils {
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
-              Text('Version: @version'.trParams({'version': Constants.appVersion})),
+              Text(
+                'Version: @version'.trParams({'version': Constants.appVersion}),
+              ),
             ],
           ),
           actions: <Widget>[

@@ -35,17 +35,23 @@ class HotelScreenController extends GetxController {
           .maybeSingle();
 
       if (hotelRow == null) {
-        debugPrint('Hotel $hotelId does not exist on server. Skipping reviews fetch.');
+        debugPrint(
+          'Hotel $hotelId does not exist on server. Skipping reviews fetch.',
+        );
         Utils.showToast('Could not fetch reviews'.tr);
         return;
       }
 
       final response = await supabase
           .from('review')
-          .select('id, reviewer_name, overall_rating, feedback, review_detail_rating(id, review_id, service, rating)')
+          .select(
+            'id, reviewer_name, overall_rating, feedback, review_detail_rating(id, review_id, service, rating)',
+          )
           .eq('hotel_id', hotelId)
           .order('id', ascending: false);
-      reviews.assignAll((response as List).map((e) => Review.fromJson(e)).toList());
+      reviews.assignAll(
+        (response as List).map((e) => Review.fromJson(e)).toList(),
+      );
     } catch (e) {
       debugPrint('Reviews fetch error: $e');
       Utils.showToast('Could not fetch reviews'.tr);
