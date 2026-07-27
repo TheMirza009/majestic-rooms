@@ -200,7 +200,9 @@ class BookingController extends GetxController {
       }
     } catch (e) {
       debugPrint('❌ [BookingController] Failed to confirm booking: $e');
-      if (context.mounted) {
+      if (commonController.isAuthSessionError(e)) {
+        commonController.showSessionExpiredDialog();
+      } else if (context.mounted) {
         Get.snackbar(
           'Error'.tr,
           'Failed to confirm booking.'.tr,
@@ -281,7 +283,9 @@ class BookingController extends GetxController {
       }
     } catch (e) {
       debugPrint('❌ [BookingController] Failed to cancel booking: $e');
-      if (context.mounted) {
+      if (Get.find<CommonController>().isAuthSessionError(e)) {
+        Get.find<CommonController>().showSessionExpiredDialog();
+      } else if (context.mounted) {
         Get.snackbar(
           'Error'.tr,
           'Failed to cancel booking. Please try again.'.tr,

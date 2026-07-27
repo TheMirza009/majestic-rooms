@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 
 class HotelStars extends StatelessWidget {
@@ -23,7 +24,7 @@ class HotelStars extends StatelessWidget {
         children: [
           for (int i = 0; i < 5; i++)
             if (i < rating.floor())
-              Icon(Icons.star, color: context.secondaryColor, size: 20)
+              Icon(Icons.star, color: CustomColors.luxuryGold, size: 20)
             else if (i == rating.floor())
               Stack(
                 children: [

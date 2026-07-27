@@ -19,12 +19,12 @@ class LicenceBanner extends StatelessWidget {
         decoration: BoxDecoration(
           color: hasLicence
               ? context.secondaryColor.withOpacity(0.15)
-              : context.primaryColor.withOpacity(0.10),
+              : context.errorColor.withOpacity(0.10),
           border: Border.all(
             width: 1.15,
             color: hasLicence
                 ? context.secondaryColor
-                : context.primaryColor.withAlpha(150),
+                : context.errorColor.withAlpha(150),
           ),
           borderRadius: BorderRadius.circular(14),
         ),
@@ -33,7 +33,7 @@ class LicenceBanner extends StatelessWidget {
           children: [
             Icon(
               hasLicence ? Icons.verified_rounded : Icons.info_outline_rounded,
-              color: hasLicence ? context.secondaryColor : context.primaryColor,
+              color: hasLicence ? context.secondaryColor : context.errorColor,
             ),
             const SizedBox(width: 12),
             Text(
@@ -44,7 +44,7 @@ class LicenceBanner extends StatelessWidget {
                 fontWeight: FontWeight.w600,
                 color: hasLicence
                     ? CustomColors.linkColor
-                    : context.primaryColor,
+                    : context.errorColor,
               ),
             ),
             const SizedBox(width: 12),

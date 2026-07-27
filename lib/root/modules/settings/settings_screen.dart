@@ -259,6 +259,10 @@ class ThemeDebuggerTile extends StatelessWidget {
                 onTap: () => Get.find<CommonController>().changeTheme(AppThemeSets.greenTheme),
               ),
               _ThemeCircle(
+                color: CustomColors.emeraldBrass,
+                onTap: () => Get.find<CommonController>().changeTheme(AppThemeSets.emeraldTheme),
+              ),
+              _ThemeCircle(
                 color: CustomColors.brandBlue,
                 onTap: () => Get.find<CommonController>().changeTheme(AppThemeSets.blueTheme),
               ),
@@ -278,7 +282,7 @@ class _ThemeCircle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isActive = context.primaryColor.value == color.value;
+    final bool isActive = context.primaryColor.toARGB32() == color.toARGB32();
     final double iconSize = 24.0;
     final double activeSize = iconSize * 1.15; // 27.6
     final double inactiveSize = iconSize; // 24.0

@@ -1014,13 +1014,13 @@ class _BookingSummaryScreenState extends State<BookingSummaryScreen> {
                                 decoration: BoxDecoration(
                                   color: controller.isBooking.value
                                       ? Colors.grey
-                                      : context.primaryColor,
+                                      : context.secondaryColor,
                                   borderRadius: BorderRadius.circular(100),
                                   boxShadow: controller.isBooking.value
                                       ? []
                                       : [
                                           BoxShadow(
-                                            color: context.primaryColor
+                                            color: context.secondaryColor
                                                 .withOpacity(0.30),
                                             blurRadius: 16,
                                             offset: const Offset(0, 6),

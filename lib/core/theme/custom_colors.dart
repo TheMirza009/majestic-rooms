@@ -29,12 +29,8 @@ class CustomColors {
 
   // ── Surface & canvas ──────────────────────────────────────────────────────
   static const Color bgLight = Color(0xFFF9F9FA); // scaffold background
-  static const Color bgLightAlt = Color.fromARGB(
-    255,
-    228,
-    234,
-    234,
-  ); // scaffold background
+  static const Color bgLightAlt = Color.fromARGB(255, 228, 234, 234); // scaffold background (green theme)
+  static const Color bgLightBlue = Color(0xFFDBE3E9); // scaffold background (blue theme)
   static const Color surfaceWhite = Color(0xFFFFFFFF); // cards / containers
   static const Color cardSubtleBg = Color(
     0xFFF1F1F3,
@@ -44,6 +40,17 @@ class CustomColors {
   static const Color textMain = Color(0xFF1A1A1A); // headings
   static const Color textMuted = Color(0xFF666666); // descriptions / subtitles
   static const Color textLight = Color(0xFFFFFFFF); // text on dark surfaces
+
+  // ── Emerald theme ──────────────────────────────────────────────────────────
+  // Mapped from theme.scopes.css [data-theme-scope='public']
+  static const Color emeraldPrimary    = Color(0xFF0F4C3A); // --primary: CTA fill (deep emerald)
+  static const Color emeraldScaffoldBg = Color(0xFFFBF8F2); // --background: warm cream
+  static const Color emeraldBrass      = Color(0xFFB08655); // --accent: brass
+  static const Color emeraldSandTint   = Color(0xFFF3ECDB); // --secondary/muted: warm sand
+  static const Color emeraldBrassDark  = Color(0xFF7D5D37); // --secondary-foreground / destructive
+  static const Color emeraldSage       = Color(0xFF5B6A62); // --muted-foreground: dark neutral
+  static const Color emeraldBorder     = Color(0xFFE4DCC8); // --border / --input
+  static const Color emeraldAnchor     = Color(0xFF1A2B24); // --foreground: near-black
 
   // ── Utility ───────────────────────────────────────────────────────────────
   static const Color whatsappGreen = Color(0xFF25D366); // WhatsApp float button

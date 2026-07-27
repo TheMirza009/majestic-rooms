@@ -245,8 +245,8 @@ class _HotelCardState extends State<HotelCard> {
                                             Icon(
                                               Icons.star_rounded,
                                               size: 13,
-                                              color: context.secondaryColor,
-                                            ),
+                                              color: CustomColors.luxuryGold, // context.primaryColor,
+                                            ), 
                                             const SizedBox(width: 2),
                                             Expanded(
                                               child: Text(

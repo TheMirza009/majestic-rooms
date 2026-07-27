@@ -258,8 +258,8 @@ class _ProfileScreenState extends State<ProfileScreen>
                 _Tile(
                   icon: Icons.logout,
                   title: 'Log Out'.tr,
-                  iconColor: context.primaryColor,
-                  titleColor: context.primaryColor,
+                  iconColor: context.errorColor,
+                  titleColor: context.errorColor,
                   trailing: const SizedBox.shrink(),
                   onTap: Utils.logoutDialog,
                 ),

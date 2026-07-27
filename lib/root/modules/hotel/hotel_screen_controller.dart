@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/core/data/models/review.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,7 +55,12 @@ class HotelScreenController extends GetxController {
       );
     } catch (e) {
       debugPrint('Reviews fetch error: $e');
-      Utils.showToast('Could not fetch reviews'.tr);
+      if (Get.isRegistered<CommonController>() &&
+          Get.find<CommonController>().isAuthSessionError(e)) {
+        Get.find<CommonController>().showSessionExpiredDialog();
+      } else {
+        Utils.showToast('Could not fetch reviews'.tr);
+      }
     } finally {
       isLoadingReviews.value = false;
     }

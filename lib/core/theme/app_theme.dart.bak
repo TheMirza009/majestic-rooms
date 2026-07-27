@@ -126,15 +126,15 @@ class AppTheme {
       ),
 
       colorScheme: const ColorScheme.light(
-        primary:          CustomColors.emeraldBrass,      // dominant gold/amber — bottom nav, main chrome
-        secondary:        CustomColors.emeraldPrimary,    // emerald green — CTA buttons, accented widgets
-        tertiary:         CustomColors.emeraldBrassDark,  // deeper brass-brown — extra accent
-        surface:          CustomColors.surfaceWhite,      // --card
-        onPrimary:        CustomColors.textLight,         // white on brass
-        onSecondary:      CustomColors.textLight,         // white on emerald
-        onSurface:        CustomColors.emeraldAnchor,     // --foreground
-        onSurfaceVariant: CustomColors.emeraldSage,       // --muted-foreground
-        outline:          CustomColors.emeraldBorder,     // --border
+        primary:          CustomColors.emeraldPrimary,   // --primary
+        secondary:        CustomColors.emeraldBrass,     // --accent
+        tertiary:         CustomColors.emeraldBrassDark, // --destructive / accent-deep
+        surface:          CustomColors.surfaceWhite,     // --card
+        onPrimary:        CustomColors.textLight,        // white on emerald CTA
+        onSecondary:      CustomColors.emeraldAnchor,    // dark on brass
+        onSurface:        CustomColors.emeraldAnchor,    // --foreground
+        onSurfaceVariant: CustomColors.emeraldSage,      // --muted-foreground
+        outline:          CustomColors.emeraldBorder,    // --border
       ),
 
       appBarTheme: const AppBarTheme(
@@ -155,7 +155,7 @@ class AppTheme {
 
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: CustomColors.emeraldPrimary, // emerald green buttons
+          backgroundColor: CustomColors.emeraldPrimary,
           foregroundColor: CustomColors.textLight,
           textStyle: const TextStyle(
             fontFamily: 'Fustat',

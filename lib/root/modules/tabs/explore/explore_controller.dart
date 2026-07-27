@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:majestic_rooms/root/modules/home/notifications_screen.dart';
@@ -193,9 +192,7 @@ class ExploreController extends GetxController {
       _applyFilters();
     } catch (e) {
       debugPrint("Fetch hotels error: $e");
-      if (e is PostgrestException &&
-          (e.code == 'PGRST303' ||
-              e.message.toLowerCase().contains('jwt expired'))) {
+      if (controller.isAuthSessionError(e)) {
         controller.showSessionExpiredDialog();
       }
     } finally {
@@ -219,9 +216,7 @@ class ExploreController extends GetxController {
       if (parsedHotels.length < _pageSize) _allPagesLoaded = true;
     } catch (e) {
       debugPrint("Load next page error: $e");
-      if (e is PostgrestException &&
-          (e.code == 'PGRST303' ||
-              e.message.toLowerCase().contains('jwt expired'))) {
+      if (controller.isAuthSessionError(e)) {
         controller.showSessionExpiredDialog();
       }
     }
@@ -247,9 +242,7 @@ class ExploreController extends GetxController {
       if (hotels.isEmpty) Utils.showToast('No hotels found'.tr);
     } catch (e) {
       debugPrint("Search hotels error: $e");
-      if (e is PostgrestException &&
-          (e.code == 'PGRST303' ||
-              e.message.toLowerCase().contains('jwt expired'))) {
+      if (controller.isAuthSessionError(e)) {
         controller.showSessionExpiredDialog();
       }
     } finally {

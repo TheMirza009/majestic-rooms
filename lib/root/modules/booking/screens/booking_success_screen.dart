@@ -229,11 +229,14 @@ class _BookingSuccessScreenState extends State<BookingSuccessScreen>
                           gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            colors: [Color(0xFF9B2728), context.primaryColor],
+                            colors: [
+                              context.secondaryColor.withValues(alpha: 0.7),
+                              context.secondaryColor,
+                            ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: Color(0x407A2021),
+                              color: context.secondaryColor.withValues(alpha: 0.35),
                               blurRadius: 32,
                               offset: Offset(0, 12),
                             ),

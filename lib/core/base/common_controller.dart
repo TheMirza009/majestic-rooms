@@ -36,21 +36,37 @@ class CommonController extends GetxController {
     languageCode.value = Get.locale?.languageCode ?? 'en';
     _initData();
 
-    _authSubscription = _supabase.onAuthStateChange.listen((authState) {
-      currentUser.value = authState.session?.user;
+    _authSubscription = _supabase.onAuthStateChange.listen(
+      (authState) {
+        currentUser.value = authState.session?.user;
 
-      // Auto-logout: if the session expires in the background or the user
-      // is deleted/signed out remotely, force them back to the login screen.
-      if (authState.event == AuthChangeEvent.signedOut ||
-          authState.event == AuthChangeEvent.userDeleted) {
-        savedHotels.clear();
-        bookings.clear();
-        Get.offAllNamed(AppRoutes.login);
-      } else if (authState.event == AuthChangeEvent.signedIn) {
-        _initData();
-      }
-    });
+        // Auto-logout: if the session expires in the background or the user
+        // is deleted/signed out remotely, force them back to the login screen.
+        if (authState.event == AuthChangeEvent.signedOut) {
+          _clearSessionAndNavigateToLogin();
+        } else if (authState.event == AuthChangeEvent.signedIn) {
+          _initData();
+        }
+      },
+      onError: (Object error, StackTrace stackTrace) {
+        debugPrint(
+          '⚠️ [Auth] onAuthStateChange stream error handled gracefully: $error',
+        );
+        if (isAuthSessionError(error)) {
+          _clearSessionAndNavigateToLogin();
+        }
+      },
+    );
     _supabase.printUserStates();
+  }
+
+  void _clearSessionAndNavigateToLogin() {
+    currentUser.value = null;
+    savedHotels.clear();
+    bookings.clear();
+    if (Get.currentRoute != AppRoutes.login) {
+      Get.offAllNamed(AppRoutes.login);
+    }
   }
 
   Future<void> _initData() async {
@@ -86,7 +102,7 @@ class CommonController extends GetxController {
       savedHotels.assignAll(fetchedHotels);
     } catch (e) {
       debugPrint('❌ [CommonController] Failed to load saved hotels: $e');
-      if (_isJwtExpired(e)) showSessionExpiredDialog();
+      if (isLoggedIn && isAuthSessionError(e)) showSessionExpiredDialog();
     }
   }
 
@@ -172,7 +188,7 @@ class CommonController extends GetxController {
       bookings.assignAll(fetchedBookings);
     } catch (e) {
       debugPrint('❌ [CommonController] Failed to fetch bookings: $e');
-      if (_isJwtExpired(e)) showSessionExpiredDialog();
+      if (isAuthSessionError(e)) showSessionExpiredDialog();
     }
   }
 
@@ -190,13 +206,26 @@ class CommonController extends GetxController {
 
   // ── Session ────────────────────────────────────────────────────────────────
 
-  /// Returns true if [error] is a Supabase JWT-expired (PGRST303) error.
-  bool _isJwtExpired(Object error) {
+  /// Returns true if [error] is a Supabase JWT-expired (PGRST303) error,
+  /// an invalid refresh token error, or any other session expiration error.
+  bool isAuthSessionError(Object error) {
+    if (error is AuthException) {
+      final code = error.code?.toLowerCase() ?? '';
+      final msg = error.message.toLowerCase();
+      return code == 'refresh_token_not_found' ||
+          msg.contains('refresh token') ||
+          msg.contains('jwt expired') ||
+          msg.contains('invalid refresh token');
+    }
     if (error is PostgrestException) {
       return error.code == _jwtExpiredCode ||
           (error.message.toLowerCase().contains('jwt expired'));
     }
-    return error.toString().toLowerCase().contains('jwt expired');
+    final str = error.toString().toLowerCase();
+    return str.contains('jwt expired') ||
+        str.contains('refresh token') ||
+        str.contains('refresh_token_not_found') ||
+        str.contains('invalid refresh token');
   }
 
   /// Shows a Material Expressive session-expired dialog. Safe to call from any
@@ -205,8 +234,12 @@ class CommonController extends GetxController {
   /// Dismissed only via the "Sign In Again" CTA, which signs the user out and
   /// navigates to the login screen.
   void showSessionExpiredDialog() {
-    // Avoid stacking multiple dialogs if already shown.
-    if (Get.isDialogOpen ?? false) return;
+    // Avoid stacking multiple dialogs if already shown, or if user is already logged out / on login screen.
+    if ((Get.isDialogOpen ?? false) ||
+        !isLoggedIn ||
+        Get.currentRoute == AppRoutes.login) {
+      return;
+    }
 
     Get.dialog(
       barrierDismissible: false,
