@@ -1,3 +1,7 @@
+
+import 'package:flutter/foundation.dart';
+import 'package:majestic_rooms/core/theme/app_theme.dart';
+import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -300,3 +304,4 @@ class _SettingsTile extends StatelessWidget {
     );
   }
 }
+

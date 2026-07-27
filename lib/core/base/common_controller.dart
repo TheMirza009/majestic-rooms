@@ -1,3 +1,4 @@
+import 'package:majestic_rooms/core/theme/app_theme.dart';
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -100,6 +101,17 @@ class CommonController extends GetxController {
   }
 
   // ── App States ─────────────────────────────────────────────────────────────
+
+  // ── Theme State ────────────────────────────────────────────────────────────
+
+  final Rx<ThemeData> currentTheme = AppTheme.lightTheme.obs;
+
+  void changeTheme(ThemeData theme) {
+    currentTheme.value = theme;
+    Get.changeTheme(theme);
+    update();
+  }
+
 
   /// Active currency symbol. Read by [formatPrice] throughout the app.
   /// Change this from Settings whenever that screen is built.

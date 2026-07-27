@@ -5,7 +5,8 @@ class CustomColors {
 
   // ── Legacy (kept for backward compatibility) ──────────────────────────────
   static const Color brandRed = Color(0xFF7A2021);
-  static const Color brandGreen = Color(0xFF1697A3);
+  static const Color brandGreen = Color(0xFF64d5b3); // Color(0xFF1697A3);
+  static const Color brandBlue = Color.fromARGB(255, 11, 56, 111);
   static const Color brandBlack = Color(0xFF111827);
   static const Color brandWhite = Color(0xFFFFFFFF);
   static const Color brandGrey = Color(0xFFE5E7EB);
@@ -28,7 +29,12 @@ class CustomColors {
 
   // ── Surface & canvas ──────────────────────────────────────────────────────
   static const Color bgLight = Color(0xFFF9F9FA); // scaffold background
-  static const Color bgLightAlt = Color(0xEEE4EAEA); // scaffold background
+  static const Color bgLightAlt = Color.fromARGB(
+    255,
+    228,
+    234,
+    234,
+  ); // scaffold background
   static const Color surfaceWhite = Color(0xFFFFFFFF); // cards / containers
   static const Color cardSubtleBg = Color(
     0xFFF1F1F3,

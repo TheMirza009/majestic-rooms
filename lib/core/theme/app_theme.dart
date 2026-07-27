@@ -1,18 +1,36 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:majestic_rooms/core/theme/custom_colors.dart';
 import 'app_dimens_extension.dart';
 
+class AppThemeSets {
+  static ThemeData get redTheme => AppTheme._buildTheme(CustomColors.brandRed, CustomColors.cardSubtleBg);
+  static ThemeData get greenTheme => AppTheme._buildTheme(CustomColors.brandGreen, CustomColors.bgLightAlt);
+  static ThemeData get blueTheme => AppTheme._buildTheme(const Color.fromARGB(255, 7, 77, 163), const Color(0xFFDBE3E9));
+}
+
 class AppTheme {
-  static ThemeData get lightTheme {
+  static ThemeData get lightTheme => AppThemeSets.redTheme;
+
+  static ThemeData _buildTheme(Color primaryColor, Color scaffoldBgColor) {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       fontFamily: 'Fustat',
-      primaryColor: CustomColors.brandRed, // CustomColors.brandGreen, // CustomColors.brandRed,
-      scaffoldBackgroundColor: CustomColors.cardSubtleBg, //  CustomColors.bgLightAlt, // CustomColors.bgLight,
+      primaryColor: primaryColor,
+      scaffoldBackgroundColor: scaffoldBgColor,
 
-      colorScheme: const ColorScheme.light(
-        primary: CustomColors.brandRed, //  CustomColors.brandGreen, // CustomColors.brandRed,
+      cupertinoOverrideTheme: CupertinoThemeData(
+        primaryColor: primaryColor,
+        textTheme: const CupertinoTextThemeData(
+          textStyle: TextStyle(fontFamily: 'Fustat'),
+          actionTextStyle: TextStyle(fontFamily: 'Fustat'),
+          pickerTextStyle: TextStyle(fontFamily: 'Fustat'),
+        ),
+      ),
+
+      colorScheme: ColorScheme.light(
+        primary: primaryColor,
         secondary: CustomColors.luxuryGold,
         tertiary: CustomColors.premiumAmber,
         surface: CustomColors.surfaceWhite,

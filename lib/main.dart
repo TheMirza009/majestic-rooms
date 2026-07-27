@@ -1,3 +1,4 @@
+import 'package:majestic_rooms/core/base/common_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:majestic_rooms/core/base/app_binding.dart';
@@ -16,6 +17,7 @@ Future<void> main() async {
     url: Environment.supabaseUrl,
     publishableKey: Environment.supabaseAnonKey,
   );
+  Get.put<CommonController>(CommonController(), permanent: true);
 
   final prefs = await SharedPreferences.getInstance();
   final langCode = prefs.getString('language_code') ?? 'en';
@@ -47,16 +49,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    final commonController = Get.find<CommonController>();
+    return Obx(() => GetMaterialApp(
       title: 'Majestic Rooms',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
+      theme: commonController.currentTheme.value,
       initialBinding: AppBinding(),
       translations: AppTranslations(),
       locale: locale,
       fallbackLocale: const Locale('en', 'US'),
       initialRoute: initialRoute,
       getPages: AppPages.routes,
-    );
+    ));
   }
 }

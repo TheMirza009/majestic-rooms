@@ -7,7 +7,6 @@ import 'package:majestic_rooms/root/modules/home/home_controller.dart';
 class AppBinding extends Bindings {
   @override
   void dependencies() {
-    Get.put<CommonController>(CommonController(), permanent: true);
     Get.put<HomeController>(HomeController(), permanent: true);
   }
 }
