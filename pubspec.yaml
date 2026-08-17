@@ -72,22 +72,24 @@ flutter:
 
 
 flutter_native_splash:
-  color: "#F9F9FA"
-  image: "assets/launcher/splash.png"
-  color_dark: "#111111"
+  color: "#e5dfd8"
+  image: "assets/launcher/splash_light.png"
+  color_dark: "#2b2721"
   image_dark: "assets/launcher/splash_dark.png"
   android_12:
-    image: "assets/launcher/splash.png"
-    image_dark: "assets/launcher/splash_dark.png"
-    color: "#F9F9FA"
-    color_dark: "#111111"
+    image: "assets/launcher/splash_android12_light.png"
+    image_dark: "assets/launcher/splash_android12_dark.png"
+    color: "#e5dfd8"
+    color_dark: "#2b2721"
+    # branding: assets/launcher/branding.png
+    # branding_dark: assets/launcher/branding_dark.png
   android: true
   ios: false
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: false
-  image_path: "assets/launcher/icon.png"
+  image_path: "assets/launcher/main_color_icon.png"
   min_sdk_android: 21
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/launcher/icon_adaptive.png"
+  adaptive_icon_background: "#7c2120"
+  adaptive_icon_foreground: "assets/launcher/icon_light_adaptive.png"

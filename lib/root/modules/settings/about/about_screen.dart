@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:majestic_rooms/core/theme/image_assets.dart';
 import 'package:majestic_rooms/core/theme/theme_context_extension.dart';
 import 'package:majestic_rooms/core/utils/constants.dart';
 import 'package:majestic_rooms/core/utils/helper.dart';
@@ -177,20 +178,26 @@ class AboutScreen extends StatelessWidget {
           Column(
             children: [
               Image.asset(
-                'assets/images/logo_black.png',
+                ImageAssets.symbolMain,
+                height: 90,
+                fit: BoxFit.contain,
+              ),
+              const SizedBox(height: 32),
+              Image.asset(
+                ImageAssets.logoBlack,
                 width: 180,
                 fit: BoxFit.contain,
               ),
               const SizedBox(height: 16),
-              Text(
-                Constants.appName,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.w800,
-                  color: context.textMainColor,
-                ),
-              ),
-              const SizedBox(height: 4),
+              // Text(
+              //   Constants.appName,
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.w800,
+              //     color: context.textMainColor,
+              //   ),
+              // ),
+              // const SizedBox(height: 4),
               // Text(
               //   'Version: @version'.trParams({'version': Constants.appVersion}),
               //   style: TextStyle(
@@ -201,7 +208,7 @@ class AboutScreen extends StatelessWidget {
               // ),
             ],
           ),
-          const SizedBox(height: 32),
+          const SizedBox(height: 24),
 
           // DESCRIPTION
           Text(

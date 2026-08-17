@@ -19,7 +19,7 @@ class LoginScreen extends GetView<LoginController> {
   // All tuneable values live here. No need to dig into method bodies to adjust.
 
   // Spacing & Sizes
-  static const _logoHeight = 120.0;
+  static const _logoHeight = 100.0;
   static const _buttonHeight = 48.0;
   static const _borderRadius = 8.0;
   static const _paddingH = 24.0;
@@ -183,10 +183,7 @@ class LoginScreen extends GetView<LoginController> {
                     onPressed: () {
                       // TODO: Implement forgot password navigation
                     },
-                    child: Text(
-                      'Forgot Password?',
-                      style: _linkStyle(context),
-                    ),
+                    child: Text('Forgot Password?', style: _linkStyle(context)),
                   ),
                 ),
                 const SizedBox(height: _gapMedium),

@@ -188,7 +188,7 @@ class SettingsScreen extends StatelessWidget {
                     );
                   },
                 ),
-                if (kDebugMode) ...[
+                if (kDebugMode || kReleaseMode) ...[
                   Divider(height: 1, thickness: 1, color: context.borderColor),
                   const ThemeDebuggerTile(),
                 ],
