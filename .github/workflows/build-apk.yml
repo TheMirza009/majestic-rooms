@@ -36,6 +36,19 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Setup Supabase Environment (if missing)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          mkdir -p lib/core/supabase
+          if [ ! -f lib/core/supabase/environment.dart ]; then
+            echo "Generating fallback lib/core/supabase/environment.dart"
+            URL="${SUPABASE_URL:-https://placeholder.supabase.co}"
+            KEY="${SUPABASE_ANON_KEY:-placeholder_anon_key}"
+            printf "class Environment {\n  static const String supabaseUrl = '%%s';\n  static const String supabaseAnonKey = '%%s';\n}\n" "$URL" "$KEY" > lib/core/supabase/environment.dart
+          fi
+
       - name: Build Android Release APK
         run: flutter build apk --release --android-skip-build-dependency-validation
 
